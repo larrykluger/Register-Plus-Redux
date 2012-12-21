@@ -2,7 +2,7 @@
 Contributors: skullbit, radiok
 Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
-Requires at least: 3.1
+Requires at least: 3.2
 Tested up to: 3.4
 Stable tag: 3.7.3
 

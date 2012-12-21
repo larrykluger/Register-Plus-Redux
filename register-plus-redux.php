@@ -239,12 +239,14 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 		}
 
 		function InitDeleteExpiredUsers() {
+			//TODO: How often is this triggered?
 			$delete_unverified_users_after = $this->GetReduxOption( 'delete_unverified_users_after' );
 			if ( is_numeric( $delete_unverified_users_after ) && absint( $delete_unverified_users_after ) > 0 ) {
 				global $wpdb;
-				$unverified_users = $wpdb->get_results( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
+				$unverified_users = $wpdb->get_results( $wpdb->query( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
 				if ( !empty( $unverified_users ) ) {
 					$expirationdate = date( 'Ymd', strtotime( '-' . absint( $this->GetReduxOption( 'delete_unverified_users_after' ) ) . ' days' ) );
+					//TODO: Is this neccessary?
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( $unverified_users as $unverified_user ) {
 						$user_info = get_userdata( $unverified_user->user_id );
@@ -278,7 +280,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'ReduxAdminStyles' ), 10, 1 );
 			add_action( 'admin_footer-' . $hookname, array( $this, 'ReduxAdminFoot' ), 10, 1 );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'filter_plugin_actions' ), 10, 4 );
-			if ( ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) || ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE) || $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) ) )
+			if ( ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) || ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE) || $wpdb->get_var( $wpdb->query( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) ) )
 				add_submenu_page( 'users.php', __( 'Unverified Users', 'register-plus-redux' ), __( 'Unverified Users', 'register-plus-redux' ), 'promote_users', 'unverified-users', array( $this, 'UnverifiedUsersPage' ) );
 		}
 
@@ -1347,6 +1349,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				check_admin_referer( 'delete-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
 					$update = 'delete_users';
+					//TODO: Is this neccessary?
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( (array) $_REQUEST['users'] as $id ) {
 						$id = (int) $id;
@@ -1399,7 +1402,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 					</thead>
 					<tbody id="users" class="list:user user-list">
 						<?php 
-						$unverified_users = $wpdb->get_results( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
+						$unverified_users = $wpdb->get_results( $wpdb->query( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
 						$style = '';
 						foreach ( $unverified_users as $unverified_user ) {
 							$user_info = get_userdata( $unverified_user->user_id );
@@ -3300,8 +3303,8 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 
 		function filter_login_message( $message ) {
 			// WordPress quirk, must throw errors now
+			global $errors;
 			if ( ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) && isset( $_GET['verification_code'] ) ) {
-				global $errors;
 				global $wpdb;
 				$verification_code = get_magic_quotes_gpc() ? stripslashes( $_GET['verification_code'] ) : $_GET['verification_code'];
 				$user_id = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'email_verification_code' AND meta_value = %s;", $verification_code ) );
