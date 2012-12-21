@@ -1222,14 +1222,14 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			$options['user_message_from_email'] = isset( $_POST['user_message_from_email'] ) ? sanitize_text_field( $_POST['user_message_from_email'] ) : '';
 			$options['user_message_from_name'] = isset( $_POST['user_message_from_name'] ) ? sanitize_text_field( $_POST['user_message_from_name'] ) : '';
 			$options['user_message_subject'] = isset( $_POST['user_message_subject'] ) ? sanitize_text_field( $_POST['user_message_subject'] ) : '';
-			$options['user_message_body'] = isset( $_POST['user_message_body'] ) ? sanitize_text_field( $_POST['user_message_body'] ) : '';
+			$options['user_message_body'] = isset( $_POST['user_message_body'] ) ? wp_kses_data( $_POST['user_message_body'] ) : '';
 			$options['send_user_message_in_html'] = isset( $_POST['send_user_message_in_html'] ) ? '1' : '0';
 			$options['user_message_newline_as_br'] = isset( $_POST['user_message_newline_as_br'] ) ? '1' : '0';
 			$options['custom_verification_message'] = isset( $_POST['custom_verification_message'] ) ? '1' : '0';
 			$options['verification_message_from_email'] = isset( $_POST['verification_message_from_email'] ) ? sanitize_text_field( $_POST['verification_message_from_email'] ) : '';
 			$options['verification_message_from_name'] = isset( $_POST['verification_message_from_name'] ) ? sanitize_text_field( $_POST['verification_message_from_name'] ) : '';
 			$options['verification_message_subject'] = isset( $_POST['verification_message_subject'] ) ? sanitize_text_field( $_POST['verification_message_subject'] ) : '';
-			$options['verification_message_body'] = isset( $_POST['verification_message_body'] ) ? sanitize_text_field( $_POST['verification_message_body'] ) : '';
+			$options['verification_message_body'] = isset( $_POST['verification_message_body'] ) ? wp_kses_data( $_POST['verification_message_body'] ) : '';
 			$options['send_verification_message_in_html'] = isset( $_POST['send_verification_message_in_html'] ) ? '1' : '0';
 			$options['verification_message_newline_as_br'] = isset( $_POST['verification_message_newline_as_br'] ) ? '1' : '0';
 
@@ -1240,7 +1240,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			$options['admin_message_from_email'] = isset( $_POST['admin_message_from_email'] ) ? sanitize_text_field( $_POST['admin_message_from_email'] ) : '';
 			$options['admin_message_from_name'] = isset( $_POST['admin_message_from_name'] ) ? sanitize_text_field( $_POST['admin_message_from_name'] ) : '';
 			$options['admin_message_subject'] = isset( $_POST['admin_message_subject'] ) ? sanitize_text_field( $_POST['admin_message_subject'] ) : '';
-			$options['admin_message_body'] = isset( $_POST['admin_message_body'] ) ? sanitize_text_field( $_POST['admin_message_body'] ) : '';
+			$options['admin_message_body'] = isset( $_POST['admin_message_body'] ) ? wp_kses_data( $_POST['admin_message_body'] ) : '';
 			$options['send_admin_message_in_html'] = isset( $_POST['send_admin_message_in_html'] ) ? '1' : '0';
 			$options['admin_message_newline_as_br'] = isset( $_POST['admin_message_newline_as_br'] ) ? '1' : '0';
 
@@ -2845,7 +2845,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'aim', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['aim'] ) ) update_user_meta( $user_id, 'aim', sanitize_text_field( $source['aim'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'yahoo', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['yahoo'] ) ) update_user_meta( $user_id, 'yim', sanitize_text_field( $source['yahoo'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'jabber', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['jabber'] ) ) update_user_meta( $user_id, 'jabber', sanitize_text_field( $source['jabber'] ) );
-			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'about', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['description'] ) ) update_user_meta( $user_id, 'description', wp_kses_data( $source['description'] ) );
+			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'about', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['description'] ) ) update_user_meta( $user_id, 'description', wp_filter_kses( $source['description'] ) );
 
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
@@ -2916,7 +2916,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'aim', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['aim'] ) ) update_user_meta( $user_id, 'aim', sanitize_text_field( $source['aim'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'yahoo', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['yahoo'] ) ) update_user_meta( $user_id, 'yim', sanitize_text_field( $source['yahoo'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'jabber', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['jabber'] ) ) update_user_meta( $user_id, 'jabber', sanitize_text_field( $source['jabber'] ) );
-			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'about', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['description'] ) ) update_user_meta( $user_id, 'description', wp_kses_data( $source['description'] ) );
+			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'about', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['description'] ) ) update_user_meta( $user_id, 'description', wp_filter_kses( $source['description'] ) );
 
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
@@ -2984,7 +2984,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'aim', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['aim'] ) ) update_user_meta( $user_id, 'aim', sanitize_text_field( $source['aim'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'yahoo', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['yahoo'] ) ) update_user_meta( $user_id, 'yim', sanitize_text_field( $source['yahoo'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'jabber', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['jabber'] ) ) update_user_meta( $user_id, 'jabber', sanitize_text_field( $source['jabber'] ) );
-			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'about', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['description'] ) ) update_user_meta( $user_id, 'description', wp_kses_data( $source['description'] ) );
+			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'about', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['description'] ) ) update_user_meta( $user_id, 'description', wp_filter_kses( $source['description'] ) );
 
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
