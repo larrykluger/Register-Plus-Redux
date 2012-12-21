@@ -1204,7 +1204,28 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			$options['require_privacy_policy_agree'] = isset( $_POST['require_privacy_policy_agree'] ) ? '1' : '0';
 			$options['message_privacy_policy_agree'] = isset( $_POST['message_privacy_policy_agree'] ) ? sanitize_text_field( $_POST['message_privacy_policy_agree'] ) : '';
 			$options['default_css'] = isset( $_POST['default_css'] ) ? '1' : '0';
-			$options['required_fields_style'] = isset( $_POST['required_fields_style'] ) ? sanitize_text_field( $_POST['required_fields_style'] ) : '';
+			$options['required_fields_style'] = '';
+			if ( isset( $_POST['required_fields_style'] ) ) {
+				// Stolen from Jetpack 2.0.4 custom-css.php Jetpack_Custom_CSS::filter_attr()
+				require_once( 'csstidy/class.csstidy.php' );
+				$csstidy = new csstidy();
+				$csstidy->set_cfg( 'remove_bslash', false );
+				$csstidy->set_cfg( 'compress_colors', false );
+				$csstidy->set_cfg( 'compress_font-weight', false );
+				$csstidy->set_cfg( 'discard_invalid_properties', true );
+				$csstidy->set_cfg( 'merge_selectors', false );
+				$csstidy->set_cfg( 'remove_last_;', false );
+				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
+				$required_fields_style = 'div {' . $_POST['required_fields_style'] . '}';
+				$required_fields_style = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $required_fields_style );
+				$required_fields_style = wp_kses_split( $required_fields_style, array(), array() );
+				$csstidy->parse( $required_fields_style );
+				$required_fields_style = $csstidy->print->plain();
+				$required_fields_style = str_replace( array( "\n","\r","\t" ), '', $required_fields_style );
+				preg_match( "/^div\s*{(.*)}\s*$/", $required_fields_style, $matches );
+				if ( !empty( $matches[1] ) ) $options['required_fields_style'] = $matches[1];
+			}
+			isset( $_POST['required_fields_style'] ) ? sanitize_text_field( $_POST['required_fields_style'] ) :
 			$options['required_fields_asterisk'] = isset( $_POST['required_fields_asterisk'] ) ? '1' : '0';
 			$options['starting_tabindex'] = isset( $_POST['starting_tabindex'] ) ? absint( $_POST['starting_tabindex'] ) : '0';
 
@@ -1244,11 +1265,56 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			$options['send_admin_message_in_html'] = isset( $_POST['send_admin_message_in_html'] ) ? '1' : '0';
 			$options['admin_message_newline_as_br'] = isset( $_POST['admin_message_newline_as_br'] ) ? '1' : '0';
 
-			// XSS?
-			$options['custom_registration_page_css'] = isset( $_POST['custom_registration_page_css'] ) ? $_POST['custom_registration_page_css'] : '';
-			// XSS?
-			$options['custom_login_page_css'] = isset( $_POST['custom_login_page_css'] ) ? $_POST['custom_login_page_css'] : '';
+			$options['custom_registration_page_css'] = '';
+			if ( isset( $_POST['custom_registration_page_css'] ) ) {
+				// Stolen from Jetpack 2.0.4 custom-css.php Jetpack_Custom_CSS::init()
+				require_once( 'csstidy/class.csstidy.php' );
+				$csstidy = new csstidy();
+				$csstidy->set_cfg( 'remove_bslash', false );
+				$csstidy->set_cfg( 'compress_colors', false );
+				$csstidy->set_cfg( 'compress_font-weight', false );
+				$csstidy->set_cfg( 'optimise_shorthands', 0 );
+				$csstidy->set_cfg( 'remove_last_;', false );
+				$csstidy->set_cfg( 'case_properties', false );
+				$csstidy->set_cfg( 'discard_invalid_properties', true );
+				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
+				$csstidy->set_cfg( 'preserve_css', true );
+				$csstidy->set_cfg( 'template', dirname( __FILE__ ) . '/csstidy/wordpress-standard.tpl' );
+				$custom_registration_page_css = $_POST['custom_registration_page_css'];
+				$custom_registration_page_css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $custom_registration_page_css );
+				$custom_registration_page_css = str_replace( '<=', '&lt;=', $custom_registration_page_css );
+				$custom_registration_page_css = wp_kses_split( $custom_registration_page_css, array(), array() );
+				$custom_registration_page_css = str_replace( '&gt;', '>', $custom_registration_page_css );
+				$custom_registration_page_css = strip_tags( $custom_registration_page_css );
+				$csstidy->parse( $custom_registration_page_css );
+				$options['custom_registration_page_css'] = $csstidy->print->plain();
+			}
 
+			$options['custom_login_page_css'] = '';
+			if ( isset( $_POST['custom_login_page_css'] ) ) {
+				// Stolen from Jetpack 2.0.4 custom-css.php Jetpack_Custom_CSS::init()
+				require_once( 'csstidy/class.csstidy.php' );
+				$csstidy = new csstidy();
+				$csstidy->set_cfg( 'remove_bslash', false );
+				$csstidy->set_cfg( 'compress_colors', false );
+				$csstidy->set_cfg( 'compress_font-weight', false );
+				$csstidy->set_cfg( 'optimise_shorthands', 0 );
+				$csstidy->set_cfg( 'remove_last_;', false );
+				$csstidy->set_cfg( 'case_properties', false );
+				$csstidy->set_cfg( 'discard_invalid_properties', true );
+				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
+				$csstidy->set_cfg( 'preserve_css', true );
+				$csstidy->set_cfg( 'template', dirname( __FILE__ ) . '/csstidy/wordpress-standard.tpl' );
+				$custom_login_page_css = $_POST['custom_login_page_css'];
+				$custom_login_page_css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $custom_login_page_css );
+				$custom_login_page_css = str_replace( '<=', '&lt;=', $custom_login_page_css );
+				$custom_login_page_css = wp_kses_split( $custom_login_page_css, array(), array() );
+				$custom_login_page_css = str_replace( '&gt;', '>', $custom_login_page_css );
+				$custom_login_page_css = strip_tags( $custom_login_page_css );
+				$csstidy->parse( $custom_login_page_css );
+				$options['custom_login_page_css'] = $csstidy->print->plain();
+			}
+			 
 			$options['filter_random_password'] = isset( $_POST['filter_random_password'] ) ? '1' : '0';
 
 			$usermeta_key = 0;
@@ -3050,9 +3116,8 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( !empty( $meta_field['require_on_registration'] ) && empty( $value ) ) $valid_value = FALSE;
 			// check text field against regex if specified
 			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $value ) ) $valid_value = FALSE;
-			// santize text for database, skip textarea as this removes linebreaks
-			// XSS?
 			if ( $meta_field['display'] != 'textarea' ) $value = sanitize_text_field( $value );
+			if ( $meta_field['display'] = 'textarea' ) $value = wp_filter_kses( $value );
 			
 			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $value );
 		}
