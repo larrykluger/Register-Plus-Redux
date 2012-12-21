@@ -1403,29 +1403,31 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 					<tbody id="users" class="list:user user-list">
 						<?php 
 						$unverified_users = $wpdb->get_results( $wpdb->query( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
-						$style = '';
-						foreach ( $unverified_users as $unverified_user ) {
-							$user_info = get_userdata( $unverified_user->user_id );
-							$style = ( $style == ' class="alternate"' ) ? '' : ' class="alternate"';
-							?>
-
-							<tr id="user-<?php echo $user_info->ID; ?>"<?php echo $style; ?>>
-								<th scope="row" class="check-column"><input type="checkbox" name="users[]" id="user_<?php echo $user_info->ID; ?>" name="user_<?php echo $user_info->ID; ?>" value="<?php echo $user_info->ID; ?>"></th>
-								<td class="username column-username">
-									<strong><?php if ( current_user_can( 'edit_users' ) ) echo '<a href="', esc_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "user-edit.php?user_id=$user_info->ID" ) ) , '">', $user_info->stored_user_login, '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
-									<div class="row-actions">
-										<?php if ( current_user_can( 'edit_users' ) ) echo '<span class="edit"><a href="', esc_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "user-edit.php?user_id=$user_info->ID" ) ), '">', __( 'Edit', 'register-plus-redux' ), "</a></span>\n"; ?>
-										<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "users.php?action=delete&amp;user=$user_info->ID" ), 'delete-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), "</a></span>\n"; ?>
-									</div>
-								</td>
-								<td><?php echo $user_info->user_login; ?></td>
-								<td class="email column-email"><a href="mailto:<?php echo $user_info->user_email; ?>" title="<?php esc_attr_e( 'E-mail: ', 'register-plus-redux' ); echo $user_info->user_email; ?>"><?php echo $user_info->user_email; ?></a></td>
-								<td><?php echo $user_info->user_registered; ?></td>
-								<td><?php echo $user_info->email_verification_sent; ?></td>
-								<td><?php echo $user_info->email_verified; ?></td>
-							</tr>
-						<?php } ?>
-
+						if ( !empty( $unverified_users ) ) {
+							$style = '';
+							foreach ( $unverified_users as $unverified_user ) {
+								$user_info = get_userdata( $unverified_user->user_id );
+								$style = ( $style == ' class="alternate"' ) ? '' : ' class="alternate"';
+								?>
+								<tr id="user-<?php echo $user_info->ID; ?>"<?php echo $style; ?>>
+									<th scope="row" class="check-column"><input type="checkbox" name="users[]" id="user_<?php echo $user_info->ID; ?>" name="user_<?php echo $user_info->ID; ?>" value="<?php echo $user_info->ID; ?>"></th>
+									<td class="username column-username">
+										<strong><?php if ( current_user_can( 'edit_users' ) ) echo '<a href="', esc_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "user-edit.php?user_id=$user_info->ID" ) ) , '">', $user_info->stored_user_login, '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
+										<div class="row-actions">
+											<?php if ( current_user_can( 'edit_users' ) ) echo '<span class="edit"><a href="', esc_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "user-edit.php?user_id=$user_info->ID" ) ), '">', __( 'Edit', 'register-plus-redux' ), "</a></span>\n"; ?>
+											<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "users.php?action=delete&amp;user=$user_info->ID" ), 'delete-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), "</a></span>\n"; ?>
+										</div>
+									</td>
+									<td><?php echo $user_info->user_login; ?></td>
+									<td class="email column-email"><a href="mailto:<?php echo $user_info->user_email; ?>" title="<?php esc_attr_e( 'E-mail: ', 'register-plus-redux' ); echo $user_info->user_email; ?>"><?php echo $user_info->user_email; ?></a></td>
+									<td><?php echo $user_info->user_registered; ?></td>
+									<td><?php echo $user_info->email_verification_sent; ?></td>
+									<td><?php echo $user_info->email_verified; ?></td>
+								</tr>
+								<?php
+							}
+						}
+						?>
 					</tbody>
 				</table>
 				<div class="tablenav">
