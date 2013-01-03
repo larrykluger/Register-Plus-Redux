@@ -243,7 +243,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			$delete_unverified_users_after = $this->GetReduxOption( 'delete_unverified_users_after' );
 			if ( is_numeric( $delete_unverified_users_after ) && absint( $delete_unverified_users_after ) > 0 ) {
 				global $wpdb;
-				$unverified_users = $wpdb->get_results( $wpdb->query( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
+				$unverified_users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" );
 				if ( !empty( $unverified_users ) ) {
 					$expirationdate = date( 'Ymd', strtotime( '-' . absint( $this->GetReduxOption( 'delete_unverified_users_after' ) ) . ' days' ) );
 					//TODO: Is this neccessary?
@@ -280,7 +280,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'ReduxAdminStyles' ), 10, 1 );
 			add_action( 'admin_footer-' . $hookname, array( $this, 'ReduxAdminFoot' ), 10, 1 );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'filter_plugin_actions' ), 10, 4 );
-			if ( ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) || ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE) || $wpdb->get_var( $wpdb->query( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) ) )
+			if ( ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) || ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE) || $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) )
 				add_submenu_page( 'users.php', __( 'Unverified Users', 'register-plus-redux' ), __( 'Unverified Users', 'register-plus-redux' ), 'promote_users', 'unverified-users', array( $this, 'UnverifiedUsersPage' ) );
 		}
 
@@ -1468,7 +1468,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 					</thead>
 					<tbody id="users" class="list:user user-list">
 						<?php 
-						$unverified_users = $wpdb->get_results( $wpdb->query( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) );
+						$unverified_users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" );
 						if ( !empty( $unverified_users ) ) {
 							$style = '';
 							foreach ( $unverified_users as $unverified_user ) {
