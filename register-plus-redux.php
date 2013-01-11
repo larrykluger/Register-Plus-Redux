@@ -3,7 +3,7 @@
 Author: radiok
 Plugin Name: Register Plus Redux
 Author URI: http://radiok.info/
-Plugin URI: http://radiok.info/category/register-plus-redux/
+Plugin URI: http://radiok.info/blog/category/register-plus-redux/
 Description: Enhances the user registration process with complete customization and additional administration options.
 Version: 3.9
 Text Domain: register-plus-redux
