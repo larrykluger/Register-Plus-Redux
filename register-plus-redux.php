@@ -17,7 +17,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			global $rpr_options;
 			global $wp_version;
 
-			add_action( 'init', array( $this, 'InitL18n' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
+			add_action( 'plugins_loaded', array( $this, 'InitL18n' ), 10, 1 );
 
 			if ( is_admin() ) {
 				add_action( 'init', array( $this, 'InitOptions' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
@@ -246,7 +246,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				$unverified_users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" );
 				if ( !empty( $unverified_users ) ) {
 					$expirationdate = date( 'Ymd', strtotime( '-' . absint( $this->GetReduxOption( 'delete_unverified_users_after' ) ) . ' days' ) );
-					//TODO: Is this neccessary?
+					//neccessary for wp_delete_user to function
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( $unverified_users as $unverified_user ) {
 						$user_info = get_userdata( $unverified_user->user_id );
@@ -1415,7 +1415,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				check_admin_referer( 'delete-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
 					$update = 'delete_users';
-					//TODO: Is this neccessary?
+					//neccessary for wp_delete_user to function
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( (array) $_REQUEST['users'] as $id ) {
 						$id = (int) $id;
