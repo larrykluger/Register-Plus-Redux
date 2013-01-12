@@ -9,6 +9,8 @@ Version: 3.9
 Text Domain: register-plus-redux
 */
 
+// TODO: meta key could be changed and ruin lookups
+
 $rpr_options = get_option( 'register_plus_redux_options' );
 
 if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
