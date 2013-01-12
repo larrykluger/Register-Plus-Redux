@@ -1140,7 +1140,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 						<th scope="row"><?php _e( 'Random Password Appears in Messages', 'register-plus-redux' ); ?></th>
 						<td>
 							<label><input type="checkbox" name="filter_random_password" value="1" <?php if ( $this->GetReduxOption( 'filter_random_password' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Filter Random Passwords.', 'register-plus-redux' ); ?></label><br />
-							<?php _e( 'When user set password is enabled, and another plugin is being used to modify outgoing messages, a random password may appear in those messages, regardless of the fact that a user enterered password was specified. This option will filter all password requests and show the user entered password is possible.', 'register-plus-redux' ); ?>
+							<?php _e( 'When user set password is enabled, and another plugin is being used to modify outgoing messages, a random password may appear in those messages, regardless of the fact that a user enterered password was specified. This option will filter all password requests and show the user entered password if possible.', 'register-plus-redux' ); ?>
 						</td>
 					</tr>
 				</table>
