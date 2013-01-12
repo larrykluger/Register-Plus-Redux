@@ -2640,12 +2640,11 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 		}
 
 		function CheckRegistrationForm_swp( $errors, $sanitized_user_login, $user_email ) {
-			if ( ( $this->GetReduxOption( 'username_is_email' ) == TRUE ) && is_array( $errors->get_error_codes() ) && array_key_exists( 'empty_username', $errors->get_error_codes() ) ) {
-				unset( $errors->errors['empty_username'] );
-				unset( $errors->error_data['empty_username'] );
-				$sanitized_user_login = get_magic_quotes_gpc() ? stripslashes( $_POST['user_email'] ) : $_POST['user_email'];
-				$sanitized_user_login = sanitize_user( $sanitized_user_login );
-				if ( !array_key_exists( 'empty_username', $errors->get_error_codes() ) && $sanitized_user_login != $_POST['user_email'] ) {
+			if ( $this->GetReduxOption( 'username_is_email' ) == TRUE )  {
+				if ( is_array( $errors->errors ) && array_key_exists( 'empty_username', $errors->errors ) ) unset( $errors->errors['empty_username'] );
+				if ( is_array( $errors->error_data ) && array_key_exists( 'empty_username', $errors->error_data ) ) unset( $errors->error_data['empty_username'] );
+				$sanitized_user_login = sanitize_user( $user_email );
+				if ( $sanitized_user_login != $user_email ) {
 					$errors->add( 'invalid_email', __( '<strong>ERROR</strong>: Email address is not appropriate as a username, please enter another email address.', 'register-plus-redux' ) );
 				}
 			}
@@ -2713,7 +2712,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 					$errors->add( 'empty_password', __( '<strong>ERROR</strong>: Please enter a password.', 'register-plus-redux' ) );
 				} elseif ( strlen( $_POST['pass1'] ) < absint( $this->GetReduxOption( 'min_password_length' ) ) ) {
 					$errors->add( 'password_length', sprintf( __( '<strong>ERROR</strong>: Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $this->GetReduxOption( 'min_password_length' ) ) ) );
-				} elseif ( ( $_POST['pass1'] != $_POST['pass2'] ) && $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE ) {
+				} elseif ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
 					$errors->add( 'password_mismatch', __( '<strong>ERROR</strong>: Your password does not match.', 'register-plus-redux' ) );
 				} else {
 					$_POST['password'] = $_POST['pass1'];
@@ -3302,10 +3301,10 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			$message = str_replace( '%blogname%', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $message );
 			$message = str_replace( '%site_url%', site_url(), $message );
 			if ( !empty( $_SERVER ) ) {
-				$message = str_replace( '%http_referer%', $_SERVER['HTTP_REFERER'], $message );
-				$message = str_replace( '%http_user_agent%', $_SERVER['HTTP_USER_AGENT'], $message );
-				$message = str_replace( '%registered_from_ip%', $_SERVER['REMOTE_ADDR'], $message );
-				$message = str_replace( '%registered_from_host%', gethostbyaddr( $_SERVER['REMOTE_ADDR'] ), $message );
+				$message = str_replace( '%http_referer%', isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '', $message );
+				$message = str_replace( '%http_user_agent%', isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '', $message );
+				$message = str_replace( '%registered_from_ip%', isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '', $message );
+				$message = str_replace( '%registered_from_host%', isset( $_SERVER['REMOTE_ADDR'] ) ? gethostbyaddr( $_SERVER['REMOTE_ADDR'] ) : '', $message );
 			}
 			if ( !empty( $user_info ) ) {
 				if ( ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) || ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE ) ) {
@@ -3407,12 +3406,12 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			}
 			if ( isset( $_GET['checkemail'] ) && ( $_GET['checkemail'] == 'registered' ) ) {
 				if ( $this->GetReduxOption( 'verify_user_email' ) == TRUE ) {
-					unset( $errors->errors['registered'] );
-					unset( $errors->error_data['registered'] );
+					if ( is_array( $errors->errors ) && array_key_exists( 'registered', $errors->errors ) ) unset( $errors->errors['registered'] );
+					if ( is_array( $errors->error_data ) && array_key_exists( 'registered', $errors->error_data ) ) unset( $errors->error_data['registered'] );
 					$errors->add( 'verify_user_email', nl2br( $this->GetReduxOption( 'message_verify_user_email' ) ), 'message' );
 				} elseif ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE ) {
-					unset( $errors->errors['registered'] );
-					unset( $errors->error_data['registered'] );
+					if ( is_array( $errors->errors ) && array_key_exists( 'registered', $errors->errors ) ) unset( $errors->errors['registered'] );
+					if ( is_array( $errors->error_data ) && array_key_exists( 'registered', $errors->error_data ) ) unset( $errors->error_data['registered'] );
 					$errors->add( 'verify_user_admin', nl2br( $this->GetReduxOption( 'message_verify_user_admin' ) ), 'message' );
 				}
 			}
