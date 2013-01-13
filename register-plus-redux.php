@@ -11,6 +11,8 @@ Text Domain: register-plus-redux
 
 // TODO: meta key could be changed and ruin lookups
 // TODO: Datepicker is never exposed as an option
+// TODO: Define some "universal" functions and isolate features into seperate php files
+// TODO: MS users aren't being linked to a site
 
 $rpr_options = get_option( 'register_plus_redux_options' );
 
