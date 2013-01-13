@@ -1840,7 +1840,14 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				if ( $this->GetReduxOption( 'show_disclaimer' ) == TRUE || $this->GetReduxOption( 'show_license' ) == TRUE || $this->GetReduxOption( 'show_privacy_policy' ) == TRUE ) echo "\n.accept_check { display:block; margin-bottom:8px; }";
 				if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
 					echo "\n#reg_passmail { display: none; }";
-					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) echo "\n#pass-strength-result { width: 100%; padding: 3px; margin-top:0px; margin-right:6px; margin-bottom:4px; border: 1px solid; text-align: center; display: block; }";
+					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) {
+						echo "\n#pass-strength-result { width: 100%; margin-top: 2px; margin-right: 6px; margin-bottom: 6px; border: 1px solid; padding: 3px; text-align: center; font-weight: bold; display: block; }";
+						echo "\n#pass-strength-result { background-color: #eee; border-color: #ddd !important; }";
+						echo "\n#pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }";
+						echo "\n#pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }";
+						echo "\n#pass-strength-result.short { background-color: #ffa0a0; border-color: #f04040 !important; }";
+						echo "\n#pass-strength-result.strong { background-color: #c3ff88; border-color: #8dff1c !important; }";
+					}
 				}
 				if ( $this->GetReduxOption( 'required_fields_style' ) ) {
 					echo "\n#user_login, #user_email { ", esc_html( $this->GetReduxOption( 'required_fields_style' ) ), '} ';
@@ -2049,7 +2056,14 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				if ( $this->GetReduxOption( 'show_privacy_policy' ) == TRUE ) { echo "\n.mu_register #privacy_policy { width: 100%; font-size:12px; margin:5px 0; display: block; "; if ( strlen( $this->GetReduxOption( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
 				if ( $this->GetReduxOption( 'show_disclaimer' ) == TRUE || $this->GetReduxOption( 'show_license' ) == TRUE || $this->GetReduxOption( 'show_privacy_policy' ) == TRUE ) echo "\n.mu_register .accept_check { display:block; margin:5px 0; }";
 				if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
-					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) echo "\n.mu_register #pass-strength-result { width: 100%; padding: 3px; margin-top:0px; margin-right:6px; margin-bottom:4px; border: 1px solid; text-align: center; display: block; }";
+					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) {
+						echo "\n.mu_register #pass-strength-result { width: 100%; margin: 5px 0; border: 1px solid; padding: 6px; text-align: center; font-weight: bold; display: block; }";
+						echo "\n.mu_register #pass-strength-result { background-color: #eee; border-color: #ddd !important; }";
+						echo "\n.mu_register #pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }";
+						echo "\n.mu_register #pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }";
+						echo "\n.mu_register #pass-strength-result.short { background-color: #ffa0a0; border-color: #f04040 !important; }";
+						echo "\n.mu_register #pass-strength-result.strong { background-color: #c3ff88; border-color: #8dff1c !important; }";
+					}
 				}
 				if ( $this->GetReduxOption( 'required_fields_style' ) ) {
 					echo "\n.mu_register #user_login, .mu_register #user_email { ", esc_html( $this->GetReduxOption( 'required_fields_style' ) ), '} ';
