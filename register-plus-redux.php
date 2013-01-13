@@ -1516,9 +1516,9 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( $this->GetReduxOption( 'username_is_email' ) == TRUE ) {
 				global $wpdb;
 
-				unset( $result['errors']->errors['user_name'] );
-				unset( $result['errors']->error_data['user_name'] );
-				
+				if ( is_array( $result['errors']->errors ) && array_key_exists( 'user_name', $result['errors']->errors ) ) unset( $result['errors']->errors['user_name'] );
+				if ( is_array( $result['errors']->error_data ) && array_key_exists( 'user_name', $result['errors']->error_data ) ) unset( $result['errors']->error_data['user_name'] );
+
 				$result['user_name'] = $result['user_email'];
 				$result['orig_username'] = $result['user_email'];
 
@@ -1840,7 +1840,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				if ( $this->GetReduxOption( 'show_disclaimer' ) == TRUE || $this->GetReduxOption( 'show_license' ) == TRUE || $this->GetReduxOption( 'show_privacy_policy' ) == TRUE ) echo "\n.accept_check { display:block; margin-bottom:8px; }";
 				if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
 					echo "\n#reg_passmail { display: none; }";
-					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) echo "\n#pass-strength-result { width: 100%; padding: 3px; margin-top:0px; margin-right:6px; margin-bottom:4px; border: 1px solid; text-align: center; }";
+					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) echo "\n#pass-strength-result { width: 100%; padding: 3px; margin-top:0px; margin-right:6px; margin-bottom:4px; border: 1px solid; text-align: center; display: block; }";
 				}
 				if ( $this->GetReduxOption( 'required_fields_style' ) ) {
 					echo "\n#user_login, #user_email { ", esc_html( $this->GetReduxOption( 'required_fields_style' ) ), '} ';
@@ -1902,7 +1902,8 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 						}
 						/* ]]> */
 						function check_pass_strength() {
-							var user = jQuery("#user_login").val();
+							// HACK support username_is_email in function
+							var user = jQuery("<?php if ( $this->GetReduxOption( 'username_is_email' ) == TRUE ) echo '#user_email'; else echo '#user_login'; ?>").val();
 							var pass1 = jQuery("#pass1").val();
 							var pass2 = jQuery("#pass2").val();
 							var strength;
@@ -1930,11 +1931,13 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 							}
 						}
 						function passwordStrength(password1, username, password2) {
+							// HACK support disable_password_confirmation in function
+							password2 = typeof password2 !== 'undefined' ? password2 : '';
 							var shortPass = 1, badPass = 2, goodPass = 3, strongPass = 4, mismatch = 5, symbolSize = 0, natLog, score;
 							// password 1 != password 2
 							if ((password1 != password2) && password2.length > 0)
 								return mismatch
-							// password < 4
+							// password < <?php echo absint( $this->GetReduxOption( 'min_password_length' ) ); ?> 
 							if (password1.length < <?php echo absint( $this->GetReduxOption( 'min_password_length' ) ); ?>)
 								return shortPass
 							// password1 == username
@@ -2046,7 +2049,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				if ( $this->GetReduxOption( 'show_privacy_policy' ) == TRUE ) { echo "\n.mu_register #privacy_policy { width: 100%; font-size:12px; margin:5px 0; display: block; "; if ( strlen( $this->GetReduxOption( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
 				if ( $this->GetReduxOption( 'show_disclaimer' ) == TRUE || $this->GetReduxOption( 'show_license' ) == TRUE || $this->GetReduxOption( 'show_privacy_policy' ) == TRUE ) echo "\n.mu_register .accept_check { display:block; margin:5px 0; }";
 				if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
-					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) echo "\n#.mu_register pass-strength-result { width: 100%; padding: 3px; margin-top:0px; margin-right:6px; margin-bottom:4px; border: 1px solid; text-align: center; }";
+					if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) echo "\n.mu_register #pass-strength-result { width: 100%; padding: 3px; margin-top:0px; margin-right:6px; margin-bottom:4px; border: 1px solid; text-align: center; display: block; }";
 				}
 				if ( $this->GetReduxOption( 'required_fields_style' ) ) {
 					echo "\n.mu_register #user_login, .mu_register #user_email { ", esc_html( $this->GetReduxOption( 'required_fields_style' ) ), '} ';
@@ -2108,7 +2111,8 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 						}
 						/* ]]> */
 						function check_pass_strength() {
-							var user = jQuery("#user_login").val();
+							// HACK support username_is_email in function
+							var user = jQuery("<?php if ( $this->GetReduxOption( 'username_is_email' ) == TRUE ) echo '#user_email'; else echo '#user_login'; ?>").val();
 							var pass1 = jQuery("#pass1").val();
 							var pass2 = jQuery("#pass2").val();
 							var strength;
@@ -2136,11 +2140,13 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 							}
 						}
 						function passwordStrength(password1, username, password2) {
+							// HACK support disable_password_confirmation in function
+							password2 = typeof password2 !== 'undefined' ? password2 : '';
 							var shortPass = 1, badPass = 2, goodPass = 3, strongPass = 4, mismatch = 5, symbolSize = 0, natLog, score;
 							// password 1 != password 2
 							if ((password1 != password2) && password2.length > 0)
 								return mismatch
-							// password < 4
+							// password < <?php echo absint( $this->GetReduxOption( 'min_password_length' ) ); ?> 
 							if (password1.length < <?php echo absint( $this->GetReduxOption( 'min_password_length' ) ); ?>)
 								return shortPass
 							// password1 == username
@@ -2185,7 +2191,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( $this->GetReduxOption( 'double_check_email' ) == TRUE ) {
 				$user_email2 = isset( $_POST['user_email2'] ) ? $_POST['user_email2'] : '';
 				if ( isset( $_GET['user_email2'] ) ) $user_email2 = $_GET['user_email2'];
-				echo "\n<p id=\"user_email2-p\"><label id=\"user_email2-label\">";
+				echo "\n<p id=\"user_email2-p\"><label id=\"user_email2-label\" for=\"user_email2\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE ) echo '*';
 				echo __( 'Confirm E-mail', 'register-plus-redux' ), '<br /><input type="text" autocomplete="off" name="user_email2" id="user_email2" class="input" value="', esc_attr( $user_email2 ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2194,7 +2200,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'first_name', $this->GetReduxOption( 'show_fields' ) ) ) {
 				$first_name = isset( $_POST['first_name'] ) ? $_POST['first_name'] : '';
 				if ( isset( $_GET['first_name'] ) ) $first_name = $_GET['first_name'];
-				echo "\n<p id=\"first_name-p\"><label id=\"first_name-label\">";
+				echo "\n<p id=\"first_name-p\"><label id=\"first_name-label\" for=\"first_name\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && is_array( $this->GetReduxOption( 'required_fields' ) ) && in_array( 'first_name', $this->GetReduxOption( 'required_fields' ) ) ) echo '*';
 				echo __( 'First Name', 'register-plus-redux' ), '<br /><input type="text" name="first_name" id="first_name" class="input" value="', esc_attr( $first_name ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2203,7 +2209,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'last_name', $this->GetReduxOption( 'show_fields' ) ) ) {
 				$last_name = isset( $_POST['last_name'] ) ? $_POST['last_name'] : '';
 				if ( isset( $_GET['last_name'] ) ) $last_name = $_GET['last_name'];
-				echo "\n<p id=\"last_name-p\"><label id=\"last_name-label\">";
+				echo "\n<p id=\"last_name-p\"><label id=\"last_name-label\" for=\"last_name\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && is_array( $this->GetReduxOption( 'required_fields' ) ) && in_array( 'last_name', $this->GetReduxOption( 'required_fields' ) ) ) echo '*';
 				echo __( 'Last Name', 'register-plus-redux' ), '<br /><input type="text" name="last_name" id="last_name" class="input" value="', esc_attr( $last_name ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2212,7 +2218,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'user_url', $this->GetReduxOption( 'show_fields' ) ) ) {
 				$user_url = isset( $_POST['user_url'] ) ? $_POST['user_url'] : '';
 				if ( isset( $_GET['user_url'] ) ) $user_url = $_GET['user_url'];
-				echo "\n<p id=\"user_url-p\"><label id=\"user_url-label\">";
+				echo "\n<p id=\"user_url-p\"><label id=\"user_url-label\" for=\"user_url\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && is_array( $this->GetReduxOption( 'required_fields' ) ) && in_array( 'user_url', $this->GetReduxOption( 'required_fields' ) ) ) echo '*';
 				echo __( 'Website', 'register-plus-redux' ), '<br /><input type="text" name="url" id="user_url" class="input" value="', esc_attr( $user_url ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2221,7 +2227,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'aim', $this->GetReduxOption( 'show_fields' ) ) ) {
 				$aim = isset( $_POST['aim'] ) ? $_POST['aim'] : '';
 				if ( isset( $_GET['aim'] ) ) $aim = $_GET['aim'];
-				echo "\n<p id=\"aim-p\"><label id=\"aim-label\">";
+				echo "\n<p id=\"aim-p\"><label id=\"aim-label\" for=\"aim\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && is_array( $this->GetReduxOption( 'required_fields' ) ) && in_array( 'aim', $this->GetReduxOption( 'required_fields' ) ) ) echo '*';
 				echo __( 'AIM', 'register-plus-redux' ), '<br /><input type="text" name="aim" id="aim" class="input" value="', esc_attr( $aim ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2230,7 +2236,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'yahoo', $this->GetReduxOption( 'show_fields' ) ) ) {
 				$yahoo = isset( $_POST['yahoo'] ) ? $_POST['yahoo'] : '';
 				if ( isset( $_GET['yahoo'] ) ) $yahoo = $_GET['yahoo'];
-				echo "\n<p id=\"yahoo-p\"><label id=\"yahoo-label\">";
+				echo "\n<p id=\"yahoo-p\"><label id=\"yahoo-label\" for=\"yahoo\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && is_array( $this->GetReduxOption( 'required_fields' ) ) && in_array( 'yahoo', $this->GetReduxOption( 'required_fields' ) ) ) echo '*';
 				echo __( 'Yahoo IM', 'register-plus-redux' ), '<br /><input type="text" name="yahoo" id="yahoo" class="input" value="', esc_attr( $yahoo ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2239,7 +2245,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'jabber', $this->GetReduxOption( 'show_fields' ) ) ) {
 				$jabber = isset( $_POST['jabber'] ) ? $_POST['jabber'] : '';
 				if ( isset( $_GET['jabber'] ) ) $_POST['jabber'] = $_GET['jabber'];
-				echo "\n<p id=\"jabber-p\"><label id=\"jabber-label\">";
+				echo "\n<p id=\"jabber-p\"><label id=\"jabber-label\" for=\"jabber\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && is_array( $this->GetReduxOption( 'required_fields' ) ) && in_array( 'jabber', $this->GetReduxOption( 'required_fields' ) ) ) echo '*';
 				echo __( 'Jabber / Google Talk', 'register-plus-redux' ), '<br /><input type="text" name="jabber" id="jabber" class="input" value="', esc_attr( $jabber ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2265,7 +2271,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 					if ( isset( $_GET[$meta_key] ) ) $value = $_GET[$meta_key];
 					switch ( $meta_field['display'] ) {
 						case 'textbox':
-							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label">';
+							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '<br /><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
 							if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" '; else echo 'class="input" ';
@@ -2274,7 +2280,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 							echo '/></label></p>';
 							break;
 						case 'select':
-							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label">';
+							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '<br />';
 							echo "\n<select name=\"", $meta_key, '" id="', $meta_key, '"';
@@ -2291,7 +2297,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 							echo "\n</label></p>";
 							break;
 						case 'checkbox':
-							echo "\n<p id=\"", $meta_key, '-p" style="margin-bottom:16px;"><label id="', $meta_key, '-label">';
+							echo "\n<p id=\"", $meta_key, '-p" style="margin-bottom:16px;"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '</label><br />';
 							$field_options = explode( ',', $meta_field['options'] );
@@ -2306,7 +2312,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 							echo "\n</p>";
 							break;
 						case 'radio':
-							echo "\n<p id=\"", $meta_key, '-p" style="margin-bottom:16px;"><label id="', $meta_key, '-label">';
+							echo "\n<p id=\"", $meta_key, '-p" style="margin-bottom:16px;"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '</label><br />';
 							$field_options = explode( ',', $meta_field['options'] );
@@ -2320,7 +2326,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 							echo "\n</p>";
 							break;
 						case 'textarea':
-							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label">';
+							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '<br /><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5"';
 							if ( $tabindex != 0 ) echo " tabindex=\"", $tabindex++, "\" ";
@@ -2340,13 +2346,13 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
 				$password = isset( $_POST['password'] ) ? $_POST['password'] : '';
 				if ( isset( $_GET['password'] ) ) $password = $_GET['password'];
-				echo "\n<p id=\"pass1-p\"><label id=\"pass1-label\">";
+				echo "\n<p id=\"pass1-p\"><label id=\"pass1-label\" for=\"pass1\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE ) echo '*';
 				echo __( 'Password', 'register-plus-redux' ), '<br /><input type="password" autocomplete="off" name="pass1" id="pass1" value="', esc_attr( $password ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 				echo '/></label></p>';
 				if ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE ) {
-					echo "\n<p id=\"pass2-p\"><label id=\"pass2-label\">";
+					echo "\n<p id=\"pass2-p\"><label id=\"pass2-label\" for=\"pass2\">";
 					if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE ) echo '*';
 					echo __( 'Confirm Password', 'register-plus-redux' ), '<br /><input type="password" autocomplete="off" name="pass2" id="pass2" value="', esc_attr( $password ), '" size="25" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2360,7 +2366,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 			if ( $this->GetReduxOption( 'enable_invitation_code' ) == TRUE ) {
 				$invitation_code = isset( $_POST['invitation_code'] ) ? $_POST['invitation_code'] : '';
 				if ( isset( $_GET['invitation_code'] ) ) $invitation_code = $_GET['invitation_code'];
-				echo "\n<p id=\"invitation_code-p\"><label id=\"invitation_code-label\">";
+				echo "\n<p id=\"invitation_code-p\"><label id=\"invitation_code-label\" for=\"invitation_code\">";
 				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE && $this->GetReduxOption( 'require_invitation_code' ) == TRUE ) echo '*';
 				echo __( 'Invitation Code', 'register-plus-redux' ), '<br /><input type="text" name="invitation_code" id="invitation_code" class="input" value="', esc_attr( $invitation_code ), '" size="25" ';
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -2377,7 +2383,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				echo "\n\t<label id=\"disclaimer_title\">", esc_html( $this->GetReduxOption( 'message_disclaimer_title' ) ), '</label><br />';
 				echo "\n\t<div name=\"disclaimer\" id=\"disclaimer\" style=\"display: inline;\">", nl2br( $this->GetReduxOption( 'message_disclaimer' ) ), '</div>';
 				if ( $this->GetReduxOption( 'require_disclaimer_agree' ) == TRUE ) {
-					echo "\n\t<label id=\"accept_disclaimer-label\" class=\"accept_check\"><input type=\"checkbox\" name=\"accept_disclaimer\" id=\"accept_disclaimer\" value=\"1\""; if ( !empty( $accept_disclaimer ) ) echo ' checked="checked" ';
+					echo "\n\t<label id=\"accept_disclaimer-label\" class=\"accept_check\" for=\"accept_disclaimer\"><input type=\"checkbox\" name=\"accept_disclaimer\" id=\"accept_disclaimer\" value=\"1\""; if ( !empty( $accept_disclaimer ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 					echo '/>&nbsp;', esc_html( $this->GetReduxOption( 'message_disclaimer_agree' ) ), '</label>';
 				}
@@ -2390,7 +2396,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				echo "\n\t<label id=\"license_title\">", esc_html( $this->GetReduxOption( 'message_license_title' ) ), '</label><br />';
 				echo "\n\t<div name=\"license\" id=\"license\" style=\"display: inline;\">", nl2br( $this->GetReduxOption( 'message_license' ) ), '</div>';
 				if ( $this->GetReduxOption( 'require_license_agree' ) == TRUE ) {
-					echo "\n\t<label id=\"accept_license-label\" class=\"accept_check\"><input type=\"checkbox\" name=\"accept_license\" id=\"accept_license\" value=\"1\""; if ( !empty( $accept_license ) ) echo ' checked="checked" ';
+					echo "\n\t<label id=\"accept_license-label\" class=\"accept_check\" for=\"accept_license\"><input type=\"checkbox\" name=\"accept_license\" id=\"accept_license\" value=\"1\""; if ( !empty( $accept_license ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 					echo '/>&nbsp;', esc_html( $this->GetReduxOption( 'message_license_agree' ) ), '</label>';
 				}
@@ -2403,7 +2409,7 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 				echo "\n\t<label id=\"privacy_policy_title\">", esc_html( $this->GetReduxOption( 'message_privacy_policy_title' ) ), "</label><br />";
 				echo "\n\t<div name=\"privacy_policy\" id=\"privacy_policy\" style=\"display: inline;\">", nl2br( $this->GetReduxOption( 'message_privacy_policy' ) ), "</div>";
 				if ( $this->GetReduxOption( 'require_privacy_policy_agree' ) == TRUE ) {
-					echo "\n\t<label id=\"accept_privacy_policy-label\" class=\"accept_check\"><input type=\"checkbox\" name=\"accept_privacy_policy\" id=\"accept_privacy_policy\" value=\"1\""; if ( !empty( $accept_privacy_policy ) ) echo ' checked="checked" ';
+					echo "\n\t<label id=\"accept_privacy_policy-label\" class=\"accept_check\" for=\"accept_privacy_policy\"><input type=\"checkbox\" name=\"accept_privacy_policy\" id=\"accept_privacy_policy\" value=\"1\""; if ( !empty( $accept_privacy_policy ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 					echo '/>&nbsp;', esc_html( $this->GetReduxOption( 'message_privacy_policy_agree' ) ), "</label>";
 				}
@@ -2576,13 +2582,15 @@ if ( !class_exists( 'RegisterPlusReduxPlugin' ) ) {
 					echo '<p class="error">'.$errmsg.'</p>';
 				}
 				echo "\n\t\t<input type=\"password\" autocomplete=\"off\" name=\"pass1\" id=\"pass1\" value=\"", esc_attr( $password ), '" />';
-				echo "\n\t\t<label id=\"pass2-label\" for=\"pass2-label\">";
-				if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE ) echo '*';
-				echo __( 'Confirm Password', 'register-plus-redux' ), ':</label>';
-				if ( $errmsg = $errors->get_error_message('pass2') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+				if ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE ) {
+					echo "\n\t\t<label id=\"pass2-label\" for=\"pass2-label\">";
+					if ( $this->GetReduxOption( 'required_fields_asterisk' ) == TRUE ) echo '*';
+					echo __( 'Confirm Password', 'register-plus-redux' ), ':</label>';
+					if ( $errmsg = $errors->get_error_message('pass2') ) {
+						echo '<p class="error">'.$errmsg.'</p>';
+					}
+					echo "\n\t\t<input type=\"password\" autocomplete=\"off\" name=\"pass2\" id=\"pass2\" value=\"", esc_attr( $password ), '" />';
 				}
-				echo "\n\t\t<input type=\"password\" autocomplete=\"off\" name=\"pass2\" id=\"pass2\" value=\"", esc_attr( $password ), '" />';
 				if ( $this->GetReduxOption( 'show_password_meter' ) == TRUE ) {
 					echo "\n\t\t<div id=\"pass-strength-result\">", $this->GetReduxOption( 'message_empty_password' ), '</div>';
 					echo "\n\t\t<p id=\"pass_strength_msg\" style=\"display: inline;\">", sprintf(__( 'Your password must be at least %d characters long. To make your password stronger, use upper and lower case letters, numbers, and the following symbols !@#$%%^&amp;*()', 'register-plus-redux' ), absint( $this->GetReduxOption( 'min_password_length' ) ) ), '</p>';
