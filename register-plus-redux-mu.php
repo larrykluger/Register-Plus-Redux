@@ -211,7 +211,6 @@ if ( !class_exists( 'RegisterPlusReduxMU' ) ) {
 			global $pagenow;
 
 			$source = $meta;
-			echo $user_id, ', ', $password, ', ', print_r( $meta );
 			
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'first_name', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['first_name'] ) ) update_user_meta( $user_id, 'first_name', sanitize_text_field( $source['first_name'] ) );
 			if ( is_array( $this->GetReduxOption( 'show_fields' ) ) && in_array( 'last_name', $this->GetReduxOption( 'show_fields' ) ) && !empty( $source['last_name'] ) ) update_user_meta( $user_id, 'last_name', sanitize_text_field( $source['last_name'] ) );
