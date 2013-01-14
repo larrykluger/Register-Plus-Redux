@@ -13,6 +13,7 @@ Text Domain: register-plus-redux
 // TODO: Datepicker is never exposed as an option
 // TODO: Define some "universal" functions and isolate features into seperate php files
 // TODO: MS users aren't being linked to a site
+// TODO: Remove must-use code, note in faq that RPR must be network activated when altering signup process, add code to detect?
 
 $rpr_options = get_option( 'register_plus_redux_options' );
 
