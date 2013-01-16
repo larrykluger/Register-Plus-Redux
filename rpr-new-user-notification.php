@@ -30,7 +30,7 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 		}
 		if ( ( $pagenow != 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_registered' ) == FALSE ) || 
 			( $pagenow == 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_created' ) == FALSE ) ) {
-			$register_plus_redux->sendAdminMessage( $user_id, $plaintext_pass, $verification_code );
+			$register_plus_redux->sendAdminMessage( $user_id, $plaintext_pass, isset( $verification_code ) ? $verification_code : '' );
 		}
 	}
 }
