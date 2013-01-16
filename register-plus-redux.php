@@ -13,18 +13,18 @@ Text Domain: register-plus-redux
 // TODO: Datepicker is never exposed as an option
 // TODO: Define some "universal" functions and isolate features into seperate php files
 // TODO: MS users aren't being linked to a site
-// TODO: Remove must-use code, note in faq that RPR must be network activated when altering signup process, add code to detect?
+// TODO: Add code to detect whether network activated?  Show admin_notice and/or disable functionality?
 
 if ( !class_exists( 'RegisterPlusRedux' ) ) {
 	class RegisterPlusRedux {
 		private $_options;
 		function __construct() {
+			global $_options;
 			global $wp_version;
 
 			$_options = get_option( 'register_plus_redux_options' );
 
 			add_action( 'init', array( $this, 'InitL18n' ), 10, 1 );
-			//add_action( 'init', array( $this, 'include_rpr_new_user_notification' ), 10, 1 );
 
 			if ( is_admin() ) {
 				add_action( 'init', array( $this, 'InitOptions' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
@@ -38,8 +38,6 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 				add_action( 'after_signup_form', array( $this, 'rpr_signup_foot_scripts' ), 10, 1 ); // Closest thing to signup_footer
 				add_filter( 'wpmu_validate_user_signup', array( $this, 'filter_wpmu_validate_user_signup' ), 10, 1 );
 				add_filter( 'add_signup_meta', array( $this, 'filter_add_signup_meta' ), 10, 1 ); // Preserve metadata for after user is activated
-
-				//defined here for completeness, however, used in MU file
 				add_action( 'wpmu_activate_user', array( $this, 'rpr_restore_signup_fields' ), 10, 3 ); // Add stored metadata for new user to database
 				//add_action( 'wpmu_activate_blog', array( $this, 'rpr_restore_signup_fields_stub' ), 10, 5 );
 			}
