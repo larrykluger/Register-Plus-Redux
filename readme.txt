@@ -10,35 +10,41 @@ Enhances the user registration process with complete customization and additiona
 
 == Description ==
 
-Register Plus Redux enables the user registration process to be customized in any way, big or small.  Is there another field you want users to fill out when registering?  Do you want to change the message your users receive after they register?  Do you want users to have to verify their email address is legitimate?  Do you want to queue up new users to be approved or denied by an administrator?  Register Plus Redux can do all that and more.
+Register Plus Redux enables the user registration (or signup) process to be customized in many ways, big and small. Is there another field you want users to complete when registering? Do you want to change the message your users receive after they register? Do you want users to have to verify their email address is legitimate? Do you want to queue up new users to be approved or denied by an administrator? Register Plus Redux can do all that and more.
 
 Enhancements to registration include:
 
-* Customized registration page, including your own logo, disclaimer, license agreement, or privacy policy
+* Replace WordPress logo with your own logo on registration and login page
 
-* Use Email Address as Username __(new feature in version 3.7.2)__
+* Verify new users Email Address following registration
 
-* User-entered password (with password strength meter)
+* Keep new users in a queue to be verified by an Administrator
 
-* Added profile fields
+* Alter redirect of users following registration or signup
 
-* Additional required fields for registration
+* Automatically logon users following registration or signup (functionality still in development)
+
+* Option to use Email Address as Username
+
+* Optionally require users to enter Email Address twice for accuracy
+
+* Show and potentially require any profile fields on registration or signup form
+
+* Allow users to specify their password (with optional password strength meter)
 
 * Invitation code system (with dashboard widget to track invites)
 
-* User-defined fields __(can be checked against regex as of version 3.7.2)__
+* Add your own disclaimer, license agreement, or privacy policy to registration or signup page
 
-* Email verification of new users
+* Add additional custom fields (textbox, select, checkboxes, radio buttons, textarea) to registration, signup, or profile __(textboxes be validated against regex)__
 
-* Administration verification of new users
+* Customize message to new users
 
-* Customized new user message
+* Customize message to Administrators when users are registered or signup
 
-* Customized administrator message
+* Specify CSS to be applied to registration or login page
 
-Also includes fixes for known Register Plus bugs. 
-
-Register Plus Redux was forked from Register Plus, developed by skullbit, which was abandoned in 2008.
+Register Plus Redux was forked from Register Plus, developed by skullbit, after that plugin was abandoned in 2008. Register Plus Redux resolves many known bugs and added compatibility with WordPress 3.0+.
 
 Available in the following translations:
 
@@ -59,25 +65,32 @@ tr_TR Turkey Turkish
 == Installation ==
 
 1. Upload the 'register-plus-redux' directory to the '/wp-content/plugins/' directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Manage settings from Register Plus Redux page
+2. When installed on WordPress with Multisite, you must Network Activate 'Register Plus Redux' from the 'Plugins' menu in Network Admin to have access to all functionality (refer to the FAQ for more information)
+2. -OR- Simply Activate 'Register Plus Redux' from the site's 'Plugins' menu
+3. Configure Register Plus Redux from the 'Register Plus Redux' page under Settings on individual sites
 
 == Frequently Asked Questions ==
 
 = How is Register Plus Redux related to Register Plus? =
-Register Plus was abandoned by skullbit sometime after September, 2008 following the release of Register Plus 3.5.1.  As of September, 2009 skullbit's website was undergoing maintenance.  Several bugs have been reported to the Register Plus plugin forum since that time, to resolve these bugs and continue development radiok forked the project.
+Register Plus was abandoned by skullbit sometime after September, 2008 following the release of Register Plus 3.5.1. As of September, 2009 skullbit's website was undergoing maintenance. Several bugs had been reported to the Register Plus plugin forum since that time, to resolve these bugs and continue development radiok forked the project.
 
 = What's New? or What's Coming Soon? =
 Visit <http://radiok.info/blog/category/register-plus-redux/> for all information Register Plus Redux related
 
-= Didn't Register Plus have CAPTCHA? How do I add a CAPTCHA to the registration form? =
-Register Plus offered two different CAPTCHA methods, a simple random CAPTCHA and reCAPTCHA.  The simple one randomly created a 5-character sequence on a background image with two random lines drawn across the image, this CAPTCHA would be very easy for any OCR program to decipher as the characters were not modified in anyway and contrast was high.  reCAPTCHA is a great idea, but there is another plugin, [WP-reCAPTCHA](http://wordpress.org/extend/plugins/wp-recaptcha/) endorsed by the reCAPTCHA developers that can be used to add reCAPTCHA to the registration page.  I endorse the use of that plugin for that purpose.
+= Register, Signup, what's the difference? =
+Historically, users registered for WordPress sites.  WordPress MU (__M__ulti__u__ser) introduced the signup process which is conceptually similar to registration, but also very different, especially from a coding perspective.  WordPress MU has since been merged into WordPress as the Multisite (a/k/a WordPress MS) feature.  The actions, filters and, overall request lifecycle are dramatically different, as is the presentation.  The registration and signup pages are different in every way, even though they have similar intentions.  As such, developers must make the distinction between registration and signup.
+
+= Why should I Network Activate vs activating on individual blogs? =
+This question is specific to WordPress with Networks, or WordPress Multisite, whichever terminology tickles your fancy. If you don't know what either means, you most likely don't need to concern yourself either way. After much trial and error, I learned that due to an odd executive decision in WordPress core, site plugins are not loaded during user or blog activation (see WordPress Trac [#18278](http://core.trac.wordpress.org/ticket/18278) or [#23197](http://core.trac.wordpress.org/ticket/23197)), however, network plugins, that is plugins "Network Activated" are loaded. This behavior prevents Register Plus Redux from restoring information stored after a user signs up when only activated at the site level. There's nothing forcing you to Network Activate, however, features involving adding additional fields to the signup page will not function properly. This mandate does create some odd situations in which you may have one site, or a subset sites, in which you wish to utilize Register Plus Redux, however all your site will have access to its functionality. This is a decision Network Administrators must make.
+
+= Didn't Register Plus have a CAPTCHA feature? How do I add a CAPTCHA to the registration form? =
+Register Plus offered two different CAPTCHA methods, a simple random CAPTCHA and reCAPTCHA. The simple one randomly created a 5-character sequence on a background image with two random lines drawn across the image, this CAPTCHA would be very easy for any OCR program to decipher as the characters were not modified in anyway and contrast was high. reCAPTCHA is a great idea, but there is another plugin, [WP-reCAPTCHA](http://wordpress.org/extend/plugins/wp-recaptcha/) endorsed by the reCAPTCHA developers that can be used to add reCAPTCHA to the registration page. I endorse the use of that plugin for that purpose.
 
 = Didn't Register Plus have a feature to allow duplicate e-mail addresses? =
-Register Plus did have a feature that allowed multiple users to register with the same e-mail address.  I'm not sure when that stopped working for Register Plus, but I can assure you, that method doesn't work in WordPress 3.0 and will not work in the foreseeable future.  Register Plus' method was pretty simple, if the email_exists error is thrown, unthrow it.  Well, that works, to a degree, but once WordPress actually builds the user it chokes up and unpleasant things happen, in my experience.  I'll leave this feature to brighter minds then my own to implement.
+Register Plus did have a feature that allowed multiple users to register with the same e-mail address. I'm not sure when that stopped working for Register Plus, but I can assure you, that method does not work in WordPress 3.0 and will not work in the foreseeable future. Register Plus' method was pretty simple, if the email_exists error was thrown, 'unthrow', or more accurately, unset it. That is still possible, however, when WordPress actually creates the user, it chokes up and unpleasant things happen, in my experience. I'll leave this feature to brighter minds than my own to implement.
 
 = I do not want users to go to the Dashboard after logging in. How do I redirect users after they login? =
-This isn't quite a registration issue, but I can see how the line blurs since A) Redux does have configuration options for the Login screen, and B) Redux has a configuration for redirect after registration.  I briefly considering programming this feature, but [Peter's Login Redirect](http://wordpress.org/extend/plugins/peters-login-redirect/) does everything I could do and so much more.  I endorse the use of that plugin for this purpose.
+This isn't quite a registration issue, but I can see how the line blurs since A) Redux does have configuration options for the Login screen, and B) Redux has a configuration for redirect after registration. I briefly considering programming this feature, but [Peter's Login Redirect](http://wordpress.org/extend/plugins/peters-login-redirect/) does everything I could do and so much more. I endorse the use of that plugin for this purpose.
 
 = Things to Keep in Mind =
 Really more for me than you, but who's nitpicking.
@@ -99,7 +112,7 @@ October 22, 2012 by radiok
 * Can now specify database key for meta fields
 * Remove hack to workaround non-english custom fields
 * Added option for unique invitation codes
-* Improved CSS of Checkbox and Radio fields on standard Wordpress registration page
+* Improved CSS of Checkbox and Radio fields on standard WordPress registration page
 * Converted jQuery for Email Address as Username option to JavaScript DOM commands
 * Added help feature (in progress) for meta fields
 * Changed method of sanitizing user data to preserve percent signs
@@ -107,7 +120,7 @@ October 22, 2012 by radiok
 = 3.7.3 =
 March 29, 2011 by radiok
 
-* Regression, Wordpress 3.1 does not resolve wp_enqueue_script problem, reverted code to 3.7.1
+* Regression, WordPress 3.1 does not resolve wp_enqueue_script problem, reverted code to 3.7.1
 
 = 3.7.2 =
 March 23, 2011 by radiok
@@ -164,7 +177,7 @@ October 21, 2010 by radiok
 * Fixed jQuery datepicker for date custom fields
 * Fixed jQuery on Settings Page only working with Firefox
 * Added options to specify whether user must agree to Disclaimer, License, or Privacy Policy
-* Added option to turn off Wordpress standard CSS on registration page, as requested by jlsniu <http://wordpress.org/support/topic/plugin-register-plus-redux-css-and-tabindex>
+* Added option to turn off WordPress standard CSS on registration page, as requested by jlsniu <http://wordpress.org/support/topic/plugin-register-plus-redux-css-and-tabindex>
 * Added option to change or disable tabindex's on registration page, as requested by jlsniu <http://wordpress.org/support/topic/plugin-register-plus-redux-css-and-tabindex>
  
 = 3.6.19 =
@@ -273,7 +286,7 @@ September 25, 2010 by radiok
 September 24, 2010 by radiok
 
 * Fixed custom logo feature
-* Update registration page HTML to better match Wordpress 3.0.1
+* Update registration page HTML to better match WordPress 3.0.1
 * Changed add/remove buttons on settings page to not be links, no more jumping around the page
 * Invitation codes are no longer stored in lowercase, making way for option to enforce case sensitivity
 
@@ -454,7 +467,7 @@ April 26, 2008 by Skullbit
 
 * Fixed Admin Registration Password issue
 * Added Dashboard Widget for showing invitation code tracking
-* Added Email Verification for ensuring legitimate addresses are registered.  
+* Added Email Verification for ensuring legitimate addresses are registered.
 * Unvalidated registrations are unable to login and are deleted after a set grace period
 
 = 2.0 =
