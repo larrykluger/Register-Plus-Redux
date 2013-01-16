@@ -91,7 +91,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 			if ( !empty( $options ) ) {
 				update_option( 'register_plus_redux_options', $options );
 				$rpr_options = $options;
-			} else {
+			}
+			else {
 				update_option( 'register_plus_redux_options', $rpr_options );
 			}
 			return TRUE;
@@ -205,16 +206,19 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 						elseif ( $meta_field['display'] == 'date' ) {
 							$meta_field['display'] = 'text';
 							$meta_field['show_datepicker'] = '1';
-						} elseif ( $meta_field['display'] == 'url' ) {
+						}
+						elseif ( $meta_field['display'] == 'url' ) {
 							$meta_field['display'] = 'text';
 							$meta_field['escape_url'] = '1';
-						} elseif ( $meta_field['display'] == 'static' ) $meta_field['display'] = 'text';
+						}
+						elseif ( $meta_field['display'] == 'static' ) $meta_field['display'] = 'text';
 						$redux_usermeta[$k] = $meta_field;
 					}
 					// TODO: Confirm old custom fields are migrating successfully, then kill old option
 					//delete_option( 'register_plus_redux_usermeta-rv1' );
 					if ( !empty( $redux_usermeta ) ) update_option( 'register_plus_redux_usermeta-rv2', $redux_usermeta );
-				} elseif ( !empty( $custom_fields ) ) {
+				} 
+				elseif ( !empty( $custom_fields ) ) {
 					$redux_usermeta = array();
 					if ( !is_array( $custom_fields ) ) $custom_fields = array();
 					foreach ( $custom_fields as $k => $custom_field ) {
@@ -232,10 +236,12 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 						elseif ( $meta_field['display'] == 'date' ) {
 							$meta_field['display'] = 'text';
 							$meta_field['show_datepicker'] = '1';
-						} elseif ( $meta_field['display'] == 'url' ) {
+						}
+						elseif ( $meta_field['display'] == 'url' ) {
 							$meta_field['display'] = 'text';
 							$meta_field['escape_url'] = '1';
-						} elseif ( $meta_field['display'] == 'static' ) $meta_field['display'] = 'text';
+						}
+						elseif ( $meta_field['display'] == 'static' ) $meta_field['display'] = 'text';
 						$redux_usermeta[$k] = $meta_field;
 					}
 					// TODO: Confirm old custom fields are migrating successfully, then kill old option
@@ -265,11 +271,13 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 											if ( date( 'Ymd', strtotime( $user_info->email_verified ) ) < $expirationdate ) {
 												wp_delete_user( $unverified_user->user_id );
 											}
-										} else {
+										}
+										else {
 											wp_delete_user( $unverified_user->user_id );
 										}
 									}
-								} else {
+								}
+								else {
 									wp_delete_user( $unverified_user->user_id );
 								}
 							}
@@ -365,7 +373,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					jQuery("#custom_verification_message").prop("disabled", true);
 					jQuery("#custom_verification_message").prop("checked", false);
 					jQuery("#custom_verification_message_settings").hide();
-				} else {
+				}
+				else {
 					jQuery("#custom_verification_message").prop("disabled", false);
 					jQuery("#user_message_summary").append("<?php _e( 'The following message will be sent when a user is registered:', 'register-plus-redux' ); ?>");
 					var verification_message_from_name = "<?php echo $this->defaultOptions( 'verification_message_from_name' ); ?>";
@@ -393,7 +402,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					jQuery("#custom_user_message").prop("checked", false);
 					jQuery("#custom_user_message_settings").hide();
 					jQuery("#user_message_summary").append("<?php _e( 'No message will be sent to user whether they are registered or created by an administrator.', 'register-plus-redux' ); ?>");
-				} else {
+				}
+				else {
 					jQuery("#custom_user_message").prop("disabled", false);
 					var when = "<?php _e( 'The following message will be sent when a user is ', 'register-plus-redux' ); ?>";
 					if (!jQuery("#disable_user_message_registered").prop("checked")) when = when + "<?php _e( 'registered', 'register-plus-redux' ); ?>";
@@ -435,7 +445,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					jQuery("#custom_admin_message").prop("checked", false);
 					jQuery("#custom_admin_message_settings").hide();
 					jQuery("#admin_message_summary").append("<?php _e( 'No message will be sent to administrator whether a user is registered or created.', 'register-plus-redux' ); ?>");
-				} else {
+				}
+				else {
 					jQuery("#custom_admin_message").prop("disabled", false);
 					var when = "<?php _e( 'The following message will be sent when a user is ', 'register-plus-redux' ); ?>";
 					if (!jQuery("#disable_admin_message_registered").prop("checked")) when = when + "<?php _e( 'registered', 'register-plus-redux' ); ?>";
@@ -525,7 +536,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					if (jQuery(this).text() == "Show Settings") {
 						jQuery(this).text("Hide Settings");
 						jQuery(this).parent().parent().parent().find(".settings").show();
-					} else {
+					}
+					else {
 						jQuery(this).text("Show Settings");
 						jQuery(this).parent().parent().parent().find(".settings").hide();
 					}
@@ -552,7 +564,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					var row = jQuery(this).parents("tr:first");
 					if (jQuery(this).is(".upButton")) {
 						row.insertBefore(row.prev() );
-					} else {
+					}
+					else {
 						row.insertAfter(row.next() );
 					}
 				});
@@ -654,7 +667,7 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 				<?php if ( !is_multisite() ) { ?>
 				<h3 class="title"><?php _e( 'Registration Form', 'register-plus-redux' ); ?></h3>
 				<p><?php _e( 'Select which fields to show on the Registration Form. Users will not be able to register without completing any fields marked required.', 'register-plus-redux' ); ?></p>
-				<?php } elseif ( is_multisite() ) { ?>
+				<?php } else { ?>
 				<h3 class="title"><?php _e( 'Signup Form', 'register-plus-redux' ); ?></h3>
 				<p><?php _e( 'Select which fields to show on the Signup Form. Users will not be able to signup without completing any fields marked required.', 'register-plus-redux' ); ?></p>
 				<?php } ?>
@@ -1550,7 +1563,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 			if ( $this->GetReduxOption( 'double_check_email' ) == TRUE ) {
 				if ( empty( $_POST['user_email2'] ) ) {
 					$result['errors']->add( 'user_email2', __( 'Please confirm your e-mail address.', 'register-plus-redux' ) );
-				} elseif ( $_POST['user_email'] != $_POST['user_email2'] ) {
+				}
+				elseif ( $_POST['user_email'] != $_POST['user_email2'] ) {
 					$result['errors']->add( 'user_email2', __( 'Your e-mail address does not match.', 'register-plus-redux' ) );
 				}
 			}
@@ -1603,18 +1617,22 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
 				if ( empty( $_POST['pass1'] ) ) {
 					$result['errors']->add( 'pass1', __( 'Please enter a password.', 'register-plus-redux' ) );
-				} elseif ( strlen( $_POST['pass1'] ) < absint( $this->GetReduxOption( 'min_password_length' ) ) ) {
+				}
+				elseif ( strlen( $_POST['pass1'] ) < absint( $this->GetReduxOption( 'min_password_length' ) ) ) {
 					$result['errors']->add( 'pass1', sprintf( __( 'Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $this->GetReduxOption( 'min_password_length' ) ) ) );
-				} elseif ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
+				}
+				elseif ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
 					$result['errors']->add( 'pass1', __( 'Your password does not match.', 'register-plus-redux' ) );
-				} else {
+				}
+				else {
 					$_POST['password'] = $_POST['pass1'];
 				}
 			}
 			if ( $this->GetReduxOption( 'enable_invitation_code' ) == TRUE ) {
 				if ( empty( $_POST['invitation_code'] ) && $this->GetReduxOption( 'require_invitation_code' ) == TRUE ) {
 					$result['errors']->add( 'invitation_code', __( 'Please enter an invitation code.', 'register-plus-redux' ) );
-				} elseif ( !empty( $_POST['invitation_code'] ) ) {
+				}
+				elseif ( !empty( $_POST['invitation_code'] ) ) {
 					$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
 					if ( !is_array( $invitation_code_bank ) ) $invitation_code_bank = array();
 					if ( $this->GetReduxOption( 'invitation_code_case_sensitive' ) == FALSE ) {
@@ -1624,7 +1642,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					}
 					if ( is_array( $invitation_code_bank ) && !in_array( $_POST['invitation_code'], $invitation_code_bank ) ) {
 						$result['errors']->add( 'invitation_code', __( 'That invitation code is invalid.', 'register-plus-redux' ) );
-					} else {
+					}
+					else {
 						// reverts lowercase key to stored case
 						$key = array_search( $_POST['invitation_code'], $invitation_code_bank );
 						$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
@@ -1694,7 +1713,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					</script>
 					<!--<![endif]-->
 					<?php
-				} elseif ( isset( $_GET['action'] ) && ( $_GET['action'] == 'lostpassword' ) ) {
+				} 
+				elseif ( isset( $_GET['action'] ) && ( $_GET['action'] == 'lostpassword' ) ) {
 					?>
 					<!--[if (lte IE 8)]>
 					<script type="text/javascript">
@@ -1707,7 +1727,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					</script>
 					<!--<![endif]-->
 					<?php
-				} elseif ( !isset( $_GET['action'] ) ) {
+				}
+				elseif ( !isset( $_GET['action'] ) ) {
 					?>
 					<!--[if (lte IE 8)]>
 					<script type="text/javascript">
@@ -1978,7 +1999,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					</script>
 					<?php
 				}
-			} else {
+			}
+			else {
 				if ( $this->GetReduxOption( 'custom_login_page_css' ) ) {
 					echo "\n<style type=\"text/css\">";
 					echo "\n", esc_html( $this->GetReduxOption( 'custom_login_page_css' ) );
@@ -2686,7 +2708,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 			if ( $this->GetReduxOption( 'double_check_email' ) == TRUE ) {
 				if ( empty( $_POST['user_email2'] ) ) {
 					$errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please confirm your e-mail address.', 'register-plus-redux' ) );
-				} elseif ( $_POST['user_email'] != $_POST['user_email2'] ) {
+				}
+				elseif ( $_POST['user_email'] != $_POST['user_email2'] ) {
 					$errors->add( 'email_mismatch', __( '<strong>ERROR</strong>: Your e-mail address does not match.', 'register-plus-redux' ) );
 				}
 			}
@@ -2739,16 +2762,19 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
 				if ( empty( $_POST['pass1'] ) && $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE ) {
 					$errors->add( 'empty_password', __( '<strong>ERROR</strong>: Please enter a password.', 'register-plus-redux' ) );
-				} elseif ( strlen( $_POST['pass1'] ) < absint( $this->GetReduxOption( 'min_password_length' ) ) ) {
+				}
+				elseif ( strlen( $_POST['pass1'] ) < absint( $this->GetReduxOption( 'min_password_length' ) ) ) {
 					$errors->add( 'password_length', sprintf( __( '<strong>ERROR</strong>: Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $this->GetReduxOption( 'min_password_length' ) ) ) );
-				} elseif ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
+				}
+				elseif ( $this->GetReduxOption( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
 					$errors->add( 'password_mismatch', __( '<strong>ERROR</strong>: Your password does not match.', 'register-plus-redux' ) );
 				}
 			}
 			if ( $this->GetReduxOption( 'enable_invitation_code' ) == TRUE ) {
 				if ( empty( $_POST['invitation_code'] ) && $this->GetReduxOption( 'require_invitation_code' ) == TRUE ) {
 					$errors->add( 'empty_invitation_code', __( '<strong>ERROR</strong>: Please enter an invitation code.', 'register-plus-redux' ) );
-				} elseif ( !empty( $_POST['invitation_code'] ) ) {
+				}
+				elseif ( !empty( $_POST['invitation_code'] ) ) {
 					$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
 					if ( !is_array( $invitation_code_bank ) ) $invitation_code_bank = array();
 					if ( $this->GetReduxOption( 'invitation_code_case_sensitive' ) == FALSE ) {
@@ -2758,7 +2784,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					}
 					if ( is_array( $invitation_code_bank ) && !in_array( $_POST['invitation_code'], $invitation_code_bank ) ) {
 						$errors->add( 'invitation_code_mismatch', __( '<strong>ERROR</strong>: That invitation code is invalid.', 'register-plus-redux' ) );
-					} else {
+					}
+					else {
 						// reverts lowercase key to stored case
 						$key = array_search( $_POST['invitation_code'], $invitation_code_bank );
 						$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
@@ -2991,7 +3018,7 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 		}
 
 		function rpr_restore_signup_fields_stub( $blog_id, $user_id, $password, $signup, $meta ) {
-			rpr_restore_signup_fields( $user_id, $password, $meta );
+			$this->rpr_restore_signup_fields( $user_id, $password, $meta );
 		}
 
 		function rpr_save_registration_fields( $user_id ) {
@@ -3354,11 +3381,13 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 							$errors->add( 'account_verified', sprintf( __( 'Thank you %s, your account has been verified, please login with the password you specified during registration.', 'register-plus-redux' ), $stored_user_login ), 'message' );
 						else
 							$errors->add( 'account_verified_checkemail', sprintf( __( 'Thank you %s, your account has been verified, your password will be emailed to you.', 'register-plus-redux' ), $stored_user_login ), 'message' );
-					} elseif ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE ) {
+					}
+					elseif ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE ) {
 						update_user_meta( $user_id, 'email_verified', gmdate( 'Y-m-d H:i:s' ) );
 						$errors->add( 'admin_review', __( 'Your account will be reviewed by an administrator and you will be notified when it is activated.', 'register-plus-redux' ), 'message' );
 					}
-				} else {
+				}
+				else {
 					$errors->add( 'invalid_verification_code', __( 'Invalid verification code.', 'register-plus-redux' ), 'error' );
 				}
 			}
@@ -3367,7 +3396,8 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 					if ( is_array( $errors->errors ) && array_key_exists( 'registered', $errors->errors ) ) unset( $errors->errors['registered'] );
 					if ( is_array( $errors->error_data ) && array_key_exists( 'registered', $errors->error_data ) ) unset( $errors->error_data['registered'] );
 					$errors->add( 'verify_user_email', nl2br( $this->GetReduxOption( 'message_verify_user_email' ) ), 'message' );
-				} elseif ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE ) {
+				}
+				elseif ( $this->GetReduxOption( 'verify_user_admin' ) == TRUE ) {
 					if ( is_array( $errors->errors ) && array_key_exists( 'registered', $errors->errors ) ) unset( $errors->errors['registered'] );
 					if ( is_array( $errors->error_data ) && array_key_exists( 'registered', $errors->error_data ) ) unset( $errors->error_data['registered'] );
 					$errors->add( 'verify_user_admin', nl2br( $this->GetReduxOption( 'message_verify_user_admin' ) ), 'message' );
@@ -3431,11 +3461,13 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 							}
 						}
 					}
-				} elseif ( !is_multisite() && ( $pagenow == 'wp-login.php' ) ) {
+				}
+				elseif ( !is_multisite() && ( $pagenow == 'wp-login.php' ) ) {
 					if ( array_key_exists( 'pass1', $_POST ) ) {
 						$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
 					}
-				} elseif ( $this->GetReduxOption( 'filter_random_password' ) == TRUE ) {
+				}
+				elseif ( $this->GetReduxOption( 'filter_random_password' ) == TRUE ) {
 					if ( array_key_exists( 'pass1', $_POST ) ) {
 						$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
 					}
