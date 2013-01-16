@@ -15,15 +15,16 @@ Text Domain: register-plus-redux
 // TODO: MS users aren't being linked to a site
 // TODO: Remove must-use code, note in faq that RPR must be network activated when altering signup process, add code to detect?
 
-$rpr_options = get_option( 'register_plus_redux_options' );
-
 if ( !class_exists( 'RegisterPlusRedux' ) ) {
 	class RegisterPlusRedux {
-		function RegisterPlusRedux() {
-			global $rpr_options;
+		private $_options;
+		function __construct() {
 			global $wp_version;
 
-			add_action( 'plugins_loaded', array( $this, 'InitL18n' ), 10, 1 );
+			$_options = get_option( 'register_plus_redux_options' );
+
+			add_action( 'init', array( $this, 'InitL18n' ), 10, 1 );
+			//add_action( 'init', array( $this, 'include_rpr_new_user_notification' ), 10, 1 );
 
 			if ( is_admin() ) {
 				add_action( 'init', array( $this, 'InitOptions' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
@@ -65,7 +66,7 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 			add_filter( 'random_password', array( $this, 'filter_random_password' ), 10, 1 ); // Replace random password with user set password
 			add_filter( 'update_user_metadata', array( $this, 'filter_update_user_metadata' ), 10, 5 );
 
-			if ( !empty( $rpr_options['enable_invitation_tracking_widget'] ) )
+			if ( !empty( $_options['enable_invitation_tracking_widget'] ) )
 				add_action( 'wp_dashboard_setup', array( $this, 'AddDashboardWidget' ) );
 			
 			if ( $wp_version < 3.2 )
@@ -86,42 +87,42 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 		}
 
 		function SaveReduxOptions( $options = array() ) {
-			global $rpr_options;
-			if ( empty( $options ) && empty( $rpr_options ) ) return FALSE;
+			global $_options;
+			if ( empty( $options ) && empty( $_options ) ) return FALSE;
 			if ( !empty( $options ) ) {
 				update_option( 'register_plus_redux_options', $options );
-				$rpr_options = $options;
+				$_options = $options;
 			}
 			else {
-				update_option( 'register_plus_redux_options', $rpr_options );
+				update_option( 'register_plus_redux_options', $_options );
 			}
 			return TRUE;
 		}
 
 		function GetReduxOption( $option ) {
-			global $rpr_options;
+			global $_options;
 			if ( empty( $option ) ) return NULL;
 			$this->LoadReduxOptions( FALSE );
-			if ( array_key_exists( $option, $rpr_options ) )
-				return $rpr_options[$option];
+			if ( array_key_exists( $option, $_options ) )
+				return $_options[$option];
 			return NULL;
 		}
 
 		function LoadReduxOptions( $force_refresh = FALSE ) {
-			global $rpr_options;
-			if ( empty( $rpr_options ) || $force_refresh === TRUE ) {
-				$rpr_options = get_option( 'register_plus_redux_options' );
+			global $_options;
+			if ( empty( $_options ) || $force_refresh === TRUE ) {
+				$_options = get_option( 'register_plus_redux_options' );
 			}
-			if ( empty( $rpr_options ) ) {
+			if ( empty( $_options ) ) {
 				$this->SaveReduxOptions( $this->defaultOptions() );
 			}
 		}
 
 		function SetReduxOption( $option, $value, $save_now = FALSE ) {
-			global $rpr_options;
+			global $_options;
 			if ( empty( $option ) ) return FALSE;
 			$this->LoadReduxOptions( FALSE );
-			$rpr_options[$option] = $value;
+			$_options[$option] = $value;
 			if ( $save_now === TRUE ) {
 				$this->SaveReduxOptions();
 			}
@@ -129,10 +130,10 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 		}
 
 		function RemoveReduxOption( $option, $save_now = FALSE ) {
-			global $rpr_options;
+			global $_options;
 			if ( empty( $option ) ) return FALSE;
 			$this->LoadReduxOptions( FALSE );
-			unset( $rpr_options[$option] );
+			unset( $_options[$option] );
 			if ( $save_now === TRUE ) {
 				$this->SaveReduxOptions();
 			}
@@ -141,7 +142,7 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 
 		function InitL18n() {
 			// Place your language file in the languages subfolder and name it "register-plus-redux-{language}.mo" replace {language} with your language value from wp-config.php
-			load_plugin_textdomain( 'register-plus-redux', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+			load_plugin_textdomain( 'register-plus-redux', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		}
 
 		function InitOptions() {
@@ -3521,58 +3522,17 @@ if ( !class_exists( 'RegisterPlusRedux' ) ) {
 	}
 }
 
-if ( class_exists( 'RegisterPlusRedux' ) )
+if ( class_exists( 'RegisterPlusRedux' ) ) {
 	$register_plus_redux = new RegisterPlusRedux();
-
-function create_wp_new_user_notification() {
-	global $rpr_options;
-	$do_create = FALSE;
-	if ( !empty( $rpr_options['verify_user_email'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['disable_user_message_registered'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['disable_user_message_created'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['custom_user_message'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['verify_user_admin'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['disable_admin_message_registered'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['disable_admin_message_created'] ) ) $do_create = TRUE;
-	if ( !empty( $rpr_options['custom_admin_message'] ) ) $do_create = TRUE;
-	return $do_create;
-}
-
-if ( create_wp_new_user_notification() == TRUE ) {
-	if ( function_exists( 'wp_new_user_notification' ) ) {
-		add_action( 'admin_notices', array( $register_plus_redux, 'ConflictWarning' ), 10, 1 );
-	}
-	
-	// Called after user completes registration from wp-login.php
-	// Called after admin creates user from wp-admin/user-new.php
-	// Called after admin creates new site, which also creates new user from wp-admin/network/edit.php (MS)
-	// Called after admin creates user from wp-admin/network/edit.php (MS)
-	if ( !function_exists( 'wp_new_user_notification' ) ) {
-		function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
-			global $pagenow;
-			global $register_plus_redux;
-			global $rpr_options;
-			if ( !empty( $rpr_options['user_set_password'] ) && !empty( $_POST['pass1'] ) )
-				$plaintext_pass = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
-			if ( ( $pagenow == 'user-new.php' ) && !empty( $_POST['pass1'] ) )
-				$plaintext_pass = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
-			if ( ( $pagenow != 'user-new.php' ) && !empty( $rpr_options['verify_user_email'] ) ) {
-				$verification_code = wp_generate_password( 20, FALSE );
-				update_user_meta( $user_id, 'email_verification_code', $verification_code );
-				update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
-				$register_plus_redux->sendVerificationMessage( $user_id, $verification_code );
-			}
-			if ( ( ( $pagenow != 'user-new.php' ) && empty( $rpr_options['disable_user_message_registered'] ) ) || 
-				( ( $pagenow == 'user-new.php' ) && empty( $rpr_options['disable_user_message_created'] ) ) ) {
-				if ( empty( $rpr_options['verify_user_email'] ) && empty( $rpr_options['verify_user_admin'] ) ) {
-					$register_plus_redux->sendUserMessage( $user_id, $plaintext_pass );
-				}
-			}
-			if ( ( ( $pagenow != 'user-new.php' ) && empty( $rpr_options['disable_admin_message_registered'] ) ) || 
-				( ( $pagenow == 'user-new.php' ) && empty( $rpr_options['disable_admin_message_created'] ) ) ) {
-				$register_plus_redux->sendAdminMessage( $user_id, $plaintext_pass, $verification_code );
-			}
-		}
-	}
+	$do_include = FALSE;
+	if ( $register_plus_redux->GetReduxOption( 'verify_user_email' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'disable_user_message_registered' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'disable_user_message_created' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'custom_user_message' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'disable_admin_message_registered' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'disable_admin_message_created' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'custom_admin_message' ) == TRUE ) $do_include = TRUE;
+	if ( $do_include ) include( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
 }
 ?>
