@@ -714,8 +714,6 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 		function rpr_restore_signup_fields_stub( $blog_id, $user_id, $password, $signup, $meta ) {
 			$this->rpr_restore_signup_fields( $user_id, $password, $meta );
 		}
-
-
 	}
 }
 
