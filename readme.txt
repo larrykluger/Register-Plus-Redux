@@ -109,7 +109,7 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 = 3.9 =
-October 22, 2012 by radiok
+January 16, 2012 by radiok
 
 * Converted custom_fields to redux_usermeta
 * Can now specify database key for meta fields
@@ -119,6 +119,10 @@ October 22, 2012 by radiok
 * Converted jQuery for Email Address as Username option to JavaScript DOM commands
 * Added help feature (in progress) for meta fields
 * Changed method of sanitizing user data to preserve percent signs
+* Completely rewrote all form validation
+* Apply KSES to HTML enabled form fields
+* Added CSSTidy to validate CSS
+* Broke out code across several php files
 
 = 3.7.3 =
 March 29, 2011 by radiok
