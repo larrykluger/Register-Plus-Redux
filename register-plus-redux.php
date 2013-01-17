@@ -2826,6 +2826,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	
 	//TODO: Would be great to only include files if options would require them
 	if ( is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
+	if ( is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 	//if ( !is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
 }
 ?>
