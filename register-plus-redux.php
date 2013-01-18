@@ -14,6 +14,9 @@ Text Domain: register-plus-redux
 // TODO: Define some "universal" functions and isolate features into seperate php files
 // TODO: MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level
 // TODO: Add code to detect whether network activated?  Show admin_notice and/or disable functionality?
+// TODO: Add code to hide username box on user-new.php when username_is_email
+// TODO: Signups table needs an edit view
+// TODO: Wordpress MS uses wpmu_welcome_user_notification moreso then new-user-notification 
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
@@ -1639,8 +1642,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
+		//wp-activate.php calls this page when activating user
 		function rpr_save_registration_fields( $user_id ) {
 			global $pagenow;
+			if ( $pagenow != 'wp-activate.php' ) echo "rpr_save_registration_fields:$pagenow<br />";
+			//deal with signup fields in RPR_Activate::rpr_restore_signup_fields
+			if ( $pagenow == 'wp-activate.php' ) return;
 
 			$source = get_magic_quotes_gpc() ? stripslashes_deep( $_POST ) : $_POST;
 
@@ -1661,30 +1668,11 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_registration'] ) ) {
-					$this->SaveMetaField( $meta_field, $user_id, $source[$meta_field['meta_key']] );
+					if ( !empty( $source[$meta_field['meta_key']] ) ) $register_plus_redux->SaveMetaField( $meta_field, $user_id, $source[$meta_field['meta_key']] );
 				}
 			}
 
 			if ( $this->GetReduxOption( 'enable_invitation_code' ) == TRUE && !empty( $source['invitation_code'] ) ) update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $source['invitation_code'] ) );
-
-			// TODO: Verify autologin works
-			if ( $pagenow != 'user-new.php' && $this->GetReduxOption( 'autologin_user' ) == TRUE && $this->GetReduxOption( 'verify_user_email' ) == FALSE && $this->GetReduxOption( 'verify_user_admin' ) == FALSE ) {
-				$user_info = get_userdata( $user_id );
-				$credentials['user_login'] = sanitize_text_field( $user_info->user_login );
-				if ( empty( $_POST['pass1'] ) ) {
-					$plaintext_pass = wp_generate_password();
-					update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
-					wp_set_password( $plaintext_pass, $user_id );
-					$credentials['user_password'] = $plaintext_pass;
-					if ( $this->GetReduxOption( 'disable_user_message_registered' ) == FALSE )
-						$this->sendUserMessage( $user_id, $plaintext_pass );
-				}
-				else {
-					$credentials['user_password'] = sanitize_text_field( $_POST['pass1'] );
-				}
-				$credentials['remember'] = FALSE;
-				$user = wp_signon( $credentials, FALSE ); 
-			}
 
 			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE && !empty( $source['pass1'] ) ) {
 				$plaintext_pass = sanitize_text_field( $source['pass1'] );
@@ -1706,6 +1694,26 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$temp_user_login = 'unverified_' . wp_generate_password( 7, FALSE );
 				$wpdb->update( $wpdb->users, array( 'user_login' => $temp_user_login ), array( 'ID' => $user_id ) );
 			}
+
+			// TODO: Verify autologin works
+			if ( $pagenow != 'user-new.php' && $this->GetReduxOption( 'autologin_user' ) == TRUE && $this->GetReduxOption( 'verify_user_email' ) == FALSE && $this->GetReduxOption( 'verify_user_admin' ) == FALSE ) {
+				$user_info = get_userdata( $user_id );
+				$credentials['user_login'] = sanitize_text_field( $user_info->user_login );
+				if ( empty( $_POST['pass1'] ) ) {
+					$plaintext_pass = wp_generate_password();
+					update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
+					wp_set_password( $plaintext_pass, $user_id );
+					$credentials['user_password'] = $plaintext_pass;
+					if ( $this->GetReduxOption( 'disable_user_message_registered' ) == FALSE )
+						$this->sendUserMessage( $user_id, $plaintext_pass );
+				}
+				else {
+					$credentials['user_password'] = sanitize_text_field( $_POST['pass1'] );
+				}
+				$credentials['remember'] = FALSE;
+				$user = wp_signon( $credentials, FALSE ); 
+			}
+
 		}
 
 		function SaveMetaField( $meta_field, $user_id, $value ) {
@@ -1899,10 +1907,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		function replaceKeywords( $message = '', $user_info = array(), $plaintext_pass = '', $verification_code = '' ) {
+			global $pagenow;
 			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %stored_user_login% %user_password% %verification_code% %verification_url%';
 			// TODO: replaceKeywords could be attempting to get_user_meta before it is even written
 			$message = str_replace( '%blogname%', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $message );
 			$message = str_replace( '%site_url%', site_url(), $message );
+			$message = str_replace( '%pagenow%', $pagenow, $message ); //debug keyword
 			if ( !empty( $_SERVER ) ) {
 				$message = str_replace( '%http_referer%', isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '', $message );
 				$message = str_replace( '%http_user_agent%', isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '', $message );
@@ -1979,26 +1989,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		function filter_random_password( $password ) {
 			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
 				global $pagenow;
-				if ( is_multisite() && ( $pagenow == 'wp-activate.php' ) ) {
-					$activation_key = isset( $_POST['key'] ) ? $_POST['key'] : '';
-					if ( isset( $_GET['key'] ) ) $activation_key = $_GET['key'];
-					if ( get_magic_quotes_gpc() ) stripslashes( $activation_key );
-					if ( !empty( $activation_key ) ) {
-						global $wpdb;
-						$signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE activation_key = %s;", $activation_key ) );
-						if ( !empty( $signup ) ) {
-							$meta = unserialize( $signup->meta );
-							if ( is_array( $meta ) && array_key_exists( 'pass1', $meta ) && !empty( $meta['pass1'] ) ) {
-								$password = $meta['pass1'];
-								unset( $meta['pass1'] );
-								if ( array_key_exists( 'pass2', $meta ) ) unset( $meta['pass2'] );
-								$meta = serialize( $meta );
-								$wpdb->update( $wpdb->signups, array( 'meta' => $meta ), array( 'activation_key' => $activation_key ) );
-							}
-						}
-					}
-				}
-				elseif ( !is_multisite() && ( $pagenow == 'wp-login.php' ) ) {
+				if ( !is_multisite() && ( $pagenow == 'wp-login.php' ) ) {
 					if ( array_key_exists( 'pass1', $_POST ) ) {
 						$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
 					}
@@ -2042,6 +2033,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 // include secondary php files outside of object otherwise $register_plus_redux will not be an instance yet
 if ( class_exists( 'Register_Plus_Redux' ) ) {
+	global $pagenow;
 	//rumor has it this may need to declared global in order to be available at plugin activation
 	$register_plus_redux = new Register_Plus_Redux();
 
@@ -2056,21 +2048,21 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $register_plus_redux->GetReduxOption( 'custom_admin_message' ) == TRUE ) $do_include = TRUE;
 	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
 
-	$do_include = FALSE;
-	if ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
-	if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) ) $do_include = TRUE;
-	if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->GetReduxOption( 'autologin_user' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE ) $do_include = TRUE;
-	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
-
 	//TODO: Determine which features require the following file
-	$do_include = FALSE;
-	if ( is_multisite() ) $do_include = TRUE;
-	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
+	$do_include = TRUE;
+	if ( $do_include && $pagenow = 'wp-login.php' ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
 
 	//TODO: Determine which features require the following file
 	$do_include = TRUE;
-	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
+	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
+
+	$do_include = FALSE;
+	if ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
+	if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) ) $do_include = TRUE;
+	if ( is_array( get_option( 'register_plus_redux_usermeta-rv2' ) ) ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'autologin_user' ) == TRUE ) $do_include = TRUE;
+	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 }
 ?>
