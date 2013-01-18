@@ -16,19 +16,20 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 			$plaintext_pass = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
 		if ( $pagenow == 'user-new.php' && !empty( $_POST['pass1'] ) )
 			$plaintext_pass = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
-		if ( $pagenow != 'user-new.php' && $register_plus_redux->GetReduxOption( 'verify_user_email' ) == TRUE ) {
+		//TODO: Code now only forces users registering to verify email, may want to add settings to have admin created users verify email too
+		if ( $pagenow == 'wp-login.php' && $register_plus_redux->GetReduxOption( 'verify_user_email' ) == TRUE ) {
 			$verification_code = wp_generate_password( 20, FALSE );
 			update_user_meta( $user_id, 'email_verification_code', $verification_code );
 			update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
 			$register_plus_redux->sendVerificationMessage( $user_id, $verification_code );
 		}
-		if ( ( $pagenow != 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_user_message_registered' ) == FALSE ) || 
+		if ( ( $pagenow == 'wp-login.php' && $register_plus_redux->GetReduxOption( 'disable_user_message_registered' ) == FALSE ) || 
 			( $pagenow == 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_user_message_created' ) == FALSE ) ) {
 			if ( $register_plus_redux->GetReduxOption( 'verify_user_email' ) == FALSE && $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == FALSE ) {
 				$register_plus_redux->sendUserMessage( $user_id, $plaintext_pass );
 			}
 		}
-		if ( ( $pagenow != 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_registered' ) == FALSE ) || 
+		if ( ( $pagenow == 'wp-login.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_registered' ) == FALSE ) || 
 			( $pagenow == 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_created' ) == FALSE ) ) {
 			$register_plus_redux->sendAdminMessage( $user_id, $plaintext_pass, isset( $verification_code ) ? $verification_code : '' );
 		}
