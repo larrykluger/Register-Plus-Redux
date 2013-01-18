@@ -2044,6 +2044,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 if ( class_exists( 'Register_Plus_Redux' ) ) {
 	//rumor has it this may need to declared global in order to be available at plugin activation
 	$register_plus_redux = new Register_Plus_Redux();
+
 	$do_include = FALSE;
 	if ( $register_plus_redux->GetReduxOption( 'verify_user_email' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->GetReduxOption( 'disable_user_message_registered' ) == TRUE ) $do_include = TRUE;
@@ -2055,9 +2056,21 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $register_plus_redux->GetReduxOption( 'custom_admin_message' ) == TRUE ) $do_include = TRUE;
 	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
 
-	//TODO: Would be great to only include files if options would require them
-	if ( is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
-	if ( is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
-	if ( TRUE ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
+	$do_include = FALSE;
+	if ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
+	if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'autologin_user' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE ) $do_include = TRUE;
+	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
+
+	//TODO: Determine which features require the following file
+	$do_include = FALSE;
+	if ( is_multisite() ) $do_include = TRUE;
+	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
+
+	//TODO: Determine which features require the following file
+	$do_include = TRUE;
+	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
 }
 ?>

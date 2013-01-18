@@ -12,7 +12,17 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 
 			$source = $meta;
 			echo $user_id, ', ', $password, ', ', print_r( $meta );
-			
+
+			//TODO: Not the most elegant solution, it would be better to interupt the activation and keep the data in the signups table with a flag to alert admin to complete activation			
+			if ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) {
+				global $wpdb;
+				$user_info = get_userdata( $user_id );
+				update_user_meta( $user_id, 'stored_user_login', sanitize_text_field( $user_info->user_login ) );
+				update_user_meta( $user_id, 'stored_user_password', sanitize_text_field( $plaintext_pass ) );
+				$temp_user_login = 'unverified_' . wp_generate_password( 7, FALSE );
+				$wpdb->update( $wpdb->users, array( 'user_login' => $temp_user_login ), array( 'ID' => $user_id ) );
+			}
+
 			if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) && in_array( 'first_name', $register_plus_redux->GetReduxOption( 'show_fields' ) ) && !empty( $source['first_name'] ) ) update_user_meta( $user_id, 'first_name', sanitize_text_field( $source['first_name'] ) );
 			if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) && in_array( 'last_name', $register_plus_redux->GetReduxOption( 'show_fields' ) ) && !empty( $source['last_name'] ) ) update_user_meta( $user_id, 'last_name', sanitize_text_field( $source['last_name'] ) );
 			if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) && in_array( 'url', $register_plus_redux->GetReduxOption( 'show_fields' ) ) && !empty( $source['user_url'] ) ) {
@@ -37,7 +47,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE && !empty( $source['invitation_code'] ) ) update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $source['invitation_code'] ) );
 
 			// TODO: Verify autologin works
-			if ( $pagenow != 'user-new.php' && $register_plus_redux->GetReduxOption( 'autologin_user' ) == TRUE && $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == FALSE ) {
+			if ( $register_plus_redux->GetReduxOption( 'autologin_user' ) == TRUE && $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == FALSE ) {
 				$user_info = get_userdata( $user_id );
 				$credentials['user_login'] = sanitize_text_field( $user_info->user_login );
 				if ( empty( $_POST['pass1'] ) ) {
@@ -59,21 +69,6 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 				$plaintext_pass = sanitize_text_field( $source['pass1'] );
 				update_user_option( $user_id, 'default_password_nag', FALSE, TRUE );
 				wp_set_password( $plaintext_pass, $user_id );
-			}
-
-			if ( ( $pagenow == 'user-new.php' ) && !empty( $source['pass1'] ) ) {
-				$plaintext_pass = sanitize_text_field( $source['pass1'] );
-				update_user_option( $user_id, 'default_password_nag', FALSE, TRUE );
-				wp_set_password( $plaintext_pass, $user_id );
-			}
-
-			if ( ( $pagenow != 'user-new.php' ) && ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) ) {
-				global $wpdb;
-				$user_info = get_userdata( $user_id );
-				update_user_meta( $user_id, 'stored_user_login', sanitize_text_field( $user_info->user_login ) );
-				update_user_meta( $user_id, 'stored_user_password', sanitize_text_field( $plaintext_pass ) );
-				$temp_user_login = 'unverified_' . wp_generate_password( 7, FALSE );
-				$wpdb->update( $wpdb->users, array( 'user_login' => $temp_user_login ), array( 'ID' => $user_id ) );
 			}
 		}
 
