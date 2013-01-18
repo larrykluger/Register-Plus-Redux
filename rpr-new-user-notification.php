@@ -7,6 +7,7 @@ if ( function_exists( 'wp_new_user_notification' ) ) {
 // Called after admin creates user from wp-admin/user-new.php
 // Called after admin creates new site, which also creates new user from wp-admin/network/edit.php (MS)
 // Called after admin creates user from wp-admin/network/edit.php (MS)
+// TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 if ( !function_exists( 'wp_new_user_notification' ) ) {
 	function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
 		global $pagenow;
@@ -24,13 +25,13 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 			$register_plus_redux->sendVerificationMessage( $user_id, $verification_code );
 		}
 		if ( ( $pagenow == 'wp-login.php' && $register_plus_redux->GetReduxOption( 'disable_user_message_registered' ) == FALSE ) || 
-			( $pagenow == 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_user_message_created' ) == FALSE ) ) {
+			( $pagenow != 'wp-login.php' && $register_plus_redux->GetReduxOption( 'disable_user_message_created' ) == FALSE ) ) {
 			if ( $register_plus_redux->GetReduxOption( 'verify_user_email' ) == FALSE && $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == FALSE ) {
 				$register_plus_redux->sendUserMessage( $user_id, $plaintext_pass );
 			}
 		}
 		if ( ( $pagenow == 'wp-login.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_registered' ) == FALSE ) || 
-			( $pagenow == 'user-new.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_created' ) == FALSE ) ) {
+			( $pagenow != 'wp-login.php' && $register_plus_redux->GetReduxOption( 'disable_admin_message_created' ) == FALSE ) ) {
 			$register_plus_redux->sendAdminMessage( $user_id, $plaintext_pass, isset( $verification_code ) ? $verification_code : '' );
 		}
 	}
