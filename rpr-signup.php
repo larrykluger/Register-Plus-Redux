@@ -578,9 +578,9 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					$result['errors']->add( 'pass1', __( 'Your password does not match.', 'register-plus-redux' ) );
 				}
 				else {
+					$_POST['password'] = $_POST['pass1'];
 					unset( $_POST['pass1'] );
 					if (array_key_exists( 'pass2', $_POST ) ) unset( $_POST['pass2'] );
-					$_POST['password'] = $_POST['pass1'];
 				}
 			}
 			if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE ) {
