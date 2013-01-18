@@ -442,6 +442,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 		}
 
 		function rpr_login_head_style_scripts() {
+			global $register_plus_redux;
 			if ( $register_plus_redux->GetReduxOption( 'custom_logo_url' ) ) {
 				if ( ini_get( 'allow_url_fopen' ) )
 					list( $width, $height, $type, $attr ) = getimagesize( esc_url( $register_plus_redux->GetReduxOption( 'custom_logo_url' ) ) );
@@ -706,6 +707,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 		}
 
 		function rpr_login_foot_scripts() {
+			global $register_plus_redux;
 			if ( $register_plus_redux->GetReduxOption( 'username_is_email' ) == TRUE ) {
 				if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'register' ) ) {
 					?>
