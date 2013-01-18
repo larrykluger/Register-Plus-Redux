@@ -2058,7 +2058,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 
 	$do_include = FALSE;
 	if ( $register_plus_redux->GetReduxOption( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
-	if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) $do_include = TRUE;
+	if ( is_array( $register_plus_redux->GetReduxOption( 'show_fields' ) ) ) $do_include = TRUE;
 	if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->GetReduxOption( 'autologin_user' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE ) $do_include = TRUE;
