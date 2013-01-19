@@ -504,7 +504,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				$signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE user_login = %s", $result['user_name'] ) );
 				if ( !empty( $signup ) ) {
 					// If registered more than two days ago, cancel registration and let this signup go through.
-					if ( ( current_time( 'mysql', true ) - $signup->registered ) > 172800 )
+					if ( ( current_time( 'timestamp', true ) - mysql2date('U', $signup->registered) ) > 2 * DAY_IN_SECONDS )
 						$wpdb->delete( $wpdb->signups, array( 'user_login' => $result['user_name'] ) );
 					else
 						$result['errors']->add('user_email', __('That username is currently reserved but may be available in a couple of days.'));
