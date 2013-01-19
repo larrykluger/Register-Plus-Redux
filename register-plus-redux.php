@@ -627,7 +627,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 
 	$do_include = FALSE;
 	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) == TRUE ) $do_include = TRUE;
-	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-dashboard-widget.php' );
+	if ( $do_include && is_admin() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-dashboard-widget.php' );
 
 	$do_include = FALSE;
 	if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) $do_include = TRUE;
@@ -655,6 +655,8 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) $do_include = TRUE;
+	if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+	if ( is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' ) ) $do_include = FALSE;
 	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 }
 ?>
