@@ -484,6 +484,9 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 
 		function filter_wpmu_validate_user_signup( $result ) {
 			global $register_plus_redux;
+			global $pagenow;
+			if ( $pagenow == 'user-new.php' ) return $result;
+			trigger_error( sprintf( __( 'Register Plus Redux DEBUG: filter_wpmu_validate_user_signup($result=%s) from %s', 'register-plus-redux' ), $result, $pagenow ) ); 
 			if ( $register_plus_redux->GetReduxOption( 'username_is_email' ) == TRUE ) {
 				global $wpdb;
 
@@ -500,11 +503,8 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				// Has someone already signed up for this username?
 				$signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE user_login = %s", $result['user_name'] ) );
 				if ( !empty( $signup ) ) {
-					$registered_at =  mysql2date('U', $signup->registered);
-					$now = current_time( 'timestamp', true );
-					$diff = $now - $registered_at;
 					// If registered more than two days ago, cancel registration and let this signup go through.
-					if ( $diff > 172800 )
+					if ( ( current_time( 'mysql', true ) - $signup->registered ) > 172800 )
 						$wpdb->delete( $wpdb->signups, array( 'user_login' => $result['user_name'] ) );
 					else
 						$result['errors']->add('user_email', __('That username is currently reserved but may be available in a couple of days.'));
