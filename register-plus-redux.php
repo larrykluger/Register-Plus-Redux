@@ -19,6 +19,7 @@ Text Domain: register-plus-redux
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 
 // TODO: Enhancement- Create rpr-signups table and mirror wpms
+// TODO: Enhancement- Create rpr-signups table and mirror wpms
 // TODO: Enhancement- Signups table needs an edit view
 // TODO: Enhancement- MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level
 // TODO: Enhancement- Alter admin pages to match registration/signup
@@ -374,11 +375,13 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			$blogname = stripslashes( wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
 			$default = array(
 				'custom_logo_url' => '',
-				'verify_user_email' => '0',
-				'message_verify_user_email' => __( 'Please verify your account using the verification link sent to your email address.', 'register-plus-redux' ),
+				'verify_user_email' => is_multisite() ? '1' : '0',
+				'message_verify_user_email' => is_multisite() ? 
+					__( '<h2>%user_login% is your new username</h2>\n<p>But, before you can start using your new username, <strong>you must activate it</strong></p>\n<p>Check your inbox at <strong>%user_email%</strong> and click the link given.</p>\n<p>If you do not activate your username within two days, you will have to sign up again.</p>', 'register-plus-redux' ) :
+					__( 'Please verify your account using the verification link sent to your email address.', 'register-plus-redux' ),
 				'verify_user_admin' => '0',
 				'message_verify_user_admin' => __( 'Your account will be reviewed by an administrator and you will be notified when it is activated.', 'register-plus-redux' ),
-				'delete_unverified_users_after' => 7,
+				'delete_unverified_users_after' => is_multisite() ? 0 : 7,
 				'autologin_user' => '0',
 
 				'username_is_email' => '0',
@@ -418,7 +421,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				'default_css' => '1',
 				'required_fields_style' => 'border:solid 1px #E6DB55; background-color:#FFFFE0;',
 				'required_fields_asterisk' => '0',
-				'starting_tabindex' => 21,
+				'starting_tabindex' => is_multisite() ? 0 : 21,
 
 				/*
 				'datepicker_firstdayofweek' => 6,

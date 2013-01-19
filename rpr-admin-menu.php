@@ -8,7 +8,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		function rpr_admin_menu() {
 			global $register_plus_redux;
 			global $wpdb;
-			$hookname = add_submenu_page( 'options-general.php', __( 'Register Plus Redux Settings', 'register-plus-redux' ), 'Register Plus Redux', 'manage_options', 'register-plus-redux', array( $this, 'rpr_options_submenu' ) );
+			$admin_menu_hook = array( $this, 'rpr_options_submenu' );
+			//if ( is_multisite() ) $admin_menu_hook = array( $this, 'rpr_options_submenu_ms' );
+			$hookname = add_submenu_page( 'options-general.php', __( 'Register Plus Redux Settings', 'register-plus-redux' ), 'Register Plus Redux', 'manage_options', 'register-plus-redux', $admin_menu_hook );
 			// NOTE: $hookname = settings_page_register-plus-redux 
 			add_action( 'admin_print_scripts-' . $hookname, array( $this, 'rpr_options_submenu_scripts' ), 10, 1 );
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
@@ -66,6 +68,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php } ?>
 						</td>
 					</tr>
+					<?php } ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Email Verification', 'register-plus-redux' ); ?></th>
 						<td>
@@ -77,7 +80,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							</div>
 						</td>
 					</tr>
-					<?php } ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Admin Verification', 'register-plus-redux' ); ?></th>
 						<td>

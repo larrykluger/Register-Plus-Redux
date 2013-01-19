@@ -2,11 +2,12 @@
 if ( !class_exists( 'RPR_Signup' ) ) {
 	class RPR_Signup {
 		function __construct() {
-			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 1 );
+			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 0 );
 			add_action( 'signup_extra_fields', array( $this, 'rpr_signup_extra_fields' ), 9, 1 ); // Higher priority to avoid getting bumped by other plugins
-			add_action( 'after_signup_form', array( $this, 'rpr_after_signup_form' ), 10, 1 ); // Closest thing to signup_footer
+			add_action( 'after_signup_form', array( $this, 'rpr_after_signup_form' ), 10, 0 ); // Closest thing to signup_footer
 			add_filter( 'wpmu_validate_user_signup', array( $this, 'rpr_filter_wpmu_validate_user_signup' ), 10, 1 );
 			add_filter( 'add_signup_meta', array( $this, 'filter_add_signup_meta' ), 10, 1 ); // Store metadata until user is activated
+			add_action( 'signup_finished', array( $this, 'rpr_signup_finished' ), 10, 0 );
 		}
 
 		function rpr_signup_header() {
@@ -637,6 +638,32 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			$meta['signup_registered_from_ip'] = $_SERVER['REMOTE_ADDR'];
 			$meta['signup_registered_from_host'] = gethostbyaddr( $_SERVER['REMOTE_ADDR'] );
 			return $meta;
+		}
+
+		function rpr_signup_finished() {
+			//TODO Hide the detault message, replace with a div containing message_verify_user_email
+			global $register_plus_redux;
+			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE ) {
+				//use code from rpr_after_signup_form to alter html
+				?>
+				<!--[if (lte IE 8)]>
+				<script type="text/javascript">
+				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[5]);
+				document.getElementById("setupform").childNodes[5].style.display = "none";
+				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
+				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
+				</script>
+				<![endif]-->
+				<!--[if (gt IE 8)|!(IE)]><!-->
+				<script type="text/javascript">
+				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
+				document.getElementById("setupform").childNodes[6].style.display = "none";
+				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[7]);
+				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[7]);
+				</script>
+				<!--<![endif]-->
+				<?php
+			}
 		}
 	}
 }
