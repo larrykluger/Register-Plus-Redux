@@ -24,7 +24,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		function __construct() {
 			global $wp_version;
 			
-			add_action( 'init', array( $this, 'InitL18n' ), 10, 1 );
+			add_action( 'init', array( $this, 'InitI18n' ), 10, 1 );
 
 			if ( is_admin() ) {
 				add_action( 'init', array( $this, 'InitOptions' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
@@ -33,7 +33,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 
 			if ( !is_multisite() ) {
-				//require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' )
 				add_filter( 'pre_user_login', array( $this, 'filter_pre_user_login_swp' ), 10, 1 ); // Changes user_login to user_email
 			}
 
@@ -54,7 +53,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				add_action( 'admin_notices', array( $this, 'VersionWarning' ), 10, 1 ); // Runs after the admin menu is printed to the screen. 
 		}
 
-		function InitL18n() {
+		function InitI18n() {
 			// Place your language file in the languages subfolder and name it "register-plus-redux-{language}.mo" replace {language} with your language value from wp-config.php
 			load_plugin_textdomain( 'register-plus-redux', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		}
@@ -770,7 +769,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 										echo '><input type="text" name="invitation_code_bank[]" value="', esc_attr( $invitation_code_bank[$x] ) , '" />&nbsp;<img src="', plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove Code', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Code', 'register-plus-redux' ), '" class="removeInvitationCode" style="cursor: pointer;" /></div>';
 									}
 									if ( $size > 5 )
-										echo "<div id=\"showHiddenInvitationCodes\" style=\"cursor: pointer;\">", sprintf( __( 'Show %d hidden invitation codes', 'register-plus-redux' ), ( $size - 5 ) ), "</div>";
+										echo "<div id=\"showHiddenInvitationCodes\" style=\"cursor: pointer;\">", sprintf( _n( 'Show %d hidden invitation code', 'Show %d hidden invitation codes', ( $size - 5 ), 'register-plus-redux' ), ( $size - 5 ) ), "</div>";
+										//echo "<div id=\"showHiddenInvitationCodes\" style=\"cursor: pointer;\">", sprintf( __( 'Show %d hidden invitation codes', 'register-plus-redux' ), ( $size - 5 ) ), "</div>";
 								?>
 								</div>
 								<img src="<?php echo plugins_url( 'images\plus-circle.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Add Code', 'register-plus-redux' ) ?>" title="<?php esc_attr_e( 'Add Code', 'register-plus-redux' ) ?>" id="addInvitationCode" style="cursor: pointer;" />&nbsp;<?php _e( 'Add a new invitation code', 'register-plus-redux' ) ?><br />
@@ -1987,17 +1987,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		function filter_random_password( $password ) {
-			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE ) {
-				global $pagenow;
-				if ( !is_multisite() && ( $pagenow == 'wp-login.php' ) ) {
-					if ( array_key_exists( 'pass1', $_POST ) ) {
-						$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
-					}
+			if ( $this->GetReduxOption( 'user_set_password' ) == TRUE && $this->GetReduxOption( 'filter_random_password' ) == TRUE ) {
+				if ( array_key_exists( 'pass1', $_POST ) ) {
+					$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
 				}
-				elseif ( $this->GetReduxOption( 'filter_random_password' ) == TRUE ) {
-					if ( array_key_exists( 'pass1', $_POST ) ) {
-						$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
-					}
+				if ( array_key_exists( 'password', $_POST ) ) {
+					$password = get_magic_quotes_gpc() ? stripslashes( $_POST['password'] ) : $_POST['password'];
 				}
 			}
 			return $password;
@@ -2050,7 +2045,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 
 	//TODO: Determine which features require the following file
 	$do_include = TRUE;
-	if ( $do_include && $pagenow = 'wp-login.php' ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
+	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
 
 	//TODO: Determine which features require the following file
 	$do_include = TRUE;

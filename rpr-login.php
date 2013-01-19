@@ -2,6 +2,8 @@
 if ( !class_exists( 'RPR_Login' ) ) {
 	class RPR_Login {
 		function __construct() {
+			add_filter( 'random_password', array( $this, 'filter_random_password' ), 10, 1 ); // Replace random password with user set password
+
 			add_action( 'register_form', array( $this, 'rpr_additional_registration_fields' ), 9, 1); // Higher priority to avoid getting bumped by other plugins
 			add_filter( 'registration_errors', array( $this, 'rpr_check_registration' ), 10, 3 ); // applied to the list of registration errors generated while registering a user for a new account. 
 			add_filter( 'login_message', array( $this, 'filter_login_message' ), 10, 1 );
@@ -12,6 +14,19 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			add_filter( 'login_headerurl', array( $this, 'filter_login_headerurl' ), 10, 1); // Modify url to point to site
 			add_filter( 'login_headertitle', array( $this, 'filter_login_headertitle' ), 10, 1 ); // Modify header to blogname
 			add_filter( 'allow_password_reset', array( $this, 'filter_password_reset' ), 10, 2 );
+		}
+
+		function filter_random_password( $password ) {
+			global $register_plus_redux;
+			global $pagenow;
+			if ( $pagenow == 'wp-login.php' && $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE ) {
+				if ( is_array( $_REQUEST ) && array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == 'register' ) {
+					if ( array_key_exists( 'pass1', $_POST ) ) {
+						$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
+					}
+				}
+			}
+			return $password;
 		}
 
 		function rpr_additional_registration_fields() {
@@ -256,56 +271,56 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( is_array( $errors->error_data ) && array_key_exists( 'empty_username', $errors->error_data ) ) unset( $errors->error_data['empty_username'] );
 				$sanitized_user_login = sanitize_user( $user_email );
 				if ( $sanitized_user_login != $user_email ) {
-					$errors->add( 'invalid_email', __( '<strong>ERROR</strong>: Email address is not appropriate as a username, please enter another email address.', 'register-plus-redux' ) );
+					$errors->add( 'invalid_email', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Email address is not appropriate as a username, please enter another email address.', 'register-plus-redux' ) );
 				}
 			}
 			if ( !empty( $sanitized_user_login ) ) {
 				global $wpdb;
 				if ( $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login' AND meta_value = %s;", $sanitized_user_login ) ) ) {
-					$errors->add( 'username_exists', __( '<strong>ERROR</strong>: This username is already registered, please choose another one.', 'register-plus-redux' ) );
+					$errors->add( 'username_exists', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'This username is already registered, please choose another one.', 'register-plus-redux' ) );
 				}
 			}
 			if ( $register_plus_redux->GetReduxOption( 'double_check_email' ) == TRUE ) {
 				if ( empty( $_POST['user_email2'] ) ) {
-					$errors->add( 'empty_email', __( '<strong>ERROR</strong>: Please confirm your e-mail address.', 'register-plus-redux' ) );
+					$errors->add( 'empty_email', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please confirm your e-mail address.', 'register-plus-redux' ) );
 				}
 				elseif ( $_POST['user_email'] != $_POST['user_email2'] ) {
-					$errors->add( 'email_mismatch', __( '<strong>ERROR</strong>: Your e-mail address does not match.', 'register-plus-redux' ) );
+					$errors->add( 'email_mismatch', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Your e-mail address does not match.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'first_name', $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['first_name'] ) ) {
-					$errors->add( 'empty_first_name', __( '<strong>ERROR</strong>: Please enter your first name.', 'register-plus-redux' ) );
+					$errors->add( 'empty_first_name', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter your first name.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'last_name', $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['last_name'] ) ) {
-					$errors->add( 'empty_last_name', __( '<strong>ERROR</strong>: Please enter your last name.', 'register-plus-redux' ) );
+					$errors->add( 'empty_last_name', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter your last name.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'user_url', $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['user_url'] ) ) {
-					$errors->add( 'empty_user_url', __( '<strong>ERROR</strong>: Please enter your website URL.', 'register-plus-redux' ) );
+					$errors->add( 'empty_user_url', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter your website URL.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'aim', $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['aim'] ) ) {
-					$errors->add( 'empty_aim', __( '<strong>ERROR</strong>: Please enter your AIM username.', 'register-plus-redux' ) );
+					$errors->add( 'empty_aim', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter your AIM username.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'yahoo' , $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['yahoo'] ) ) {
-					$errors->add( 'empty_yahoo', __( '<strong>ERROR</strong>: Please enter your Yahoo IM username.', 'register-plus-redux' ) );
+					$errors->add( 'empty_yahoo', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter your Yahoo IM username.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'jabber', $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['jabber'] ) ) {
-					$errors->add( 'empty_jabber', __( '<strong>ERROR</strong>: Please enter your Jabber / Google Talk username.', 'register-plus-redux' ) );
+					$errors->add( 'empty_jabber', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter your Jabber / Google Talk username.', 'register-plus-redux' ) );
 				}
 			}
 			if ( is_array( $register_plus_redux->GetReduxOption( 'required_fields' ) ) && in_array( 'about', $register_plus_redux->GetReduxOption( 'required_fields' ) ) ) {
 				if ( empty( $_POST['description'] ) ) {
-					$errors->add( 'empty_description', __( '<strong>ERROR</strong>: Please enter some information about yourself.', 'register-plus-redux' ) );
+					$errors->add( 'empty_description', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter some information about yourself.', 'register-plus-redux' ) );
 				}
 			}
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
@@ -313,26 +328,26 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				$meta_key = $meta_field['meta_key'];
 				if ( !empty( $meta_field['show_on_registration'] ) && !empty( $meta_field['require_on_registration'] ) && empty( $_POST[$meta_key] ) ) {
-					$errors->add( 'empty_' . $meta_key, sprintf( __( '<strong>ERROR</strong>: Please enter a value for %s.', 'register-plus-redux' ), $meta_field['label'] ) );
+					$errors->add( 'empty_' . $meta_key, sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter a value for %s.', 'register-plus-redux' ), $meta_field['label'] ) );
 				}
 				if ( !empty( $meta_field['show_on_registration'] ) && ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $_POST[$meta_key] ) ) {
-					$errors->add( 'invalid_' . $meta_key, sprintf( __( '<strong>ERROR</strong>: Please enter new value for %s, value specified is not in the correct format.', 'register-plus-redux' ), $meta_field['label'] ) );
+					$errors->add( 'invalid_' . $meta_key, sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter new value for %s, value specified is not in the correct format.', 'register-plus-redux' ), $meta_field['label'] ) );
 				}
 			}
 			if ( $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE ) {
 				if ( empty( $_POST['pass1'] ) && $register_plus_redux->GetReduxOption( 'disable_password_confirmation' ) == FALSE ) {
-					$errors->add( 'empty_password', __( '<strong>ERROR</strong>: Please enter a password.', 'register-plus-redux' ) );
+					$errors->add( 'empty_password', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter a password.', 'register-plus-redux' ) );
 				}
 				elseif ( strlen( $_POST['pass1'] ) < absint( $register_plus_redux->GetReduxOption( 'min_password_length' ) ) ) {
-					$errors->add( 'password_length', sprintf( __( '<strong>ERROR</strong>: Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $register_plus_redux->GetReduxOption( 'min_password_length' ) ) ) );
+					$errors->add( 'password_length', sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $register_plus_redux->GetReduxOption( 'min_password_length' ) ) ) );
 				}
 				elseif ( $register_plus_redux->GetReduxOption( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
-					$errors->add( 'password_mismatch', __( '<strong>ERROR</strong>: Your password does not match.', 'register-plus-redux' ) );
+					$errors->add( 'password_mismatch', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Your password does not match.', 'register-plus-redux' ) );
 				}
 			}
 			if ( $register_plus_redux->GetReduxOption( 'enable_invitation_code' ) == TRUE ) {
 				if ( empty( $_POST['invitation_code'] ) && $register_plus_redux->GetReduxOption( 'require_invitation_code' ) == TRUE ) {
-					$errors->add( 'empty_invitation_code', __( '<strong>ERROR</strong>: Please enter an invitation code.', 'register-plus-redux' ) );
+					$errors->add( 'empty_invitation_code', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter an invitation code.', 'register-plus-redux' ) );
 				}
 				elseif ( !empty( $_POST['invitation_code'] ) ) {
 					$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
@@ -343,7 +358,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							$invitation_code_bank[$index] = strtolower( $invitation_code );
 					}
 					if ( is_array( $invitation_code_bank ) && !in_array( $_POST['invitation_code'], $invitation_code_bank ) ) {
-						$errors->add( 'invitation_code_mismatch', __( '<strong>ERROR</strong>: That invitation code is invalid.', 'register-plus-redux' ) );
+						$errors->add( 'invitation_code_mismatch', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'That invitation code is invalid.', 'register-plus-redux' ) );
 					}
 					else {
 						// reverts lowercase key to stored case
@@ -353,7 +368,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 						if ( $register_plus_redux->GetReduxOption( 'invitation_code_unique' ) == TRUE ) {
 							global $wpdb;
 							if ( $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'invitation_code' AND meta_value = %s;", $_POST['invitation_code'] ) ) ) {
-								$errors->add( 'invitation_code_exists', __( '<strong>ERROR</strong>: This invitation code is already in use, please enter a unique invitation code.', 'register-plus-redux' ) );
+								$errors->add( 'invitation_code_exists', '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'This invitation code is already in use, please enter a unique invitation code.', 'register-plus-redux' ) );
 							}
 						}
 					}
@@ -361,17 +376,17 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 			if ( $register_plus_redux->GetReduxOption( 'show_disclaimer' ) == TRUE && $register_plus_redux->GetReduxOption( 'require_disclaimer_agree' ) == TRUE ) {
 				if ( empty( $_POST['accept_disclaimer'] ) ) {
-					$errors->add( 'accept_disclaimer', sprintf( __( '<strong>ERROR</strong>: Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->GetReduxOption( 'message_disclaimer_title' ) ) ) . '.' );
+					$errors->add( 'accept_disclaimer', sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->GetReduxOption( 'message_disclaimer_title' ) ) ) . '.' );
 				}
 			}
 			if ( $register_plus_redux->GetReduxOption( 'show_license' ) == TRUE && $register_plus_redux->GetReduxOption( 'require_license_agree' ) == TRUE ) {
 				if ( empty( $_POST['accept_license'] ) ) {
-					$errors->add( 'accept_license', sprintf( __( '<strong>ERROR</strong>: Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->GetReduxOption( 'message_license_title' ) ) ) . '.' );
+					$errors->add( 'accept_license', sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->GetReduxOption( 'message_license_title' ) ) ) . '.' );
 				}
 			}
 			if ( $register_plus_redux->GetReduxOption( 'show_privacy_policy' ) == TRUE && $register_plus_redux->GetReduxOption( 'require_privacy_policy_agree' ) == TRUE ) {
 				if ( empty( $_POST['accept_privacy_policy'] ) ) {
-					$errors->add( 'accept_privacy_policy' , sprintf( __( '<strong>ERROR</strong>: Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->GetReduxOption( 'message_privacy_policy_title' ) ) ) . '.' );
+					$errors->add( 'accept_privacy_policy' , sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->GetReduxOption( 'message_privacy_policy_title' ) ) ) . '.' );
 				}
 			}
 			return $errors;
