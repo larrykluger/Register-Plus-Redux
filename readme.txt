@@ -257,7 +257,7 @@ October 5, 2010 by radiok
 September 30, 2010 by radiok
 
 * Found errant show_about_field
-* Fixed bug with replaceKeywords as reported by Angelo Dicerni <http://radiok.info/blog/the-ethos-of-register-plus-redux/>
+* Fixed bug with replace_keywords as reported by Angelo Dicerni <http://radiok.info/blog/the-ethos-of-register-plus-redux/>
 * Started working on adding localization back in
 
 = 3.6.10 =

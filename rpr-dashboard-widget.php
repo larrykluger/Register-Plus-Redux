@@ -7,7 +7,7 @@ if ( !class_exists( 'RPR_Dashboard_Widget' ) ) {
 
 		function rpr_dashboard_setup() {
 			global $register_plus_redux;
-			if ( $register_plus_redux->GetReduxOption( 'enable_invitation_tracking_widget' ) == TRUE )
+			if ( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) == TRUE )
 				wp_add_dashboard_widget( 'rpr_invitation_tracking_widget', __( 'Invitation Code Tracking', 'register-plus-redux' ), array( $this, 'rpr_invitation_tracking_widget' ) );
 		}
 
