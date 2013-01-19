@@ -9,15 +9,16 @@ Version: 3.9
 Text Domain: register-plus-redux
 */
 
-// TODO: meta key could be changed and ruin lookups
+// TODO: Define some "universal" functions and isolate features into separate php files
+// TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
-// TODO: Define some "universal" functions and isolate features into seperate php files
-// TODO: MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level
 // TODO: Add code to detect whether network activated?  Show admin_notice and/or disable functionality?
-// TODO: Add code to hide username box on user-new.php when username_is_email
-// TODO: Signups table needs an edit view
-// TODO: Wordpress MS uses wpmu_welcome_user_notification moreso then new-user-notification 
+// TODO: Custom messages may not work with Wordpress MS as it uses wpmu_welcome_user_notification not wp_new_user_notification 
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
+
+// TODO: Enhancement- Signups table needs an edit view
+// TODO: Enhancement- MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level
+// TODO: Enhancement- Alter admin pages to match registration/signup
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
@@ -241,7 +242,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$unverified_users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" );
 				if ( !empty( $unverified_users ) ) {
 					$expirationdate = date( 'Ymd', strtotime( '-' . absint( $this->GetReduxOption( 'delete_unverified_users_after' ) ) . ' days' ) );
-					//neccessary for wp_delete_user to function
+					//necessary for wp_delete_user to function
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( $unverified_users as $unverified_user ) {
 						$user_info = get_userdata( $unverified_user->user_id );
@@ -992,7 +993,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				</table>
 				*/ ?>
 				<h3 class="title"><?php _e( 'Autocomplete URL', 'register-plus-redux' ); ?></h3>
-				<p><?php _e( 'You can create a URL to autocomplete specific fields for the user. Additonal fields use the database key. Included below are available keys and an example URL.', 'register-plus-redux' ); ?></p>
+				<p><?php _e( 'You can create a URL to autocomplete specific fields for the user. Additional fields use the database key. Included below are available keys and an example URL.', 'register-plus-redux' ); ?></p>
 				<p><code>user_login user_email first_name last_name user_url aim yahoo jabber description invitation_code<?php foreach ( $redux_usermeta as $index => $meta_field ) echo " ", $meta_field['meta_key']; ?></code></p>
 				<p><code>http://www.radiok.info/wp-login.php?action=register&user_login=radiok&user_email=radiok@radiok.info&first_name=Radio&last_name=K&user_url=www.radiok.info&aim=radioko&invitation_code=1979&middle_name=Billy</code></p>
 				<h3 class="title"><?php _e( 'New User Message Settings', 'register-plus-redux' ); ?></h3>
@@ -1141,7 +1142,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 						<th scope="row"><?php _e( 'Random Password Appears in Messages', 'register-plus-redux' ); ?></th>
 						<td>
 							<label><input type="checkbox" name="filter_random_password" value="1" <?php if ( $this->GetReduxOption( 'filter_random_password' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Filter Random Passwords.', 'register-plus-redux' ); ?></label><br />
-							<?php _e( 'When user set password is enabled, and another plugin is being used to modify outgoing messages, a random password may appear in those messages, regardless of the fact that a user enterered password was specified. This option will filter all password requests and show the user entered password if possible.', 'register-plus-redux' ); ?>
+							<?php _e( 'When user set password is enabled, and another plugin is being used to modify outgoing messages, a random password may appear in those messages, regardless of the fact that a user entered password was specified. This option will filter all password requests and show the user entered password if possible.', 'register-plus-redux' ); ?>
 						</td>
 					</tr>
 				</table>
@@ -1418,7 +1419,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				check_admin_referer( 'delete-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
 					$update = 'delete_users';
-					//neccessary for wp_delete_user to function
+					//necessary for wp_delete_user to function
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( (array) $_REQUEST['users'] as $id ) {
 						$id = (int) $id;
@@ -1720,14 +1721,14 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		function SaveMetaField( $meta_field, $user_id, $value ) {
 			// convert array to string
 			if ( is_array( $value ) && count( $value ) ) $value = implode( ',', $value );
-			// santize url
+			// sanitize url
 			if ( $meta_field['escape_url'] == TRUE ) {
 				$value = esc_url_raw( $value );
 				$value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $value ) ? $value : 'http://' . $value;
 			}
 			
 			$valid_value = TRUE;
-			// poor man's way to ensure required fields aren't blanked out, really should have a seperate config per field
+			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
 			if ( !empty( $meta_field['require_on_registration'] ) && empty( $value ) ) $valid_value = FALSE;
 			// check text field against regex if specified
 			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $value ) ) $valid_value = FALSE;
