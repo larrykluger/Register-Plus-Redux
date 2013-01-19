@@ -17,6 +17,7 @@ Text Domain: register-plus-redux
 // TODO: Add code to hide username box on user-new.php when username_is_email
 // TODO: Signups table needs an edit view
 // TODO: Wordpress MS uses wpmu_welcome_user_notification moreso then new-user-notification 
+// TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {

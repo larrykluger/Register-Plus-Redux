@@ -7,7 +7,6 @@ if ( function_exists( 'wp_new_user_notification' ) ) {
 // Called after admin creates user from wp-admin/user-new.php
 // Called after admin creates new site, which also creates new user from wp-admin/network/edit.php (MS)
 // Called after admin creates user from wp-admin/network/edit.php (MS)
-// TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 if ( !function_exists( 'wp_new_user_notification' ) ) {
 	function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {
 		global $pagenow;
