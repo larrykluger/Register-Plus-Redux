@@ -9,6 +9,9 @@ Version: 3.9
 Text Domain: register-plus-redux
 */
 
+// NOTE: Debug, no more echoing
+// trigger_error( sprintf( __( 'Register Plus Redux DEBUG: rpr_save_registration_fields($user_id=%s) from %s', 'register-plus-redux' ), $user_id, $pagenow ) ); 
+
 // TODO: Define some "universal" functions and isolate features into separate php files
 // TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
@@ -19,6 +22,7 @@ Text Domain: register-plus-redux
 // TODO: Enhancement- Signups table needs an edit view
 // TODO: Enhancement- MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level
 // TODO: Enhancement- Alter admin pages to match registration/signup
+// TODO: Enhancement- Widget is lame/near worthless
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
@@ -1647,7 +1651,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		//wp-activate.php calls this page when activating user
 		function rpr_save_registration_fields( $user_id ) {
 			global $pagenow;
-			if ( $pagenow != 'wp-activate.php' ) echo "rpr_save_registration_fields:$pagenow<br />";
+			trigger_error( sprintf( __( 'Register Plus Redux DEBUG: rpr_save_registration_fields($user_id=%s) from %s', 'register-plus-redux' ), $user_id, $pagenow ) ); 
 			//deal with signup fields in RPR_Activate::rpr_restore_signup_fields
 			if ( $pagenow == 'wp-activate.php' ) return;
 

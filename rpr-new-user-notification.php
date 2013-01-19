@@ -12,6 +12,7 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 		global $pagenow;
 		global $register_plus_redux;
 
+		trigger_error( sprintf( __( 'Register Plus Redux DEBUG: wp_new_user_notification($user_id=%s, $plaintext_pass=%s) from %s', 'register-plus-redux' ), $user_id, $plaintext_pass, $pagenow ) ); 
 		if ( $register_plus_redux->GetReduxOption( 'user_set_password' ) == TRUE && !empty( $_POST['pass1'] ) )
 			$plaintext_pass = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
 		if ( $pagenow == 'user-new.php' && !empty( $_POST['pass1'] ) )
