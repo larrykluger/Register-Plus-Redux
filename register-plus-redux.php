@@ -12,7 +12,6 @@ Text Domain: register-plus-redux
 // NOTE: Debug, no more echoing
 // trigger_error( sprintf( __( 'Register Plus Redux DEBUG: function($parameter=%s) from %s', 'register-plus-redux' ), $value, $pagenow ) ); 
 
-// TODO: Define some "universal" functions and isolate features into separate php files
 // TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
 // TODO: Add code to detect whether network activated?  Show admin_notice and/or disable functionality?

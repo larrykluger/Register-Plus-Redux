@@ -1,6 +1,6 @@
 <?php
 if ( !class_exists( 'RPR_Dashboard_Widget' ) ) {
-	class RPR_Admin {
+	class RPR_Dashboard_Widget {
 		function __construct() {
 			add_action( 'wp_dashboard_setup', array( $this, 'rpr_dashboard_setup' ) );
 		}
