@@ -644,24 +644,10 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			//TODO Hide the detault message, replace with a div containing message_verify_user_email
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE ) {
-				//use code from rpr_after_signup_form to alter html
 				?>
-				<!--[if (lte IE 8)]>
 				<script type="text/javascript">
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[5]);
-				document.getElementById("setupform").childNodes[5].style.display = "none";
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
+				document.getElementById("content").innerHTML = "<?php $register_plus_redux->rpr_get_option( 'message_verify_user_email' ?>";
 				</script>
-				<![endif]-->
-				<!--[if (gt IE 8)|!(IE)]><!-->
-				<script type="text/javascript">
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
-				document.getElementById("setupform").childNodes[6].style.display = "none";
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[7]);
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[7]);
-				</script>
-				<!--<![endif]-->
 				<?php
 			}
 		}
