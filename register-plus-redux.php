@@ -19,7 +19,6 @@ Text Domain: register-plus-redux
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 
 // TODO: Enhancement- Create rpr-signups table and mirror wpms
-// TODO: Enhancement- Create rpr-signups table and mirror wpms
 // TODO: Enhancement- Signups table needs an edit view
 // TODO: Enhancement- MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level
 // TODO: Enhancement- Alter admin pages to match registration/signup
@@ -392,6 +391,11 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return $text;
 		}
 
+		function rpr_is_network_activated() {
+			if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			return is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' );
+		}
+
 		function send_verification_mail( $user_id, $verification_code ) {
 			$user_info = get_userdata( $user_id );
 			$subject = $this->default_options( 'verification_message_subject' );
@@ -558,9 +562,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) $do_include = TRUE;
-	if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-	if ( is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' ) ) $do_include = FALSE;
-	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
+	if ( $do_include && is_multisite() && rpr_is_network_activated() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 
 	//NOTE: Requires rpr-admin.php for rpr_new_user_notification_warning make
 	$do_include = FALSE;

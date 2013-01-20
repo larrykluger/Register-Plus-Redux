@@ -5,8 +5,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			global $wp_version;
 			if ( $wp_version < 3.2 )
 				add_action( 'admin_notices', array( $this, 'rpr_version_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
-			if ( is_multisite() ) if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-			if ( is_multisite() && is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' ) )
+			if ( is_multisite() && !rpr_is_network_activated() )
 				add_action( 'admin_notices', array( $this, 'rpr_network_activate_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
 
 			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
