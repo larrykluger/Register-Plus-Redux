@@ -89,7 +89,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php if ( $register_plus_redux->rpr_get_option( 'custom_logo_url' ) ) { ?>
 								<br /><img src="<?php echo esc_url( $register_plus_redux->rpr_get_option( 'custom_logo_url' ) ); ?>" /><br />
 								<?php if ( ini_get( 'allow_url_fopen' ) ) list( $custom_logo_width, $custom_logo_height ) = getimagesize( esc_url( $register_plus_redux->rpr_get_option( 'custom_logo_url' ) ) ); ?>
-								<?php if ( ini_get( 'allow_url_fopen' ) ) echo $custom_logo_width, "x", $custom_logo_height, "<br />\n"; ?>
+								<?php if ( ini_get( 'allow_url_fopen' ) ) echo $custom_logo_width, 'x', $custom_logo_height, '<br />', "\n"; ?>
 								<label><input type="checkbox" name="remove_logo" value="1" />&nbsp;<?php _e( 'Remove Logo', 'register-plus-redux' ); ?></label><br />
 								<?php _e( 'You must Save Changes to remove logo.', 'register-plus-redux' ); ?>
 							<?php } ?>
@@ -271,8 +271,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 										echo '><input type="text" name="invitation_code_bank[]" value="', esc_attr( $invitation_code_bank[$x] ) , '" />&nbsp;<img src="', plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove Code', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Code', 'register-plus-redux' ), '" class="removeInvitationCode" style="cursor: pointer;" /></div>';
 									}
 									if ( $size > 5 )
-										echo "<div id=\"showHiddenInvitationCodes\" style=\"cursor: pointer;\">", sprintf( _n( 'Show %d hidden invitation code', 'Show %d hidden invitation codes', ( $size - 5 ), 'register-plus-redux' ), ( $size - 5 ) ), "</div>";
-										//echo "<div id=\"showHiddenInvitationCodes\" style=\"cursor: pointer;\">", sprintf( __( 'Show %d hidden invitation codes', 'register-plus-redux' ), ( $size - 5 ) ), "</div>";
+										echo '<div id="showHiddenInvitationCodes" style="cursor: pointer;">', sprintf( _n( 'Show %d hidden invitation code', 'Show %d hidden invitation codes', ( $size - 5 ), 'register-plus-redux' ), ( $size - 5 ) ), '</div>';
+										//echo '<div id="showHiddenInvitationCodes" style="cursor: pointer;">', sprintf( __( 'Show %d hidden invitation codes', 'register-plus-redux' ), ( $size - 5 ) ), '</div>';
 								?>
 								</div>
 								<img src="<?php echo plugins_url( 'images\plus-circle.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Add Code', 'register-plus-redux' ) ?>" title="<?php esc_attr_e( 'Add Code', 'register-plus-redux' ) ?>" id="addInvitationCode" style="cursor: pointer;" />&nbsp;<?php _e( 'Add a new invitation code', 'register-plus-redux' ) ?><br />
@@ -409,40 +409,40 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 	
 							echo "\n<table>";
 
-							echo "\n<tr class=\"label\"><td><img src=\"", plugins_url( 'images\arrow-move.png', __FILE__ ), "\" alt=\"", esc_attr__( 'Reorder', 'register-plus-redux' ), "\" title=\"", esc_attr__( 'Drag to Reorder', 'register-plus-redux' ), "\" class=\"sortHandle\" style=\"cursor: move;\" />&nbsp;<input type=\"text\" name=\"label[$index]\" value=\"", esc_attr( $meta_field['label'] ), "\" />&nbsp;<span class=\"enableDisableFieldSettings\" style=\"color:#0000FF; cursor: pointer;\">Show Settings</span></td></tr>";
+							echo "\n<tr class=\"label\"><td><img src=\"", plugins_url( 'images\arrow-move.png', __FILE__ ), '" alt="', esc_attr__( 'Reorder', 'register-plus-redux' ), '" title="', esc_attr__( 'Drag to Reorder', 'register-plus-redux' ), '" class="sortHandle" style="cursor: move;" />&nbsp;<input type="text" name="label[', $index, ']" value="', esc_attr( $meta_field['label'] ), '" />&nbsp;<span class="enableDisableFieldSettings" style="color:#0000FF; cursor: pointer;">Show Settings</span></td></tr>';
 							echo "\n<tr class=\"settings\" style=\"display: none;\"><td>";
 	
 							echo "\n<table>";
 
-							echo "\n<tr><td>", __( 'Display', 'register-plus-redux' ), "</td>";
+							echo "\n<tr><td>", __( 'Display', 'register-plus-redux' ), '</td>';
 							echo "\n<td><select name=\"display[$index]\" class=\"enableDisableOptions\" style=\"width: 100%;\">";
-							echo "\n<option value=\"textbox\""; if ( $meta_field['display'] == 'textbox' ) echo " selected=\"selected\""; echo ">", __( 'Textbox Field', 'register-plus-redux' ), "</option>";
-							echo "\n<option value=\"select\""; if ( $meta_field['display'] == 'select' ) echo " selected=\"selected\""; echo ">", __( 'Select Field', 'register-plus-redux' ), "</option>";
-							echo "\n<option value=\"checkbox\""; if ( $meta_field['display'] == 'checkbox' ) echo " selected=\"selected\""; echo ">", __( 'Checkbox Fields', 'register-plus-redux' ), "</option>";
-							echo "\n<option value=\"radio\""; if ( $meta_field['display'] == 'radio' ) echo " selected=\"selected\""; echo ">", __( 'Radio Fields', 'register-plus-redux' ), "</option>";
-							echo "\n<option value=\"textarea\""; if ( $meta_field['display'] == 'textarea' ) echo " selected=\"selected\""; echo ">", __( 'Text Area', 'register-plus-redux' ), "</option>";
-							echo "\n<option value=\"hidden\""; if ( $meta_field['display'] == 'hidden' ) echo " selected=\"selected\""; echo ">", __( 'Hidden Field', 'register-plus-redux' ), "</option>";
-							echo "\n<option value=\"text\""; if ( $meta_field['display'] == 'text' ) echo " selected=\"selected\""; echo ">", __( 'Static Text', 'register-plus-redux' ), "</option>";
+							echo "\n<option value=\"textbox\""; if ( $meta_field['display'] == 'textbox' ) echo ' selected="selected"'; echo '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
+							echo "\n<option value=\"select\""; if ( $meta_field['display'] == 'select' ) echo ' selected="selected"'; echo '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
+							echo "\n<option value=\"checkbox\""; if ( $meta_field['display'] == 'checkbox' ) echo ' selected="selected"'; echo '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
+							echo "\n<option value=\"radio\""; if ( $meta_field['display'] == 'radio' ) echo ' selected="selected"'; echo '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
+							echo "\n<option value=\"textarea\""; if ( $meta_field['display'] == 'textarea' ) echo ' selected="selected"'; echo '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
+							echo "\n<option value=\"hidden\""; if ( $meta_field['display'] == 'hidden' ) echo ' selected="selected"'; echo '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
+							echo "\n<option value=\"text\""; if ( $meta_field['display'] == 'text' ) echo ' selected="selected"'; echo '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
 							echo "\n</select></td></tr>";
 	
-							echo "\n<tr><td>", __( 'Options', 'register-plus-redux' ), "</td>";
-							echo "\n<td><input type=\"text\" name=\"options[$index]\" value=\"", esc_attr( $meta_field['options'] ), "\""; if ( $meta_field['display'] != 'textbox' && $meta_field['display'] != 'select' && $meta_field['display'] != 'checkbox' && $meta_field['display'] != 'radio' ) echo " readonly=\"readonly\""; echo " style=\"width: 100%;\" /></td></tr>";
+							echo "\n<tr><td>", __( 'Options', 'register-plus-redux' ), '</td>';
+							echo "\n<td><input type=\"text\" name=\"options[$index]\" value=\"", esc_attr( $meta_field['options'] ), '"'; if ( $meta_field['display'] != 'textbox' && $meta_field['display'] != 'select' && $meta_field['display'] != 'checkbox' && $meta_field['display'] != 'radio' ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Database Key', 'register-plus-redux' ), "</td>";
-							echo "\n<td><input type=\"text\" name=\"meta_key[$index]\" value=\"", esc_attr( $meta_field['meta_key'] ), "\" style=\"width: 100%;\" /></td></tr>";
+							echo "\n<tr><td>", __( 'Database Key', 'register-plus-redux' ), '</td>';
+							echo "\n<td><input type=\"text\" name=\"meta_key[$index]\" value=\"", esc_attr( $meta_field['meta_key'] ), '" style="width: 100%;" /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Show on Profile', 'register-plus-redux' ), "</td>";
-							echo "\n<td><input type=\"checkbox\" name=\"show_on_profile[$index]\" value=\"1\""; if ( !empty( $meta_field['show_on_profile'] ) ) echo " checked=\"checked\""; echo " /></td></tr>";
+							echo "\n<tr><td>", __( 'Show on Profile', 'register-plus-redux' ), '</td>';
+							echo "\n<td><input type=\"checkbox\" name=\"show_on_profile[$index]\" value=\"1\""; if ( !empty( $meta_field['show_on_profile'] ) ) echo ' checked="checked"'; echo ' /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Show on Registration', 'register-plus-redux' ), "</td>";
-							echo "\n<td><input type=\"checkbox\" name=\"show_on_registration[$index]\" value=\"1\""; if ( !empty( $meta_field['show_on_registration'] ) ) echo " checked=\"checked\""; echo " class=\"modifyNextCellInput\" /></td></tr>";
+							echo "\n<tr><td>", __( 'Show on Registration', 'register-plus-redux' ), '</td>';
+							echo "\n<td><input type=\"checkbox\" name=\"show_on_registration[$index]\" value=\"1\""; if ( !empty( $meta_field['show_on_registration'] ) ) echo ' checked="checked"'; echo ' class="modifyNextCellInput" /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Required Field', 'register-plus-redux' ), "</td>";
-							echo "\n<td><input type=\"checkbox\" name=\"require_on_registration[$index]\" value=\"1\""; if ( !empty( $meta_field['require_on_registration'] ) ) echo " checked=\"checked\""; if ( empty( $meta_field['show_on_registration'] ) ) echo " disabled=\"disabled\""; echo " /></td></tr>";
+							echo "\n<tr><td>", __( 'Required Field', 'register-plus-redux' ), '</td>';
+							echo "\n<td><input type=\"checkbox\" name=\"require_on_registration[$index]\" value=\"1\""; if ( !empty( $meta_field['require_on_registration'] ) ) echo ' checked="checked"'; if ( empty( $meta_field['show_on_registration'] ) ) echo ' disabled="disabled"'; echo ' /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Actions', 'register-plus-redux' ), "</td>";
-							echo "\n<td><img src=\"", plugins_url( 'images\question.png', __FILE__ ), "\" alt=\"", esc_attr__( 'Help', 'register-plus-redux' ), "\" title=\"", esc_attr__( 'No help available', 'register-plus-redux' ), "\" class=\"helpButton\" style=\"cursor: pointer;\" />";
-							echo "\n<img src=\"", plugins_url( 'images\minus-circle.png', __FILE__ ), "\" alt=\"", esc_attr__( 'Remove', 'register-plus-redux' ), "\" title=\"", esc_attr__( 'Remove Field', 'register-plus-redux' ), "\" class=\"removeButton\" style=\"cursor: pointer;\" /></td></tr>";
+							echo "\n<tr><td>", __( 'Actions', 'register-plus-redux' ), '</td>';
+							echo "\n<td><img src=\"", plugins_url( 'images\question.png', __FILE__ ), '" alt="', esc_attr__( 'Help', 'register-plus-redux' ), '" title="', esc_attr__( 'No help available', 'register-plus-redux' ), '" class="helpButton" style="cursor: pointer;" />';
+							echo "\n<img src=\"", plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Field', 'register-plus-redux' ), '" class="removeButton" style="cursor: pointer;" /></td></tr>';
 							echo "\n</table>";
 	
 							echo "\n</td></tr>";
@@ -494,7 +494,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				*/ ?>
 				<h3 class="title"><?php _e( 'Autocomplete URL', 'register-plus-redux' ); ?></h3>
 				<p><?php _e( 'You can create a URL to autocomplete specific fields for the user. Additional fields use the database key. Included below are available keys and an example URL.', 'register-plus-redux' ); ?></p>
-				<p><code>user_login user_email first_name last_name user_url aim yahoo jabber description invitation_code<?php foreach ( $redux_usermeta as $index => $meta_field ) echo " ", $meta_field['meta_key']; ?></code></p>
+				<p><code>user_login user_email first_name last_name user_url aim yahoo jabber description invitation_code<?php foreach ( $redux_usermeta as $index => $meta_field ) echo ' ', $meta_field['meta_key']; ?></code></p>
 				<p><code>http://www.radiok.info/wp-login.php?action=register&user_login=radiok&user_email=radiok@radiok.info&first_name=Radio&last_name=K&user_url=www.radiok.info&aim=radioko&invitation_code=1979&middle_name=Billy</code></p>
 				<h3 class="title"><?php _e( 'New User Message Settings', 'register-plus-redux' ); ?></h3>
 				<table class="form-table"> 
@@ -648,7 +648,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				</table>
 				<p class="submit">
 					<input type="submit" class="button-primary" value="<?php esc_attr_e( 'Save Changes', 'register-plus-redux' ); ?>" name="update_settings" />
-					<input type="button" class="button" value="<?php esc_attr_e( 'Preview Registration Page', 'register-plus-redux' ); ?>" name="preview" onclick="window.open('<?php echo wp_login_url(), "?action=register"; ?>');" />
+					<input type="button" class="button" value="<?php esc_attr_e( 'Preview Registration Page', 'register-plus-redux' ); ?>" name="preview" onclick="window.open('<?php echo wp_login_url(), '?action=register'; ?>');" />
 				</p>
 			</form>
 			</div>
@@ -1010,9 +1010,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<div class="alignleft actions">
 						<select name="action">
 							<option value="" selected="selected"><?php _e( 'Bulk Actions', 'register-plus-redux' ); ?></option>
-							<?php if ( current_user_can( 'promote_users' ) ) echo "<option value=\"verify_users\">", __( 'Approve', 'register-plus-redux' ), "</option>\n"; ?>
+							<?php if ( current_user_can( 'promote_users' ) ) echo '<option value="verify_users">', __( 'Approve', 'register-plus-redux' ), '</option>', "\n"; ?>
 							<option value="send_verification_email"><?php _e( 'Send E-mail Verification', 'register-plus-redux' ); ?></option>
-							<?php if ( current_user_can( 'delete_users' ) ) echo "<option value=\"delete_users\">", __( 'Delete', 'register-plus-redux' ), "</option>\n"; ?>
+							<?php if ( current_user_can( 'delete_users' ) ) echo '<option value="delete_users">', __( 'Delete', 'register-plus-redux' ), '</option>', "\n"; ?>
 						</select>
 						<input type="submit" value="<?php esc_attr_e( 'Apply', 'register-plus-redux' ); ?>" name="doaction" id="doaction" class="button-secondary action" />
 
@@ -1043,10 +1043,10 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 								<tr id="user-<?php echo $user_info->ID; ?>"<?php echo $style; ?>>
 									<th scope="row" class="check-column"><input type="checkbox" name="users[]" id="user_<?php echo $user_info->ID; ?>" name="user_<?php echo $user_info->ID; ?>" value="<?php echo $user_info->ID; ?>"></th>
 									<td class="username column-username">
-										<strong><?php if ( current_user_can( 'edit_users' ) ) echo '<a href="', esc_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "user-edit.php?user_id=$user_info->ID" ) ) , '">', $user_info->stored_user_login, '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
+										<strong><?php if ( current_user_can( 'edit_users' ) ) echo '<a href="', esc_url( add_query_arg( array( 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php') ) , '">', $user_info->stored_user_login, '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
 										<div class="row-actions">
-											<?php if ( current_user_can( 'edit_users' ) ) echo '<span class="edit"><a href="', esc_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "user-edit.php?user_id=$user_info->ID" ) ), '">', __( 'Edit', 'register-plus-redux' ), "</a></span>\n"; ?>
-											<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( 'wp_http_referer', urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ), "users.php?action=delete&amp;user=$user_info->ID" ), 'delete-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), "</a></span>\n"; ?>
+											<?php if ( current_user_can( 'edit_users' ) ) echo '<span class="edit"><a href="', esc_url( add_query_arg( array( 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php') ), '">', __( 'Edit', 'register-plus-redux' ), '</a></span>', "\n"; ?>
+											<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'action' => 'delete', 'user' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'), 'delete-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), '</a></span>', "\n"; ?>
 										</div>
 									</td>
 									<td><?php echo $user_info->user_login; ?></td>
@@ -1063,9 +1063,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				</table>
 				<div class="tablenav">
 					<div class="alignleft actions">
-						<?php if ( current_user_can( 'promote_users' ) ) echo '<input type="submit" value="', esc_attr__( 'Approve Selected Users', 'register-plus-redux' ), "\" name=\"verify_users\" class=\"button-secondary action\" />&nbsp;\n"; ?>
+						<?php if ( current_user_can( 'promote_users' ) ) echo '<input type="submit" value="', esc_attr__( 'Approve Selected Users', 'register-plus-redux' ), '" name="verify_users" class="button-secondary action" />', "\n"; ?>
 						<input type="submit" value="<?php esc_attr_e( 'Send E-mail Verification to Selected Users', 'register-plus-redux' ); ?>" name="send_verification_email" class="button-secondary action" />
-						<?php if ( current_user_can( 'delete_users' ) ) echo '&nbsp;<input type="submit" value="', esc_attr__( 'Delete Selected Users', 'register-plus-redux' ), "\" name=\"delete_users\" class=\"button-secondary action\" />\n"; ?>
+						<?php if ( current_user_can( 'delete_users' ) ) echo '&nbsp;<input type="submit" value="', esc_attr__( 'Delete Selected Users', 'register-plus-redux' ), '" name="delete_users" class="button-secondary action" />', "\n"; ?>
 					</div>
 					<br class="clear">
 				</div>
@@ -1146,7 +1146,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				$required_fields_style = wp_kses_split( $required_fields_style, array(), array() );
 				$csstidy->parse( $required_fields_style );
 				$required_fields_style = $csstidy->print->plain();
-				$required_fields_style = str_replace( array( "\n","\r","\t" ), '', $required_fields_style );
+				$required_fields_style = str_replace( array( "\n", "\r", "\t" ), '', $required_fields_style );
 				preg_match( "/^div\s*{(.*)}\s*$/", $required_fields_style, $matches );
 				if ( !empty( $matches[1] ) ) $options['required_fields_style'] = $matches[1];
 			}

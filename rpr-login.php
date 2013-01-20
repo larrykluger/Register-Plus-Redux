@@ -177,7 +177,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							echo "\n<p id=\"", $meta_key, '-p"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '<br /><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5"';
-							if ( $tabindex != 0 ) echo " tabindex=\"", $tabindex++, "\" ";
+							if ( $tabindex != 0 ) echo ' tabindex="', $tabindex++, '"';
 							echo '>', esc_textarea( $value ), '</textarea></label></p>';
 							break;
 						case 'hidden':
@@ -228,10 +228,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$accept_disclaimer = isset( $_POST['accept_disclaimer'] ) ? '1' : '0';
 				if ( isset( $_GET['accept_disclaimer'] ) ) $accept_disclaimer = $_GET['accept_disclaimer'];
 				echo "\n<p id=\"disclaimer-p\">";
-				echo "\n\t<label id=\"disclaimer_title\">", esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), '</label><br />';
-				echo "\n\t<div name=\"disclaimer\" id=\"disclaimer\" style=\"display: inline;\">", nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
+				echo "\n<label id=\"disclaimer_title\">", esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), '</label><br />';
+				echo "\n<div name=\"disclaimer\" id=\"disclaimer\" style=\"display: inline;\">", nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == TRUE ) {
-					echo "\n\t<label id=\"accept_disclaimer-label\" class=\"accept_check\" for=\"accept_disclaimer\"><input type=\"checkbox\" name=\"accept_disclaimer\" id=\"accept_disclaimer\" value=\"1\""; if ( !empty( $accept_disclaimer ) ) echo ' checked="checked" ';
+					echo "\n<label id=\"accept_disclaimer-label\" class=\"accept_check\" for=\"accept_disclaimer\"><input type=\"checkbox\" name=\"accept_disclaimer\" id=\"accept_disclaimer\" value=\"1\""; if ( !empty( $accept_disclaimer ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 					echo '/>&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_agree' ) ), '</label>';
 				}
@@ -241,10 +241,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$accept_license = isset( $_POST['accept_license'] ) ? '1' : '0';
 				if ( isset( $_GET['accept_license'] ) ) $accept_license = $_GET['accept_license'];
 				echo "\n<p id=\"license-p\">";
-				echo "\n\t<label id=\"license_title\">", esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), '</label><br />';
-				echo "\n\t<div name=\"license\" id=\"license\" style=\"display: inline;\">", nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
+				echo "\n<label id=\"license_title\">", esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), '</label><br />';
+				echo "\n<div name=\"license\" id=\"license\" style=\"display: inline;\">", nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_license_agree' ) == TRUE ) {
-					echo "\n\t<label id=\"accept_license-label\" class=\"accept_check\" for=\"accept_license\"><input type=\"checkbox\" name=\"accept_license\" id=\"accept_license\" value=\"1\""; if ( !empty( $accept_license ) ) echo ' checked="checked" ';
+					echo "\n<label id=\"accept_license-label\" class=\"accept_check\" for=\"accept_license\"><input type=\"checkbox\" name=\"accept_license\" id=\"accept_license\" value=\"1\""; if ( !empty( $accept_license ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 					echo '/>&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_license_agree' ) ), '</label>';
 				}
@@ -254,12 +254,12 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$accept_privacy_policy = isset( $_POST['accept_privacy_policy'] ) ? '1' : '0';
 				if ( isset( $_GET['accept_privacy_policy'] ) ) $accept_privacy_policy = $_GET['accept_privacy_policy'];
 				echo "\n<p id=\"privacy_policy-p\">";
-				echo "\n\t<label id=\"privacy_policy_title\">", esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), "</label><br />";
-				echo "\n\t<div name=\"privacy_policy\" id=\"privacy_policy\" style=\"display: inline;\">", nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), "</div>";
+				echo "\n<label id=\"privacy_policy_title\">", esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), '</label><br />';
+				echo "\n<div name=\"privacy_policy\" id=\"privacy_policy\" style=\"display: inline;\">", nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == TRUE ) {
-					echo "\n\t<label id=\"accept_privacy_policy-label\" class=\"accept_check\" for=\"accept_privacy_policy\"><input type=\"checkbox\" name=\"accept_privacy_policy\" id=\"accept_privacy_policy\" value=\"1\""; if ( !empty( $accept_privacy_policy ) ) echo ' checked="checked" ';
+					echo "\n<label id=\"accept_privacy_policy-label\" class=\"accept_check\" for=\"accept_privacy_policy\"><input type=\"checkbox\" name=\"accept_privacy_policy\" id=\"accept_privacy_policy\" value=\"1\""; if ( !empty( $accept_privacy_policy ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
-					echo '/>&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), "</label>";
+					echo '/>&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), '</label>';
 				}
 				echo "\n</p>";
 			}
@@ -539,8 +539,8 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					#login h1 a {
 						background-image: url("<?php echo esc_url( $register_plus_redux->rpr_get_option( 'custom_logo_url' ) ); ?>");
 						margin: 0 0 0 8px;
-						<?php if ( !empty( $width ) ) echo 'width: ', $width, "px;\n"; ?>
-						<?php if ( !empty( $height ) ) echo 'height: ', $height, "px;\n"; ?>
+						<?php if ( !empty( $width ) ) echo 'width: ', $width, 'px;', "\n"; ?>
+						<?php if ( !empty( $height ) ) echo 'height: ', $height, 'px;', "\n"; ?>
 					}
 				</style>
 				<?php
