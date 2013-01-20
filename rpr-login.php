@@ -220,10 +220,12 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 				echo '/></label></p>';
 				echo "\n", '<small id="invitation_code_msg">'
-				if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE )
+				if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) {
 					_e( 'This website is currently closed to public registrations. You will need an invitation code to register.', 'register-plus-redux' );
-				else
+				}
+				else {
 					_e( 'Have an invitation code? Enter it here. (This is not required)', 'register-plus-redux' );
+				}
 				echo '</small>';
 			}
 			if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) {
