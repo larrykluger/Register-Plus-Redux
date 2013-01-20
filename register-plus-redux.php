@@ -29,8 +29,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
 		private $_options;
 		function __construct() {
-			global $wp_version;
-			
 			add_action( 'init', array( $this, 'rpr_i18n_init' ), 10, 1 );
 
 			if ( !is_multisite() ) {
@@ -44,9 +42,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			add_action( 'admin_head-profile.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 			add_action( 'admin_head-user-edit.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 			add_filter( 'random_password', array( $this, 'rpr_filter_random_password' ), 10, 1 ); // Replace random password with user set password
-
-			if ( $wp_version < 3.2 )
-				add_action( 'admin_notices', array( $this, 'rpr_version_warning' ), 10, 1 ); // Runs after the admin menu is printed to the screen. 
 		}
 
 		function rpr_i18n_init() {
@@ -207,16 +202,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				}
 			}
 			return $password;
-		}
-
-		function rpr_version_warning() {
-			global $wp_version;
-			echo "\n<div id=\"register-plus-redux-warning\" class=\"updated fade-ff0000\"><p><strong>", sprintf( __( 'Register Plus Redux requires WordPress 3.2 or greater. You are currently using WordPress %s, please upgrade or deactivate Register Plus Redux.', 'register-plus-redux' ), $wp_version ), '</strong></p></div>';
-		}
-
-		function rpr_new_user_notification_warning() {
-			if ( current_user_can(10) && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) )
-			echo "\n<div id=\"register-plus-redux-warning\" class=\"updated fade-ff0000\"><p><strong>", sprintf( __( 'There is another active plugin that is conflicting with Register Plus Redux. The conflicting plugin is creating its own wp_new_user_notification function, this function is used to alter the messages sent out following the creation of a new user. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wp_new_user_notification-conflicts/' ), '</strong></p></div>';
 		}
 
 		function rpr_update_options( $options = array() ) {
@@ -476,7 +461,9 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		function replace_keywords( $message = '', $user_info = array(), $plaintext_pass = '', $verification_code = '' ) {
 			global $pagenow;
 			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %stored_user_login% %user_password% %verification_code% %verification_url%';
-			// TODO: replace_keywords could be attempting to get_user_meta before it is even written
+			// support renamed keywords for backcompat
+			$message = str_replace( '%verification_link%', '%verification_url%', $message );
+
 			$message = str_replace( '%blogname%', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $message );
 			$message = str_replace( '%site_url%', site_url(), $message );
 			$message = str_replace( '%pagenow%', $pagenow, $message ); //debug keyword
@@ -503,7 +490,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			if ( !empty( $verification_code ) ) {
 				$message = str_replace( '%verification_code%', $verification_code, $message );
-				$message = str_replace( '%verification_link%', wp_login_url() . '?verification_code=' . $verification_code, $message );
 				$message = str_replace( '%verification_url%', wp_login_url() . '?verification_code=' . $verification_code, $message );
 			}
 			return $message;
@@ -557,17 +543,6 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) == TRUE ) $do_include = TRUE;
 	if ( $do_include && is_admin() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-dashboard-widget.php' );
 
-	$do_include = FALSE;
-	if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'custom_user_message' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'custom_admin_message' ) == TRUE ) $do_include = TRUE;
-	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
-
 	//TODO: Determine which features require the following file
 	$do_include = TRUE;
 	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-login.php' );
@@ -586,5 +561,17 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 	if ( is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' ) ) $do_include = FALSE;
 	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
+
+	//NOTE: Requires rpr-admin.php for rpr_new_user_notification_warning make
+	$do_include = FALSE;
+	if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'custom_user_message' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) == TRUE ) $do_include = TRUE;
+	if ( $register_plus_redux->rpr_get_option( 'custom_admin_message' ) == TRUE ) $do_include = TRUE;
+	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
 }
 ?>

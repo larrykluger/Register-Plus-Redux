@@ -2,7 +2,34 @@
 if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 	class RPR_Admin_Menu {
 		function __construct() {
-			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 1 ); // Runs after the basic admin panel menu structure is in place.
+			global $wp_version;
+			if ( $wp_version < 3.6 )
+				add_action( 'admin_notices', array( $this, 'rpr_version_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
+			if ( is_multisite() ) if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			if ( is_multisite() && is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' ) )
+				add_action( 'admin_notices', array( $this, 'rpr_network_activate_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
+
+			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
+		}
+
+		function rpr_version_warning() {
+			global $wp_version;
+			global $pagenow;
+			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
+				echo '\n<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux requires WordPress 3.2 or greater. You are currently using WordPress %s, please upgrade WordPress or deactivate Register Plus Redux.', 'register-plus-redux' ), $wp_version ), '</strong></p></div>';
+		}
+
+		function rpr_network_activate_warning() {
+			//TODO: Write up network activation and edit link here
+			global $pagenow;
+			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
+				echo '\n<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wp_new_user_notification-conflicts/' ), '</strong></p></div>';
+		}
+
+		function rpr_new_user_notification_warning() {
+			global $pagenow;
+			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
+				echo '\n<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'There is another active plugin that is conflicting with Register Plus Redux. The conflicting plugin is creating its own wp_new_user_notification function, this function is used to alter the messages sent out following the creation of a new user. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wp_new_user_notification-conflicts/' ), '</strong></p></div>';
 		}
 
 		function rpr_admin_menu() {

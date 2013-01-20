@@ -1,6 +1,6 @@
 <?php
 if ( function_exists( 'wp_new_user_notification' ) ) {
-	add_action( 'admin_notices', array( $register_plus_redux, 'rpr_new_user_notification_warning' ), 10, 1 );
+	if ( $rpr_admin_menu instanceof RPR_Admin_Menu ) add_action( 'admin_notices', array( $rpr_admin_menu, 'rpr_new_user_notification_warning' ), 10, 0 );
 }
 
 // Called after user completes registration from wp-login.php
