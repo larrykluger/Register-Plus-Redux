@@ -266,7 +266,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 									if ( !is_array( $invitation_code_bank ) ) $invitation_code_bank = array();
 									$size = sizeof( $invitation_code_bank );
 									for ( $x = 0; $x < $size; $x++ ) {
-										echo "\n<div class=\"invitation_code\"";
+										echo "\n", '<div class="invitation_code"';
 										if ( $x > 5 ) echo ' style="display: none;"';
 										echo '><input type="text" name="invitation_code_bank[]" value="', esc_attr( $invitation_code_bank[$x] ) , '" />&nbsp;<img src="', plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove Code', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Code', 'register-plus-redux' ), '" class="removeInvitationCode" style="cursor: pointer;" /></div>';
 									}
@@ -405,50 +405,50 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 						if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 						foreach ( $redux_usermeta as $index => $meta_field ) {
-							echo "\n<tr><td>";
+							echo "\n", '<tr><td>';
 	
-							echo "\n<table>";
+							echo "\n", '<table>';
 
-							echo "\n<tr class=\"label\"><td><img src=\"", plugins_url( 'images\arrow-move.png', __FILE__ ), '" alt="', esc_attr__( 'Reorder', 'register-plus-redux' ), '" title="', esc_attr__( 'Drag to Reorder', 'register-plus-redux' ), '" class="sortHandle" style="cursor: move;" />&nbsp;<input type="text" name="label[', $index, ']" value="', esc_attr( $meta_field['label'] ), '" />&nbsp;<span class="enableDisableFieldSettings" style="color:#0000FF; cursor: pointer;">Show Settings</span></td></tr>';
-							echo "\n<tr class=\"settings\" style=\"display: none;\"><td>";
+							echo "\n", '<tr class="label"><td><img src="', plugins_url( 'images\arrow-move.png', __FILE__ ), '" alt="', esc_attr__( 'Reorder', 'register-plus-redux' ), '" title="', esc_attr__( 'Drag to Reorder', 'register-plus-redux' ), '" class="sortHandle" style="cursor: move;" />&nbsp;<input type="text" name="label[', $index, ']" value="', esc_attr( $meta_field['label'] ), '" />&nbsp;<span class="enableDisableFieldSettings" style="color:#0000FF; cursor: pointer;">Show Settings</span></td></tr>';
+							echo "\n", '<tr class="settings" style="display: none;"><td>';
 	
-							echo "\n<table>";
+							echo "\n", '<table>';
 
-							echo "\n<tr><td>", __( 'Display', 'register-plus-redux' ), '</td>';
-							echo "\n<td><select name=\"display[$index]\" class=\"enableDisableOptions\" style=\"width: 100%;\">";
-							echo "\n<option value=\"textbox\""; if ( $meta_field['display'] == 'textbox' ) echo ' selected="selected"'; echo '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
-							echo "\n<option value=\"select\""; if ( $meta_field['display'] == 'select' ) echo ' selected="selected"'; echo '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
-							echo "\n<option value=\"checkbox\""; if ( $meta_field['display'] == 'checkbox' ) echo ' selected="selected"'; echo '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
-							echo "\n<option value=\"radio\""; if ( $meta_field['display'] == 'radio' ) echo ' selected="selected"'; echo '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
-							echo "\n<option value=\"textarea\""; if ( $meta_field['display'] == 'textarea' ) echo ' selected="selected"'; echo '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
-							echo "\n<option value=\"hidden\""; if ( $meta_field['display'] == 'hidden' ) echo ' selected="selected"'; echo '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
-							echo "\n<option value=\"text\""; if ( $meta_field['display'] == 'text' ) echo ' selected="selected"'; echo '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
-							echo "\n</select></td></tr>";
+							echo "\n", '<tr><td>', __( 'Display', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><select name="display[', $index, ']" class="enableDisableOptions" style="width: 100%;">';
+							echo "\n", '<option value="textbox"'; if ( $meta_field['display'] == 'textbox' ) echo ' selected="selected"'; echo '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="select"'; if ( $meta_field['display'] == 'select' ) echo ' selected="selected"'; echo '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="checkbox"'; if ( $meta_field['display'] == 'checkbox' ) echo ' selected="selected"'; echo '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="radio"'; if ( $meta_field['display'] == 'radio' ) echo ' selected="selected"'; echo '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="textarea"'; if ( $meta_field['display'] == 'textarea' ) echo ' selected="selected"'; echo '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="hidden"'; if ( $meta_field['display'] == 'hidden' ) echo ' selected="selected"'; echo '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="text"'; if ( $meta_field['display'] == 'text' ) echo ' selected="selected"'; echo '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
+							echo "\n", '</select></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Options', 'register-plus-redux' ), '</td>';
-							echo "\n<td><input type=\"text\" name=\"options[$index]\" value=\"", esc_attr( $meta_field['options'] ), '"'; if ( $meta_field['display'] != 'textbox' && $meta_field['display'] != 'select' && $meta_field['display'] != 'checkbox' && $meta_field['display'] != 'radio' ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
+							echo "\n", '<tr><td>', __( 'Options', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><input type="text" name="options[', $index, ']" value="', esc_attr( $meta_field['options'] ), '"'; if ( $meta_field['display'] != 'textbox' && $meta_field['display'] != 'select' && $meta_field['display'] != 'checkbox' && $meta_field['display'] != 'radio' ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Database Key', 'register-plus-redux' ), '</td>';
-							echo "\n<td><input type=\"text\" name=\"meta_key[$index]\" value=\"", esc_attr( $meta_field['meta_key'] ), '" style="width: 100%;" /></td></tr>';
+							echo "\n", '<tr><td>', __( 'Database Key', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><input type="text" name="meta_key[', $index, ']" value="', esc_attr( $meta_field['meta_key'] ), '" style="width: 100%;" /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Show on Profile', 'register-plus-redux' ), '</td>';
-							echo "\n<td><input type=\"checkbox\" name=\"show_on_profile[$index]\" value=\"1\""; if ( !empty( $meta_field['show_on_profile'] ) ) echo ' checked="checked"'; echo ' /></td></tr>';
+							echo "\n", '<tr><td>', __( 'Show on Profile', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><input type="checkbox" name="show_on_profile[', $index, ']" value="1"'; if ( !empty( $meta_field['show_on_profile'] ) ) echo ' checked="checked"'; echo ' /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Show on Registration', 'register-plus-redux' ), '</td>';
-							echo "\n<td><input type=\"checkbox\" name=\"show_on_registration[$index]\" value=\"1\""; if ( !empty( $meta_field['show_on_registration'] ) ) echo ' checked="checked"'; echo ' class="modifyNextCellInput" /></td></tr>';
+							echo "\n", '<tr><td>', __( 'Show on Registration', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><input type="checkbox" name="show_on_registration[', $index, ']" value="1"'; if ( !empty( $meta_field['show_on_registration'] ) ) echo ' checked="checked"'; echo ' class="modifyNextCellInput" /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Required Field', 'register-plus-redux' ), '</td>';
-							echo "\n<td><input type=\"checkbox\" name=\"require_on_registration[$index]\" value=\"1\""; if ( !empty( $meta_field['require_on_registration'] ) ) echo ' checked="checked"'; if ( empty( $meta_field['show_on_registration'] ) ) echo ' disabled="disabled"'; echo ' /></td></tr>';
+							echo "\n", '<tr><td>', __( 'Required Field', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><input type="checkbox" name="require_on_registration[', $index, ']" value="1"'; if ( !empty( $meta_field['require_on_registration'] ) ) echo ' checked="checked"'; if ( empty( $meta_field['show_on_registration'] ) ) echo ' disabled="disabled"'; echo ' /></td></tr>';
 	
-							echo "\n<tr><td>", __( 'Actions', 'register-plus-redux' ), '</td>';
-							echo "\n<td><img src=\"", plugins_url( 'images\question.png', __FILE__ ), '" alt="', esc_attr__( 'Help', 'register-plus-redux' ), '" title="', esc_attr__( 'No help available', 'register-plus-redux' ), '" class="helpButton" style="cursor: pointer;" />';
-							echo "\n<img src=\"", plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Field', 'register-plus-redux' ), '" class="removeButton" style="cursor: pointer;" /></td></tr>';
-							echo "\n</table>";
+							echo "\n", '<tr><td>', __( 'Actions', 'register-plus-redux' ), '</td>';
+							echo "\n", '<td><img src="', plugins_url( 'images\question.png', __FILE__ ), '" alt="', esc_attr__( 'Help', 'register-plus-redux' ), '" title="', esc_attr__( 'No help available', 'register-plus-redux' ), '" class="helpButton" style="cursor: pointer;" />';
+							echo "\n", '<img src="', plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Field', 'register-plus-redux' ), '" class="removeButton" style="cursor: pointer;" /></td></tr>';
+							echo "\n", '</table>';
 	
-							echo "\n</td></tr>";
-							echo "\n</table>";
+							echo "\n", '</td></tr>';
+							echo "\n", '</table>';
 	
-							echo "\n</td></tr>";
+							echo "\n", '</td></tr>';
 						}
 						?>
 					</tbody>
