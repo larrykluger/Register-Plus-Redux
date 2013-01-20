@@ -14,7 +14,7 @@ Text Domain: register-plus-redux
 
 // TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
-// TODO: Add code to detect whether network activated?  Show admin_notice and/or disable functionality?
+// TODO: Disable functionality in wp-signup and wp-admin around rpr_is_network_activated
 // TODO: Custom messages may not work with Wordpress MS as it uses wpmu_welcome_user_notification not wp_new_user_notification 
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 
@@ -67,76 +67,76 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				echo '<h3>', __( 'Additional Information', 'register-plus-redux' ), '</h3>';
 				echo '<table class="form-table">';
 				if ( $this->rpr_get_option( 'enable_invitation_code' ) == TRUE ) {
-					echo "\n<tr>";
-					echo "\n<th><label for=\"invitation_code\">", __( 'Invitation Code', 'register-plus-redux' ), '</label></th>';
-					echo "\n<td><input type=\"text\" name=\"invitation_code\" id=\"invitation_code\" value=\"", esc_attr( $profileuser->invitation_code ), '" class="regular-text" ';
+					echo "\n", '<tr>';
+					echo "\n", '<th><label for="invitation_code">', __( 'Invitation Code', 'register-plus-redux' ), '</label></th>';
+					echo "\n", '<td><input type="text" name="invitation_code" id="invitation_code" value="', esc_attr( $profileuser->invitation_code ), '" class="regular-text" ';
 					if ( !current_user_can( 'edit_users' ) ) echo 'readonly="readonly" ';
 					echo '/></td>';
-					echo "\n</tr>";
+					echo "\n", '</tr>';
 				}
 				foreach ( $redux_usermeta as $index => $meta_field ) {
 					if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
 						$meta_key = esc_attr( $meta_field['meta_key'] );
 						$value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
-						echo "\n<tr>";
-						echo "\n<th><label for=\"", $meta_key, '">', esc_html( $meta_field['label'] );
+						echo "\n", '<tr>';
+						echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
 						if ( empty( $meta_field['show_on_profile'] ) ) echo ' <span class="description">(hidden)</span>';
 						if ( !empty( $meta_field['require_on_registration'] ) ) echo ' <span class="description">(required)</span>';
 						echo '</label></th>';
 						switch ( $meta_field['display'] ) {
 							case 'textbox':
-								echo "\n<td><input type=\"text\" name=\"", $meta_key, '" id="', $meta_key, '" ';
+								echo "\n", '<td><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
 								if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" ';
 								echo 'value="', esc_attr( $value ), '" class="regular-text" /></td>';
 								break;
 							case 'select':
-								echo "\n<td>";
-								echo "\n<select name=\"", $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
+								echo "\n", '<td>';
+								echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
 								$field_options = explode( ',', $meta_field['options'] );
 								foreach ( $field_options as $field_option ) {
 									$option = esc_attr( $this->clean_text( $field_option ) );
-									echo "n<option value=\"", $option, '"';
+									echo "\n", '<option value="', $option, '"';
 									if ( $value == $option ) echo ' selected="selected"';
 									echo '>', esc_html( $field_option ), '</option>';
 								}
-								echo "\n</select>";
-								echo "\n</td>";
+								echo "\n", '</select>';
+								echo "\n", '</td>';
 								break;
 							case 'checkbox':
-								echo "\n<td>";
+								echo "\n", '<td>';
 								$field_options = explode( ',', $meta_field['options'] );
 								$values = explode( ',', $value );
 								foreach ( $field_options as $field_option ) {
 									$option = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n<label><input type=\"checkbox\" name=\"", $meta_key, '[]" value="', $option, '" ';
+									echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', $option, '" ';
 									if ( is_array( $values ) && in_array( $option, $values ) ) echo 'checked="checked" ';
 									if ( !is_array( $values ) && ( $value == $option ) ) echo 'checked="checked" ';
 									echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
 								}
-								echo "\n</td>";
+								echo "\n", '</td>';
 								break;
 							case 'radio':
-								echo "\n<td>";
+								echo "\n", '<td>';
 								$field_options = explode( ',', $meta_field['options'] );
 								foreach ( $field_options as $field_option ) {
 									$option = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n<label><input type=\"radio\" name=\"", $meta_key, '" value="', $option, '" ';
+									echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', $option, '" ';
 									if ( $value == $option ) echo 'checked="checked" ';
 									echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
 								}
-								echo "\n</td>";
+								echo "\n", '</td>';
 								break;
 							case 'textarea':
-								echo "\n<td><textarea name=\"", $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $value ), '</textarea></td>';
+								echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $value ), '</textarea></td>';
 								break;
 							case 'hidden':
-								echo "\n<td><input type=\"text\" disabled=\"disabled\" name=\"", $meta_key, '" id="', $meta_key, '" value="', esc_attr( $value ), '" /></td>';
+								echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $value ), '" /></td>';
 								break;
 							case 'text':
-								echo "\n<td><span class=\"description\">", esc_html( $meta_field['label'] ), '</span></td>';
+								echo "\n", '<td><span class="description">', esc_html( $meta_field['label'] ), '</span></td>';
 								break;
 						}
-						echo "\n</tr>";
+						echo "\n", '</tr>';
 					}
 				}
 				echo '</table>';
