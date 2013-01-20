@@ -284,7 +284,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				'custom_logo_url' => '',
 				'verify_user_email' => is_multisite() ? '1' : '0',
 				'message_verify_user_email' => is_multisite() ? 
-					__( '<h2>%user_login% is your new username</h2>\n<p>But, before you can start using your new username, <strong>you must activate it</strong></p>\n<p>Check your inbox at <strong>%user_email%</strong> and click the link given.</p>\n<p>If you do not activate your username within two days, you will have to sign up again.</p>', 'register-plus-redux' ) :
+					__( "<h2>%user_login% is your new username</h2>\n<p>But, before you can start using your new username, <strong>you must activate it</strong></p>\n<p>Check your inbox at <strong>%user_email%</strong> and click the link given.</p>\n<p>If you do not activate your username within two days, you will have to sign up again.</p>", 'register-plus-redux' ) :
 					__( 'Please verify your account using the verification link sent to your email address.', 'register-plus-redux' ),
 				'verify_user_admin' => '0',
 				'message_verify_user_admin' => __( 'Your account will be reviewed by an administrator and you will be notified when it is activated.', 'register-plus-redux' ),

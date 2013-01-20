@@ -635,42 +635,42 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && count( $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) $required_fields = '#' . implode( ', #', $register_plus_redux->rpr_get_option( 'required_fields' ) );
 
 				echo "\n", '<style type="text/css">';
-				echo "\nsmall { display:block; margin-bottom:8px; }";
+				echo "\n", 'small { display:block; margin-bottom:8px; }';
 				if ( $register_plus_redux->rpr_get_option( 'default_css' ) == TRUE ) {
-					if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n#user_email2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( !empty( $show_fields ) ) echo "\n$show_fields { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo "\n#description { font-size:24px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( !empty( $show_custom_text_fields ) ) echo "\n$show_custom_text_fields { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( !empty( $show_custom_select_fields ) ) echo "\n$show_custom_select_fields { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( !empty( $show_custom_checkbox_fields ) ) echo "\n$show_custom_checkbox_fields { font-size:18px; }";
-					if ( !empty( $show_custom_radio_fields ) ) echo "\n$show_custom_radio_fields { font-size:18px; }";
-					if ( !empty( $show_custom_textarea_fields ) ) echo "\n$show_custom_textarea_fields { font-size:24px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( !empty( $show_custom_date_fields ) ) echo "\n$show_custom_date_fields { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n#pass1, #pass2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }";
-					if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) echo "\n#invitation_code { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:4px; border:1px solid #e5e5e5; background:#fbfbfb; }";
+					if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n", '#user_email2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( !empty( $show_fields ) ) echo "\n", $show_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo "\n", '#description { font-size:24px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( !empty( $show_custom_text_fields ) ) echo "\n", $show_custom_text_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( !empty( $show_custom_select_fields ) ) echo "\n", $show_custom_select_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( !empty( $show_custom_checkbox_fields ) ) echo "\n", $show_custom_checkbox_fields, ' { font-size:18px; }';
+					if ( !empty( $show_custom_radio_fields ) ) echo "\n", $show_custom_radio_fields, ' { font-size:18px; }';
+					if ( !empty( $show_custom_textarea_fields ) ) echo "\n", $show_custom_textarea_fields, ' { font-size:24px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( !empty( $show_custom_date_fields ) ) echo "\n", $show_custom_date_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n", '#pass1, #pass2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) echo "\n", '#invitation_code { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:4px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 				}
-				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) { echo "\n#disclaimer { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;"; if ( strlen( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-				if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) { echo "\n#license { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;"; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-				if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) { echo "\n#privacy_policy { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;"; if ( strlen( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) echo "\n.accept_check { display:block; margin-bottom:8px; }";
+				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) { echo "\n", '#disclaimer { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+				if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) { echo "\n", '#license { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+				if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) { echo "\n", '#privacy_policy { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) echo "\n", '.accept_check { display:block; margin-bottom:8px; }';
 				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
-					echo "\n#reg_passmail { display: none; }";
+					echo "\n", '#reg_passmail { display: none; }';
 					if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
-						echo "\n#pass-strength-result { width: 100%; margin-top: 2px; margin-right: 6px; margin-bottom: 6px; border: 1px solid; padding: 3px; text-align: center; font-weight: bold; display: block; }";
-						echo "\n#pass-strength-result { background-color: #eee; border-color: #ddd !important; }";
-						echo "\n#pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }";
-						echo "\n#pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }";
-						echo "\n#pass-strength-result.short { background-color: #ffa0a0; border-color: #f04040 !important; }";
-						echo "\n#pass-strength-result.strong { background-color: #c3ff88; border-color: #8dff1c !important; }";
+						echo "\n", '#pass-strength-result { width: 100%; margin-top: 2px; margin-right: 6px; margin-bottom: 6px; border: 1px solid; padding: 3px; text-align: center; font-weight: bold; display: block; }';
+						echo "\n", '#pass-strength-result { background-color: #eee; border-color: #ddd !important; }';
+						echo "\n", '#pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }';
+						echo "\n", '#pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }';
+						echo "\n", '#pass-strength-result.short { background-color: #ffa0a0; border-color: #f04040 !important; }';
+						echo "\n", '#pass-strength-result.strong { background-color: #c3ff88; border-color: #8dff1c !important; }';
 					}
 				}
 				if ( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ) {
-					echo "\n#user_login, #user_email { ", esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), '} ';
-					if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n#user_email2 { ", esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
-					if ( !empty( $required_fields ) ) echo "\n$required_fields { ", esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
-					if ( !empty( $required_meta_fields ) ) echo "\n$required_meta_fields { ", esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
-					if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n#pass1, #pass2 { ", esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
-					if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) echo "\n#invitation_code { ", esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+					echo "\n", '#user_login, #user_email { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), '} ';
+					if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n", '#user_email2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+					if ( !empty( $required_fields ) ) echo "\n", $required_fields, ' { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+					if ( !empty( $required_meta_fields ) ) echo "\n", $required_meta_fields, ' { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+					if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n", '#pass1, #pass2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+					if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) echo "\n", '#invitation_code { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
 				}
 				if ( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) ) echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) );
 				echo "\n", '</style>';
