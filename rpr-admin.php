@@ -11,6 +11,8 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			// TODO: Write function to migrate register plus settings to redux
 			// should not be in init, likely to use similar code to rename
 
+			if ( !current_user_can( 'manage_options' ) ) return;
+			
 			// Rename options as necessary, prior to defaulting any new options
 			$rename_options = array(
 				'registration_redirect' => 'registration_redirect_url'
@@ -38,12 +40,12 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			if ( !empty( $updated ) ) $register_plus_redux->rpr_update_options();
 
 			// Added 03/28/11 in 3.7.4 converting invitation_code_bank to own option
-			$old_invitation_code_bank = $register_plus_redux->rpr_get_option( 'invitation_code_bank' );
-			$new_invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
-			if ( !isset( $new_invitation_code_bank ) && isset( $old_invitation_code_bank ) ) {
-				update_option( 'register_plus_redux_invitation_code_bank-rv1', $old_invitation_code_bank );
+			$nested_invitation_code_bank = $register_plus_redux->rpr_get_option( 'invitation_code_bank' );
+			$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
+			if ( !isset( $invitation_code_bank ) && isset( $nested_invitation_code_bank ) ) {
+				update_option( 'register_plus_redux_invitation_code_bank-rv1', $nested_invitation_code_bank );
 				//TODO: Confirm old invitation codes are migrating successfully, then kill old option
-				//$register_plus_redux->rpr_unset_option( $old_option );
+				//$register_plus_redux->rpr_unset_option( 'invitation_code_bank' );
 			}
 
 			// Added 03/28/11 in 3.7.4 converting custom fields
@@ -116,6 +118,9 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 
 		function rpr_delete_unverified_users() {
 			global $register_plus_redux;
+
+			if ( !current_user_can( 'delete_users' ) ) return;
+
 			$delete_unverified_users_after = $register_plus_redux->rpr_get_option( 'delete_unverified_users_after' );
 			if ( is_numeric( $delete_unverified_users_after ) && absint( $delete_unverified_users_after ) > 0 ) {
 				global $wpdb;
