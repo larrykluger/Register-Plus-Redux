@@ -563,7 +563,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) $do_include = TRUE;
 	if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) $do_include = TRUE;
-	if ( $do_include && is_multisite() && rpr_is_network_activated() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
+	if ( $do_include && is_multisite() && $register_plus_redux->rpr_is_network_activated() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 
 	//NOTE: Requires rpr-admin.php for rpr_new_user_notification_warning make
 	$do_include = FALSE;
