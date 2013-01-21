@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.7.3
+Stable tag: 3.9
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -109,7 +109,7 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 = 3.9 =
-January 16, 2012 by radiok
+January 21, 2012 by radiok
 
 * Converted custom_fields to redux_usermeta
 * Can now specify database key for meta fields
