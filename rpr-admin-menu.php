@@ -94,7 +94,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php } ?>
 						</td>
 					</tr>
-					<?php } ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Email Verification', 'register-plus-redux' ); ?></th>
 						<td>
@@ -106,6 +105,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							</div>
 						</td>
 					</tr>
+					<?php } ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Admin Verification', 'register-plus-redux' ); ?></th>
 						<td>
@@ -138,6 +138,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php echo sprintf( __( 'By default, after verifying, users will be sent to %s/wp-login.php, leave this value empty if you do not wish to change this behavior. You may enter another address here, however, if that addresses is not on the same domain, Wordpress will ignore the redirect.', 'register-plus-redux' ), home_url() ); ?><br />
 						</td>
 					</tr>
+					<?php if ( !is_multisite() ) { ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Autologin user', 'register-plus-redux' ); ?></th>
 						<td>
@@ -145,6 +146,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php echo sprintf( __( 'Works if Email Verification and Admin Verification are turned off. By default users will be sent to %s, to change this behavior, set up Registration Redirect field above.', 'register-plus-redux' ), admin_url() ); ?>
 						</td>
 					</tr>						
+					<?php } ?>
 				</table>
 				<?php if ( !is_multisite() ) { ?>
 				<h3 class="title"><?php _e( 'Registration Form', 'register-plus-redux' ); ?></h3>
@@ -376,7 +378,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Use Default Style Rules', 'register-plus-redux' ); ?></th>
-						<td><label><input type="checkbox" name="default_css" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'default_css' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Apply default Wordpress 3.0.1 styling to all fields.', 'register-plus-redux' ); ?></label></td>
+						<td><label><input type="checkbox" name="default_css" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'default_css' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Apply default Wordpress styling to all fields.', 'register-plus-redux' ); ?></label></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Required Fields Style Rules', 'register-plus-redux' ); ?></th>
@@ -495,6 +497,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				<p><?php _e( 'You can create a URL to autocomplete specific fields for the user. Additional fields use the database key. Included below are available keys and an example URL.', 'register-plus-redux' ); ?></p>
 				<p><code>user_login user_email first_name last_name user_url aim yahoo jabber description invitation_code<?php foreach ( $redux_usermeta as $index => $meta_field ) echo ' ', $meta_field['meta_key']; ?></code></p>
 				<p><code>http://www.radiok.info/wp-login.php?action=register&user_login=radiok&user_email=radiok@radiok.info&first_name=Radio&last_name=K&user_url=www.radiok.info&aim=radioko&invitation_code=1979&middle_name=Billy</code></p>
+				<?php if ( !is_multisite() ) { ?>
 				<h3 class="title"><?php _e( 'New User Message Settings', 'register-plus-redux' ); ?></h3>
 				<table class="form-table"> 
 					<tr valign="top">
@@ -621,7 +624,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						</td>
 					</tr>
 				</table>
-				<br />
+				<?php } ?>
 				<h3 class="title"><?php _e( 'Custom CSS for Register & Login Pages', 'register-plus-redux' ); ?></h3>
 				<p><?php _e( 'CSS Rule Example:', 'register-plus-redux' ); ?>&nbsp;<code>#user_login { font-size: 20px; width: 100%; padding: 3px; margin-right: 6px; }</code></p>
 				<table class="form-table">
