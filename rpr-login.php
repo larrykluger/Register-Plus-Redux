@@ -526,8 +526,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 
 		function rpr_filter_registration_redirect( $redirect_to ) {
 			global $register_plus_redux;
-			// NOTE: default $redirect_to = 'wp-login.php?checkemail=registered'
-			// TODO: Verify autologin works
+			//NOTE: default $redirect_to = 'wp-login.php?checkemail=registered'
 			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE && $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) $redirect_to = admin_url();
 			if ( $register_plus_redux->rpr_get_option( 'registration_redirect_url' ) ) $redirect_to = esc_url( $register_plus_redux->rpr_get_option( 'registration_redirect_url' ) );
 			return $redirect_to;
