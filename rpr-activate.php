@@ -41,20 +41,20 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 
 			//TODO: Not the most elegant solution, it would be better to interupt the activation and keep the data in the signups table with a flag to alert admin to complete activation			
 			if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) {
-				global $wpdb;
 				$user_info = get_userdata( $user_id );
 				update_user_meta( $user_id, 'stored_user_login', sanitize_text_field( $user_info->user_login ) );
 				update_user_meta( $user_id, 'stored_user_password', sanitize_text_field( $plaintext_pass ) );
 				$temp_user_login = 'unverified_' . wp_generate_password( 7, FALSE );
-				$wpdb->update( $wpdb->users, array( 'user_login' => $temp_user_login ), array( 'ID' => $user_id ) );
+				//global $wpdb;
+				//$wpdb->update( $wpdb->users, array( 'user_login' => $temp_user_login ), array( 'ID' => $user_id ) );
+				wp_update_user( array( 'ID' => $user_id, 'user_login' => $temp_user_login ) );
 			}
 
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['first_name'] ) ) update_user_meta( $user_id, 'first_name', sanitize_text_field( $meta['first_name'] ) );
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'last_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['last_name'] ) ) update_user_meta( $user_id, 'last_name', sanitize_text_field( $meta['last_name'] ) );
-			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'url', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['user_url'] ) ) {
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'user_url', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['user_url'] ) ) {
 				$user_url = esc_url_raw( $meta['user_url'] );
 				$user_url = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $user_url ) ? $user_url : 'http://' . $user_url;
-				// HACK: update_user_meta does not allow update of user_url
 				wp_update_user( array( 'ID' => $user_id, 'user_url' => sanitize_text_field( $user_url ) ) );
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'aim', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['aim'] ) ) update_user_meta( $user_id, 'aim', sanitize_text_field( $meta['aim'] ) );
@@ -65,7 +65,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			foreach ( $redux_usermeta as $index => $meta_field ) {
-				if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_registration'] ) ) {
+				if ( !empty( $meta_field['show_on_registration'] ) ) {
 					if ( !empty( $meta[$meta_field['meta_key']] ) ) $register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta[$meta_field['meta_key']] );
 				}
 			}

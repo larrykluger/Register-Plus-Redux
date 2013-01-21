@@ -18,6 +18,7 @@ Text Domain: register-plus-redux
 // TODO: Custom messages may not work with Wordpress MS as it uses wpmu_welcome_user_notification not wp_new_user_notification 
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 
+// TODO: Enhancement- Configuration to set default display_name and/or lockdown display_name
 // TODO: Enhancement- Create rpr-signups table and mirror wpms
 // TODO: Enhancement- Signups table needs an edit view
 // TODO: Enhancement- MS users aren't being linked to a site, this is by design, as a setting to automatically add users at specified level

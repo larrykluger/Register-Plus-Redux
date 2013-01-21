@@ -12,7 +12,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			// should not be in init, likely to use similar code to rename
 
 			if ( !current_user_can( 'manage_options' ) ) return;
-			
+
 			// Rename options as necessary, prior to defaulting any new options
 			$rename_options = array(
 				'registration_redirect' => 'registration_redirect_url'

@@ -272,7 +272,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				if ( $errmsg = $errors->get_error_message('user_url') ) {
 					echo '<p class="error">'.$errmsg.'</p>';
 				}
-				echo "\n", '<input type="text" name="url" id="user_url" value="', esc_attr( $user_url ), '" />';
+				echo "\n", '<input type="text" name="user_url" id="user_url" value="', esc_attr( $user_url ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'aim', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
 				$aim = isset( $_POST['aim'] ) ? $_POST['aim'] : '';
