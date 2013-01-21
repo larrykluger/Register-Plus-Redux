@@ -81,12 +81,12 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			*/
 
 			// TODO: Verify autologin works
-			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
+			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE && $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
 				$user_info = get_userdata( $user_id );
 				$credentials['user_login'] = $user_info->user_login;
 				$credentials['user_password'] = $password;
 				$credentials['remember'] = FALSE;
-				//$user = wp_signon( $credentials, FALSE ); 
+				$user = wp_signon( $credentials, FALSE ); 
 				//wp_redirect( admin_url() );
 				//exit();
 			}

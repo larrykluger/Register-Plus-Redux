@@ -8,6 +8,8 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			add_action( 'register_form', array( $this, 'rpr_register_form' ), 9, 0); // Higher priority to avoid getting bumped by other plugins
 			add_filter( 'registration_errors', array( $this, 'rpr_registration_errors' ), 10, 3 ); // applied to the list of registration errors generated while registering a user for a new account. 
 			add_filter( 'login_message', array( $this, 'rpr_filter_login_message' ), 10, 1 );
+			add_filter( 'login_form_verifyemail', array( $this, 'rpr_login_form_verifyemail' ), 10, 0 );
+
 			add_action( 'user_register', array( $this, 'rpr_user_register' ), 10, 1 ); // Runs when a user's profile is first created. Action function argument: user ID. 
 			add_filter( 'registration_redirect', array( $this, 'rpr_filter_registration_redirect' ), 10, 1 );
 
@@ -25,6 +27,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( is_array( $_REQUEST ) && array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == 'register' ) {
 					if ( array_key_exists( 'pass1', $_POST ) ) {
 						$password = sanitize_text_field( $_POST['pass1'] );
+						unset( $_POST['pass1'] );
 					}
 				}
 			}
@@ -38,7 +41,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			global $pagenow;
 			if ( $meta_key == 'default_password_nag' && $pagenow == 'wp-login.php' && $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
 				if ( is_array( $_REQUEST ) && array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == 'register' ) {
-					if ( array_key_exists( 'pass1', $_POST ) ) {
+					if ( array_key_exists( 'password', $_POST ) ) {
 						$return = FALSE;
 					}
 				}
@@ -424,20 +427,20 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( !empty( $user_id ) ) {
 					if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
 						$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
-						$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
+						$stored_user_password = get_user_meta( $user_id, 'stored_user_password', TRUE );
 						$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
 						delete_user_meta( $user_id, 'email_verification_code' );
 						delete_user_meta( $user_id, 'email_verification_sent' );
 						delete_user_meta( $user_id, 'stored_user_login' );
 						delete_user_meta( $user_id, 'stored_user_password' );
-						if ( empty( $plaintext_pass ) ) {
-							$plaintext_pass = wp_generate_password();
-							wp_set_password( $plaintext_pass, $user_id );
+						if ( empty( $stored_user_password ) ) {
+							$stored_user_password = wp_generate_password();
+							wp_set_password( $stored_user_password, $user_id );
 						}
 						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
-							$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
+							$register_plus_redux->send_welcome_user_mail( $user_id, $stored_user_password );
 						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
-							$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass );
+							$register_plus_redux->send_admin_mail( $user_id, $stored_user_password );
 						if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE )
 							$errors->add( 'account_verified', sprintf( __( 'Thank you %s, your account has been verified, please login with the password you specified during registration.', 'register-plus-redux' ), $stored_user_login ), 'message' );
 						else
@@ -465,6 +468,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				}
 			}
 			return $message;
+		}
+
+		function rpr_login_form_verifyemail() {
+			//TODO: Move some code from rpr_filter_login_message perhaps to get autologin working after verification
 		}
 
 		function rpr_user_register( $user_id ) {
@@ -521,7 +528,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			global $register_plus_redux;
 			// NOTE: default $redirect_to = 'wp-login.php?checkemail=registered'
 			// TODO: Verify autologin works
-			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) $redirect_to = admin_url();
+			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE && $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) $redirect_to = admin_url();
 			if ( $register_plus_redux->rpr_get_option( 'registration_redirect_url' ) ) $redirect_to = esc_url( $register_plus_redux->rpr_get_option( 'registration_redirect_url' ) );
 			return $redirect_to;
 		}

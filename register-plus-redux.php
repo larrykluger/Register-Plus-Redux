@@ -480,9 +480,9 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			if ( !empty( $user_info ) ) {
 				if ( ( $this->rpr_get_option( 'verify_user_email' ) == TRUE ) || ( $this->rpr_get_option( 'verify_user_admin' ) == TRUE ) ) {
-					$login = $user_info->stored_user_login;
-					if ( empty( $login ) ) $login = $user_info->user_login;
-					$message = str_replace( '%user_login%', $login, $message );
+					$user_login = $user_info->stored_user_login;
+					if ( empty( $user_login ) ) $login = $user_info->user_login;
+					$message = str_replace( '%user_login%', $user_login, $message );
 				}
 				else {
 					$message = str_replace( '%user_login%', $user_info->user_login, $message );
@@ -495,7 +495,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			if ( !empty( $verification_code ) ) {
 				$message = str_replace( '%verification_code%', $verification_code, $message );
-				$message = str_replace( '%verification_url%', wp_login_url() . '?verification_code=' . $verification_code, $message );
+				$message = str_replace( '%verification_url%', wp_login_url() . '?action=verifyemail&verification_code=' . $verification_code, $message );
 			}
 			return $message;
 		}

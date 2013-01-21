@@ -938,24 +938,24 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
 					$update = 'verify_users';
 					foreach ( (array) $_REQUEST['users'] as $id ) {
-						$id = (int) $id;
-						$stored_user_login = get_user_meta( $id, 'stored_user_login', TRUE );
-						$plaintext_pass = get_user_meta( $id, 'stored_user_password', TRUE );
-						$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $id ) );
-						delete_user_meta( $id, 'email_verification_code' );
-						delete_user_meta( $id, 'email_verification_sent' );
-						delete_user_meta( $id, 'email_verified' );
-						delete_user_meta( $id, 'stored_user_login' );
-						delete_user_meta( $id, 'stored_user_password' );
+						$user_id = (int) $id;
+						$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
+						$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
+						$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
 						if ( empty( $plaintext_pass ) ) {
 							$plaintext_pass = wp_generate_password();
-							update_user_option( $id, 'default_password_nag', TRUE, TRUE );
-							wp_set_password( $plaintext_pass, $id );
+							update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
+							wp_set_password( $plaintext_pass, $user_id );
 						}
 						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
-							$register_plus_redux->send_welcome_user_mail( $id, $plaintext_pass );
+							$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
 						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
-							$register_plus_redux->send_admin_mail( $id, $plaintext_pass );
+							$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass );
+						delete_user_meta( $user_id, 'email_verification_code' );
+						delete_user_meta( $user_id, 'email_verification_sent' );
+						delete_user_meta( $user_id, 'email_verified' );
+						delete_user_meta( $user_id, 'stored_user_login' );
+						delete_user_meta( $user_id, 'stored_user_password' );
 					}
 				}
 			}
@@ -1062,8 +1062,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				</table>
 				<div class="tablenav">
 					<div class="alignleft actions">
-						<?php if ( current_user_can( 'promote_users' ) ) echo '<input type="submit" value="', esc_attr__( 'Approve Selected Users', 'register-plus-redux' ), '" name="verify_users" class="button-secondary action" />', "\n"; ?>
-						<input type="submit" value="<?php esc_attr_e( 'Send E-mail Verification to Selected Users', 'register-plus-redux' ); ?>" name="send_verification_email" class="button-secondary action" />
+						<?php if ( current_user_can( 'promote_users' ) ) echo '<input type="submit" value="', esc_attr__( 'Approve Selected Users', 'register-plus-redux' ), '" name="verify_users" class="button-secondary action" />&nbsp;', "\n"; ?>
+						<input type="submit" value="<?php esc_attr_e( 'Send E-mail Verification to Selected Users', 'register-plus-redux' ); ?>" name="send_verification_email" class="button-secondary action" />&nbsp;
 						<?php if ( current_user_can( 'delete_users' ) ) echo '&nbsp;<input type="submit" value="', esc_attr__( 'Delete Selected Users', 'register-plus-redux' ), '" name="delete_users" class="button-secondary action" />', "\n"; ?>
 					</div>
 					<br class="clear">
