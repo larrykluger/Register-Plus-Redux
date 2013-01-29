@@ -20,10 +20,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		}
 
 		function rpr_network_activate_warning() {
-			//TODO: Write up network activation and edit link here
 			global $pagenow;
 			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
-				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/' ), '</strong></p></div>', "\n";
+				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wordpress-multisite-activation-and-the-illogical-disregard-for-plugins/' ), '</strong></p></div>', "\n";
 		}
 
 		function rpr_new_user_notification_warning() {
