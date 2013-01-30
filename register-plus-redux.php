@@ -7,6 +7,7 @@ Plugin URI: http://radiok.info/blog/category/register-plus-redux/
 Description: Enhances the user registration process with complete customization and additional administration options.
 Version: 3.9.0.1
 Text Domain: register-plus-redux
+Domain Path: /languages
 */
 
 // NOTE: Debug, no more echoing
