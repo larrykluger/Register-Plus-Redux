@@ -108,6 +108,11 @@ HTML attributes should go in the following order name -> id -> class
 4. Unverified User Management
 
 == Changelog ==
+= 3.9.1 =
+January 29, 2012 by radiok
+
+* Remove hack to random passwords in messages
+
 = 3.9 =
 January 21, 2012 by radiok
 
