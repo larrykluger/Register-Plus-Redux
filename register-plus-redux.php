@@ -42,7 +42,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 			add_action( 'admin_head-profile.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 			add_action( 'admin_head-user-edit.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
-			add_filter( 'random_password', array( $this, 'rpr_filter_random_password' ), 10, 1 ); // Replace random password with user set password
 		}
 
 		function rpr_i18n_init() {
@@ -191,18 +190,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				</script>
 				<?php
 			}
-		}
-
-		function rpr_filter_random_password( $password ) {
-			if ( $this->rpr_get_option( 'user_set_password' ) == TRUE && $this->rpr_get_option( 'filter_random_password' ) == TRUE ) {
-				if ( array_key_exists( 'pass1', $_POST ) ) {
-					$password = get_magic_quotes_gpc() ? stripslashes( $_POST['pass1'] ) : $_POST['pass1'];
-				}
-				if ( array_key_exists( 'password', $_POST ) ) {
-					$password = get_magic_quotes_gpc() ? stripslashes( $_POST['password'] ) : $_POST['password'];
-				}
-			}
-			return $password;
 		}
 
 		function rpr_update_options( $options = array() ) {
