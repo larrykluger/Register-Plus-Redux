@@ -109,9 +109,12 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 = 3.9.1 =
-January 29, 2012 by radiok
+February 5, 2012 by radiok
 
-* Remove hack to random passwords in messages
+* Removed hack to filter random passwords in messages
+* Fixed bug in checkboxes on registration page
+* Fixed malformed labels for additional fields on signup page
+* Updated javascript to be more compatible with jQuery 1.9
 
 = 3.9 =
 January 21, 2012 by radiok
