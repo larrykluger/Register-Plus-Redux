@@ -327,7 +327,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					$value = isset( $_POST[$meta_key] ) ? $_POST[$meta_key] : '';
 					if ( isset( $_GET[$meta_key] ) ) $value = $_GET[$meta_key];
 					if ( ( $meta_field['display'] != 'hidden' ) && ( $meta_field['display'] != 'text' ) ) {
-						echo "\n", '<label id="$meta_key-label" for="$meta_key">';
+						echo "\n", '<label id="', $meta_key, '-label" for="', $meta_key, '">';
 						if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 						echo esc_html( $meta_field['label'] ), ':</label>';
 						if ( $errmsg = $errors->get_error_message($meta_key) ) {

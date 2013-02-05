@@ -170,7 +170,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							$field_options = explode( ',', $meta_field['options'] );
 							foreach ( $field_options as $field_option ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
-								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', $option, '" value="$option" ';
+								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', $option, '" value="', $option, '" ';
 								if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 								if ( is_array( $value ) && in_array( $option, $value ) ) echo 'checked="checked" ';
 								if ( !is_array( $value ) && ( $value == $option ) ) echo 'checked="checked" ';
