@@ -155,11 +155,31 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
 					if ( array_key_exists( $meta_field['meta_key'], $_POST ) ) {
-						$value = get_magic_quotes_gpc() ? stripslashes( $_POST[$meta_field['meta_key']] ) : $_POST[$meta_field['meta_key']];
+						$value = get_magic_quotes_gpc() ? stripslashes_deep( $_POST[$meta_field['meta_key']] ) : $_POST[$meta_field['meta_key']];
 						$this->rpr_update_user_meta( $user_id, $meta_field, $value );
 					}
 				}
 			}
+		}
+
+		function rpr_update_user_meta( $user_id, $meta_field, $value ) {
+			// convert array to string
+			if ( is_array( $value ) && count( $value ) ) $value = implode( ',', $value );
+			// sanitize url
+			if ( $meta_field['escape_url'] == TRUE ) {
+				$value = esc_url_raw( $value );
+				$value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $value ) ? $value : 'http://' . $value;
+			}
+			
+			$valid_value = TRUE;
+			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
+			if ( !empty( $meta_field['require_on_registration'] ) && empty( $value ) ) $valid_value = FALSE;
+			// check text field against regex if specified
+			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $value ) ) $valid_value = FALSE;
+			if ( $meta_field['display'] != 'textarea' ) $value = sanitize_text_field( $value );
+			if ( $meta_field['display'] = 'textarea' ) $value = wp_filter_kses( $value );
+			
+			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $value );
 		}
 
 		//TODO: Raname or ... something
@@ -244,26 +264,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$this->rpr_update_options();
 			}
 			return TRUE;
-		}
-
-		function rpr_update_user_meta( $user_id, $meta_field, $value ) {
-			// convert array to string
-			if ( is_array( $value ) && count( $value ) ) $value = implode( ',', $value );
-			// sanitize url
-			if ( $meta_field['escape_url'] == TRUE ) {
-				$value = esc_url_raw( $value );
-				$value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $value ) ? $value : 'http://' . $value;
-			}
-			
-			$valid_value = TRUE;
-			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
-			if ( !empty( $meta_field['require_on_registration'] ) && empty( $value ) ) $valid_value = FALSE;
-			// check text field against regex if specified
-			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $value ) ) $valid_value = FALSE;
-			if ( $meta_field['display'] != 'textarea' ) $value = sanitize_text_field( $value );
-			if ( $meta_field['display'] = 'textarea' ) $value = wp_filter_kses( $value );
-			
-			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $value );
 		}
 
 		function default_options( $option = '' )
