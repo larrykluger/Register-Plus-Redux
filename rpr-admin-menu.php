@@ -36,7 +36,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			global $wpdb;
 			$admin_menu_hook = array( $this, 'rpr_options_submenu' );
 			//if ( is_multisite() ) $admin_menu_hook = array( $this, 'rpr_options_submenu_ms' );
-			$hookname = add_submenu_page( 'options-general.php', __( 'Register Plus Redux Settings', 'register-plus-redux' ), 'Register Plus Redux', 'manage_options', 'register-plus-redux', $admin_menu_hook );
+			$hookname = add_options_page( __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_options', 'register-plus-redux', $admin_menu_hook );
 			// NOTE: $hookname = settings_page_register-plus-redux 
 			add_action( 'admin_print_scripts-' . $hookname, array( $this, 'rpr_options_submenu_scripts' ), 10, 1 );
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
@@ -75,7 +75,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			?>
 			<div class="wrap">
 			<h2><?php _e( 'Register Plus Redux Settings', 'register-plus-redux' ) ?></h2>
-			<form enctype="multipart/form-data" method="post">
+			<form method="post">
 				<?php wp_nonce_field( 'register-plus-redux-update-settings' ); ?>
 				<table class="form-table">
 					<?php if ( !is_multisite() ) { ?>
@@ -636,17 +636,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						<td><textarea name="custom_login_page_css" id="custom_login_page_css" style="width:60%; height:160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) ); ?></textarea></td>
 					</tr>
 				</table>
-				<br />
-				<h3 class="title"><?php _e( 'Hacks & Fixes', 'register-plus-redux' ); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><?php _e( 'Random Password Appears in Messages', 'register-plus-redux' ); ?></th>
-						<td>
-							<label><input type="checkbox" name="filter_random_password" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'filter_random_password' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Filter Random Passwords.', 'register-plus-redux' ); ?></label><br />
-							<?php _e( 'When user set password is enabled, and another plugin is being used to modify outgoing messages, a random password may appear in those messages, regardless of the fact that a user entered password was specified. This option will filter all password requests and show the user entered password if possible.', 'register-plus-redux' ); ?>
-						</td>
-					</tr>
-				</table>
 				<p class="submit">
 					<input type="submit" class="button-primary" value="<?php esc_attr_e( 'Save Changes', 'register-plus-redux' ); ?>" name="update_settings" />
 					<input type="button" class="button" value="<?php esc_attr_e( 'Preview Registration Page', 'register-plus-redux' ); ?>" name="preview" onclick="window.open('<?php echo wp_login_url(), '?action=register'; ?>');" />
@@ -1151,7 +1140,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				preg_match( "/^div\s*{(.*)}\s*$/", $required_fields_style, $matches );
 				if ( !empty( $matches[1] ) ) $options['required_fields_style'] = $matches[1];
 			}
-			isset( $_POST['required_fields_style'] ) ? sanitize_text_field( $_POST['required_fields_style'] ) :
 			$options['required_fields_asterisk'] = isset( $_POST['required_fields_asterisk'] ) ? '1' : '0';
 			$options['starting_tabindex'] = isset( $_POST['starting_tabindex'] ) ? absint( $_POST['starting_tabindex'] ) : '0';
 
@@ -1241,8 +1229,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				$options['custom_login_page_css'] = $csstidy->print->plain();
 			}
 			 
-			$options['filter_random_password'] = isset( $_POST['filter_random_password'] ) ? '1' : '0';
-
 			$usermeta_key = 0;
 			if ( isset( $_POST['label'] ) ) {
 				foreach ( $_POST['label'] as $index => $v ) {
