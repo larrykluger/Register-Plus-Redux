@@ -112,8 +112,10 @@ HTML attributes should go in the following order name -> id -> class
 February 5, 2012 by radiok
 
 * Removed hack to filter random passwords in messages
-* Fixed bug in checkboxes on registration page
 * Fixed malformed labels for additional fields on signup page
+* Fixed bug with additional checkbox fields on registration page
+* Fixed bug with saving additional checkbox fields on profile page
+* Fixed bug with clearing additional fields on profile page
 * Updated javascript to be more compatible with jQuery 1.9
 
 = 3.9 =

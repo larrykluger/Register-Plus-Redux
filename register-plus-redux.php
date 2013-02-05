@@ -154,10 +154,9 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
-					if ( array_key_exists( $meta_field['meta_key'], $_POST ) ) {
-						$value = get_magic_quotes_gpc() ? stripslashes_deep( $_POST[$meta_field['meta_key']] ) : $_POST[$meta_field['meta_key']];
-						$this->rpr_update_user_meta( $user_id, $meta_field, $value );
-					}
+					$value = array_key_exists( $meta_field['meta_key'], $_POST ) ?  $_POST[$meta_field['meta_key']] : '';
+					$value = get_magic_quotes_gpc() ? stripslashes_deep( $value ) : $value;
+					$this->rpr_update_user_meta( $user_id, $meta_field, $value );
 				}
 			}
 		}
