@@ -882,9 +882,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 
 				jQuery(document).on("change", ".enableDisableOptions", function() {
 					if (jQuery(this).val() == "textbox" || jQuery(this).val() == "select" || jQuery(this).val() == "checkbox" || jQuery(this).val() == "radio" || jQuery(this).val() == "text")
-						jQuery(this).parent().next().next().find("input").prop("readOnly", false);
+						jQuery(this).closest("tr").next().find("input[type='text']").prop("readOnly", false);
 					else
-						jQuery(this).parent().next().next().find("input").prop("readOnly", true);
+						jQuery(this).closest("tr").next().find("input[type='text']").prop("readOnly", true);
 				});
 
 				jQuery(document).on("click", ".modifyNextCellCheckbox", function() {
