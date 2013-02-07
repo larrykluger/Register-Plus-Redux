@@ -324,8 +324,8 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				if ( !empty( $meta_field['show_on_registration'] ) ) {
 					$meta_key = esc_attr( $meta_field['meta_key'] );
-					$value = isset( $_POST[$meta_key] ) ? $_POST[$meta_key] : '';
-					if ( isset( $_GET[$meta_key] ) ) $value = $_GET[$meta_key];
+					$meta_value = isset( $_POST[$meta_key] ) ? $_POST[$meta_key] : '';
+					if ( isset( $_GET[$meta_key] ) ) $meta_value = $_GET[$meta_key];
 					if ( ( $meta_field['display'] != 'hidden' ) && ( $meta_field['display'] != 'text' ) ) {
 						echo "\n", '<label id="', $meta_key, '-label" for="', $meta_key, '">';
 						if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
@@ -338,7 +338,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 						case 'textbox':
 							echo "\n", '<input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
 							if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" ';
-							echo 'value="', esc_attr( $value ), '" />';
+							echo 'value="', esc_attr( $meta_value ), '" />';
 							break;
 						case 'select':
 							echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '">';
@@ -346,7 +346,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 							foreach ( $field_options as $field_option ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								echo "\n", '<option id="', $meta_key, '-', $option, '" value="', $option, '"';
-								if ( $value == $option ) echo ' selected="selected"';
+								if ( $meta_value == $option ) echo ' selected="selected"';
 								echo '>', esc_html( $field_option ), '</option>';
 							}
 							echo "n</select>";
@@ -356,8 +356,8 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 							foreach ( $field_options as $field_option ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', $option, '" value="', $option, '" ';
-								if ( is_array( $value ) && in_array( $option, $value ) ) echo 'checked="checked" ';
-								if ( !is_array( $value ) && ( $value == $option) ) echo 'checked="checked" ';
+								if ( is_array( $meta_value ) && in_array( $option, $meta_value ) ) echo 'checked="checked" ';
+								if ( !is_array( $meta_value ) && ( $meta_value == $option) ) echo 'checked="checked" ';
 								echo '><label id="', $meta_key, '-', $option, '-label" class="', $meta_key, '" for="', $meta_key, '-', $option, '">&nbsp;', esc_html( $field_option ), '</label>';
 							}
 							break;
@@ -366,15 +366,15 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 							foreach ( $field_options as $field_option ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', $option, '" value="', $option, '" ';
-								if ( $value == $option ) echo 'checked="checked" ';
+								if ( $meta_value == $option ) echo 'checked="checked" ';
 								echo '><label id="', $meta_key, '-', $option, '-label" class="', $meta_key, '" for="', $meta_key, '-', $option, '">&nbsp;', esc_html( $field_option ), '</label>';
 							}
 							break;
 						case 'textarea':
-							echo "\n", '<textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $value ), '</textarea>';
+							echo "\n", '<textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea>';
 							break;
 						case 'hidden':
-							echo "\n", '<input type="hidden" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $value ), '" />';
+							echo "\n", '<input type="hidden" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" />';
 							break;
 						case 'text':
 							echo "\n", esc_html( $meta_field['label'] );

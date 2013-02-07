@@ -78,7 +78,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				foreach ( $redux_usermeta as $index => $meta_field ) {
 					if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
 						$meta_key = esc_attr( $meta_field['meta_key'] );
-						$value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
+						$meta_value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
 						echo "\n", '<tr>';
 						echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
 						if ( empty( $meta_field['show_on_profile'] ) ) echo ' <span class="description">(hidden)</span>';
@@ -88,7 +88,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 							case 'textbox':
 								echo "\n", '<td><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
 								if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" ';
-								echo 'value="', esc_attr( $value ), '" class="regular-text" /></td>';
+								echo 'value="', esc_attr( $meta_value ), '" class="regular-text" /></td>';
 								break;
 							case 'select':
 								echo "\n", '<td>';
@@ -96,8 +96,9 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								$field_options = explode( ',', $meta_field['options'] );
 								foreach ( $field_options as $field_option ) {
 									$option = esc_attr( $this->clean_text( $field_option ) );
+									$option_value = esc_attr( $this->clean_text( $field_option ) );
 									echo "\n", '<option value="', $option, '"';
-									if ( $value == $option ) echo ' selected="selected"';
+									if ( $meta_value == $option ) echo ' selected="selected"';
 									echo '>', esc_html( $field_option ), '</option>';
 								}
 								echo "\n", '</select>';
@@ -106,12 +107,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 							case 'checkbox':
 								echo "\n", '<td>';
 								$field_options = explode( ',', $meta_field['options'] );
-								$values = explode( ',', $value );
+								$meta_values = explode( ',', $meta_value );
 								foreach ( $field_options as $field_option ) {
 									$option = esc_attr( $this->clean_text( $field_option ) );
 									echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', $option, '" ';
-									if ( is_array( $values ) && in_array( $option, $values ) ) echo 'checked="checked" ';
-									if ( !is_array( $values ) && ( $value == $option ) ) echo 'checked="checked" ';
+									if ( is_array( $meta_values ) && in_array( $option, $meta_values ) ) echo 'checked="checked" ';
+									if ( !is_array( $meta_values ) && ( $meta_value == $option ) ) echo 'checked="checked" ';
 									echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
 								}
 								echo "\n", '</td>';
@@ -122,16 +123,16 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								foreach ( $field_options as $field_option ) {
 									$option = esc_attr( $this->clean_text( $field_option ) );
 									echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', $option, '" ';
-									if ( $value == $option ) echo 'checked="checked" ';
+									if ( $meta_value == $option ) echo 'checked="checked" ';
 									echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
 								}
 								echo "\n", '</td>';
 								break;
 							case 'textarea':
-								echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $value ), '</textarea></td>';
+								echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea></td>';
 								break;
 							case 'hidden':
-								echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $value ), '" /></td>';
+								echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" /></td>';
 								break;
 							case 'text':
 								echo "\n", '<td><span class="description">', esc_html( $meta_field['label'] ), '</span></td>';
@@ -154,31 +155,31 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
-					$value = array_key_exists( $meta_field['meta_key'], $_POST ) ?  $_POST[$meta_field['meta_key']] : '';
-					$value = get_magic_quotes_gpc() ? stripslashes_deep( $value ) : $value;
-					$this->rpr_update_user_meta( $user_id, $meta_field, $value );
+					$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ?  $_POST[$meta_field['meta_key']] : '';
+					$meta_value = get_magic_quotes_gpc() ? stripslashes_deep( $meta_value ) : $meta_value;
+					$this->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
 				}
 			}
 		}
 
-		function rpr_update_user_meta( $user_id, $meta_field, $value ) {
+		function rpr_update_user_meta( $user_id, $meta_field, $meta_value ) {
 			// convert array to string
-			if ( is_array( $value ) && count( $value ) ) $value = implode( ',', $value );
+			if ( is_array( $meta_value ) && count( $meta_value ) ) $meta_value = implode( ',', $meta_value );
 			// sanitize url
 			if ( $meta_field['escape_url'] == TRUE ) {
-				$value = esc_url_raw( $value );
-				$value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $value ) ? $value : 'http://' . $value;
+				$meta_value = esc_url_raw( $meta_value );
+				$meta_value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $meta_value ) ? $meta_value : 'http://' . $meta_value;
 			}
 			
 			$valid_value = TRUE;
 			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
-			if ( !empty( $meta_field['require_on_registration'] ) && empty( $value ) ) $valid_value = FALSE;
+			if ( !empty( $meta_field['require_on_registration'] ) && empty( $meta_value ) ) $valid_value = FALSE;
 			// check text field against regex if specified
-			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $value ) ) $valid_value = FALSE;
-			if ( $meta_field['display'] != 'textarea' ) $value = sanitize_text_field( $value );
-			if ( $meta_field['display'] = 'textarea' ) $value = wp_filter_kses( $value );
+			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $meta_value ) ) $valid_value = FALSE;
+			if ( $meta_field['display'] != 'textarea' ) $meta_value = sanitize_text_field( $meta_value );
+			if ( $meta_field['display'] = 'textarea' ) $meta_value = wp_filter_kses( $meta_value );
 			
-			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $value );
+			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $meta_value );
 		}
 
 		//TODO: Raname or ... something

@@ -134,15 +134,15 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			foreach ( $redux_usermeta as $index => $meta_field ) {
 				if ( !empty( $meta_field['show_on_registration'] ) ) {
 					$meta_key = esc_attr( $meta_field['meta_key'] );
-					$value = isset( $_POST[$meta_key] ) ? $_POST[$meta_key] : '';
-					if ( isset( $_GET[$meta_key] ) ) $value = $_GET[$meta_key];
+					$meta_value = isset( $_POST[$meta_key] ) ? $_POST[$meta_key] : '';
+					if ( isset( $_GET[$meta_key] ) ) $meta_value = $_GET[$meta_key];
 					switch ( $meta_field['display'] ) {
 						case 'textbox':
 							echo "\n", '<p id="', $meta_key, '-p"><label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '<br /><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
 							if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" '; else echo 'class="input" ';
-							echo 'value="', esc_attr( $value ), '" size="25" ';
+							echo 'value="', esc_attr( $meta_value ), '" size="25" ';
 							if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 							echo '/></label></p>';
 							break;
@@ -157,7 +157,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							foreach ( $field_options as $field_option ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								echo '<option id="', $meta_key, '-', $option, '" value="', $option, '"';
-								if ( $value == $option ) echo ' selected="selected"';
+								if ( $meta_value == $option ) echo ' selected="selected"';
 								echo '>', esc_html( $field_option ), '</option>';
 							}
 							echo '</select>';
@@ -172,8 +172,8 @@ if ( !class_exists( 'RPR_Login' ) ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', $option, '" value="', $option, '" ';
 								if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
-								if ( is_array( $value ) && in_array( $option, $value ) ) echo 'checked="checked" ';
-								if ( !is_array( $value ) && ( $value == $option ) ) echo 'checked="checked" ';
+								if ( is_array( $meta_value ) && in_array( $option, $meta_value ) ) echo 'checked="checked" ';
+								if ( !is_array( $meta_value ) && ( $meta_value == $option ) ) echo 'checked="checked" ';
 								echo '/><label id="', $meta_key, '-', $option, '-label" class="', $meta_key, '" for="', $meta_key, '-', $option, '">&nbsp;', esc_html( $field_option ), '</label><br />';
 							}
 							echo "\n", '</p>';
@@ -187,7 +187,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', $option, '" value="', $option, '" ';
 								if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
-								if ( $value == $option ) echo 'checked="checked" ';
+								if ( $meta_value == $option ) echo 'checked="checked" ';
 								echo '/><label id="', $meta_key, '-', $option, '-label" class="', $meta_key, '" for="', $meta_key, '-', $option, '">&nbsp;', esc_html( $field_option ), '</label><br />';
 							}
 							echo "\n", '</p>';
@@ -197,10 +197,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
 							echo esc_html( $meta_field['label'] ), '<br /><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5"';
 							if ( $tabindex != 0 ) echo ' tabindex="', $tabindex++, '"';
-							echo '>', esc_textarea( $value ), '</textarea></label></p>';
+							echo '>', esc_textarea( $meta_value ), '</textarea></label></p>';
 							break;
 						case 'hidden':
-							echo "\n", '<input type="hidden" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $value ), '" ';
+							echo "\n", '<input type="hidden" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" ';
 							if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
 							echo '/>';
 							break;
