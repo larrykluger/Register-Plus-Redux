@@ -5,7 +5,7 @@ Plugin Name: Register Plus Redux
 Author URI: http://radiok.info/
 Plugin URI: http://radiok.info/blog/category/register-plus-redux/
 Description: Enhances the user registration process with complete customization and additional administration options.
-Version: 3.9.1.1
+Version: 3.9.2
 Text Domain: register-plus-redux
 Domain Path: /languages
 */
@@ -95,10 +95,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
 								$field_options = explode( ',', $meta_field['options'] );
 								foreach ( $field_options as $field_option ) {
-									$option = esc_attr( $this->clean_text( $field_option ) );
-									$option_value = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n", '<option value="', $option, '"';
-									if ( $meta_value == $option ) echo ' selected="selected"';
+									// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
+									$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
+									echo "\n", '<option value="', esc_attr( $field_option ), '"';
+									if ( $meta_value == esc_attr( $field_option ) || $meta_value == $option_cleaned ) echo ' selected="selected"';
 									echo '>', esc_html( $field_option ), '</option>';
 								}
 								echo "\n", '</select>';
@@ -109,10 +109,11 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								$field_options = explode( ',', $meta_field['options'] );
 								$meta_values = explode( ',', $meta_value );
 								foreach ( $field_options as $field_option ) {
-									$option = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', $option, '" ';
-									if ( is_array( $meta_values ) && in_array( $option, $meta_values ) ) echo 'checked="checked" ';
-									if ( !is_array( $meta_values ) && ( $meta_value == $option ) ) echo 'checked="checked" ';
+									// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
+									$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
+									echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
+									if ( is_array( $meta_values ) && ( in_array( esc_attr( $field_option ), $meta_values ) || in_array( $option_cleaned, $meta_values ) ) ) echo 'checked="checked" ';
+									if ( !is_array( $meta_values ) && ( $meta_value == esc_attr( $field_option ) || $meta_value == $option_cleaned ) ) echo 'checked="checked" ';
 									echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
 								}
 								echo "\n", '</td>';
@@ -121,9 +122,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								echo "\n", '<td>';
 								$field_options = explode( ',', $meta_field['options'] );
 								foreach ( $field_options as $field_option ) {
-									$option = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', $option, '" ';
-									if ( $meta_value == $option ) echo 'checked="checked" ';
+									// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
+									$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
+									echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', esc_attr( $field_option ), '" ';
+									if ( $meta_value == esc_attr( $field_option ) || $meta_value == $option_cleaned ) echo 'checked="checked" ';
 									echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
 								}
 								echo "\n", '</td>';

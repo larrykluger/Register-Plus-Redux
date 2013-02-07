@@ -155,9 +155,8 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							echo '>';
 							$field_options = explode( ',', $meta_field['options'] );
 							foreach ( $field_options as $field_option ) {
-								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
-								echo '<option id="', $meta_key, '-', $option, '" value="', $option, '"';
-								if ( $meta_value == $option ) echo ' selected="selected"';
+								echo '<option id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '"';
+								if ( $meta_value == esc_attr( $field_option ) ) echo ' selected="selected"';
 								echo '>', esc_html( $field_option ), '</option>';
 							}
 							echo '</select>';
@@ -169,12 +168,11 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							echo esc_html( $meta_field['label'] ), '</label><br />';
 							$field_options = explode( ',', $meta_field['options'] );
 							foreach ( $field_options as $field_option ) {
-								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
-								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', $option, '" value="', $option, '" ';
+								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
 								if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
-								if ( is_array( $meta_value ) && in_array( $option, $meta_value ) ) echo 'checked="checked" ';
-								if ( !is_array( $meta_value ) && ( $meta_value == $option ) ) echo 'checked="checked" ';
-								echo '/><label id="', $meta_key, '-', $option, '-label" class="', $meta_key, '" for="', $meta_key, '-', $option, '">&nbsp;', esc_html( $field_option ), '</label><br />';
+								if ( is_array( $meta_value ) && in_array( esc_attr( $field_option ), $meta_value ) ) echo 'checked="checked" ';
+								if ( !is_array( $meta_value ) && ( $meta_value == esc_attr( $field_option ) ) ) echo 'checked="checked" ';
+								echo '/><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
 							}
 							echo "\n", '</p>';
 							break;
@@ -184,11 +182,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							echo esc_html( $meta_field['label'] ), '</label><br />';
 							$field_options = explode( ',', $meta_field['options'] );
 							foreach ( $field_options as $field_option ) {
-								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
-								echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', $option, '" value="', $option, '" ';
+								echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
 								if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
-								if ( $meta_value == $option ) echo 'checked="checked" ';
-								echo '/><label id="', $meta_key, '-', $option, '-label" class="', $meta_key, '" for="', $meta_key, '-', $option, '">&nbsp;', esc_html( $field_option ), '</label><br />';
+								if ( $meta_value == esc_attr( $field_option ) ) echo 'checked="checked" ';
+								echo '/><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
 							}
 							echo "\n", '</p>';
 							break;
@@ -598,21 +595,19 @@ if ( !class_exists( 'RPR_Login' ) ) {
 						if ( $meta_field['display'] == 'checkbox' ) {
 							$field_options = explode( ',', $meta_field['options'] );
 							foreach ( $field_options as $field_option ) {
-								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								if ( empty( $show_custom_checkbox_fields ) )
-									$show_custom_checkbox_fields = '#' . $meta_key . '-' . $option . ', #' . $meta_key . '-' . $option . '-label';
+									$show_custom_checkbox_fields = '#' . $meta_key . '-' . sanitize_title( $field_option ) . ', #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
 								else
-									$show_custom_checkbox_fields .= ', #' . $meta_key . '-' . $option . ', #' . $meta_key . '-' . $option . '-label';
+									$show_custom_checkbox_fields .= ', #' . $meta_key . '-' . sanitize_title( $field_option ) . ', #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
 							}
 						}
 						if ( $meta_field['display'] == 'radio' ) {
 							$field_options = explode( ',', $meta_field['options'] );
 							foreach ( $field_options as $field_option ) {
-								$option = esc_attr( $register_plus_redux->clean_text( $field_option ) );
 								if ( empty( $show_custom_radio_fields ) )
-									$show_custom_radio_fields = '#' . $meta_key . '-' . $option . ', #' . $meta_key . '-' . $option . '-label';
+									$show_custom_radio_fields = '#' . $meta_key . '-' . sanitize_title( $field_option ) . ', #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
 								else
-									$show_custom_radio_fields .= ', #' . $meta_key . '-' . $option . ', #' . $meta_key . '-' . $option . '-label';
+									$show_custom_radio_fields .= ', #' . $meta_key . '-' . sanitize_title( $field_option ) . ', #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
 							}
 						}
 						if ( $meta_field['display'] == 'textarea' ) {

@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.1
+Stable tag: 3.9.2
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -78,10 +78,10 @@ Register Plus was abandoned by skullbit sometime after September, 2008 following
 Visit <http://radiok.info/blog/category/register-plus-redux/> for all information Register Plus Redux related
 
 = Register, Signup, what's the difference? =
-Historically, users registered for WordPress sites.  WordPress MU (*M*ulti*u*ser) introduced the signup process which is conceptually similar to registration, but also very different, especially from a coding perspective.  WordPress MU has since been merged into WordPress as the Multisite (a/k/a WordPress MS) feature.  The actions, filters and, overall request lifecycle are dramatically different, as is the presentation.  The registration and signup pages are different in every way, even though they have similar intentions.  As such, developers must make the distinction between registration and signup.
+Historically, users registered for WordPress sites.  WordPress MU (**M**ulti**u**ser) introduced the signup process which is conceptually similar to registration, but also very different, especially from a coding perspective.  WordPress MU has since been merged into WordPress as the Multisite (a/k/a WordPress MS) feature.  The actions, filters and, overall request lifecycle are dramatically different, as is the presentation.  The registration and signup pages are different in every way, even though they have similar intentions.  As such, developers must make the distinction between registration and signup.
 
 = Why should I Network Activate vs activating on individual blogs? =
-This question is specific to WordPress with Networks, or WordPress Multisite, whichever terminology tickles your fancy. If you don't know what either means, you most likely don't need to concern yourself either way. After much trial and error, I learned that due to an odd executive decision in WordPress core, site plugins are not loaded during user or blog activation (see WordPress Trac [#18278](http://core.trac.wordpress.org/ticket/18278) or [#23197](http://core.trac.wordpress.org/ticket/23197)), however, network plugins, that is plugins "Network Activated" are loaded. This behavior prevents Register Plus Redux from restoring information stored after a user signs up when only activated at the site level. There's nothing forcing you to Network Activate, however, features involving adding additional fields to the signup page will not function properly. This mandate does create some odd situations in which you may have one site, or a subset sites, in which you wish to utilize Register Plus Redux, however all your site will have access to its functionality. This is a decision Network Administrators must make.
+This question is specific to WordPress with Networks, or WordPress Multisite, whichever terminology tickles your fancy. If you don't know what either means, you most likely don't need to concern yourself either way. After much trial and error, I learned that due to an odd executive decision in WordPress core, site plugins are not loaded during user or blog activation (see WordPress Trac [#18278](http://core.trac.wordpress.org/ticket/18278) or [#23197](http://core.trac.wordpress.org/ticket/23197)), however, network plugins, that is plugins "Network Activated" are loaded. This behavior prevents Register Plus Redux from restoring information stored after a user signs up when only activated at the site level. There's nothing forcing you to Network Activate, however, features involving adding additional fields to the signup page will not function properly. This mandate does create some odd situations in which you may have one site, or a subset sites, in which you wish to utilize Register Plus Redux, however all your sites will have access to its functionality. This is a decision Network Administrators must make.
 
 = Didn't Register Plus have a CAPTCHA feature? How do I add a CAPTCHA to the registration form? =
 Register Plus offered two different CAPTCHA methods, a simple random CAPTCHA and reCAPTCHA. The simple one randomly created a 5-character sequence on a background image with two random lines drawn across the image, this CAPTCHA would be very easy for any OCR program to decipher as the characters were not modified in anyway and contrast was high. reCAPTCHA is a great idea, but there is another plugin, [WP-reCAPTCHA](http://wordpress.org/extend/plugins/wp-recaptcha/) endorsed by the reCAPTCHA developers that can be used to add reCAPTCHA to the registration page. I endorse the use of that plugin for that purpose.
@@ -108,6 +108,15 @@ HTML attributes should go in the following order name -> id -> class
 4. Unverified User Management
 
 == Changelog ==
+
+= 3.9.2 =
+February 6, 2012 by radiok
+
+* Improved initial 'meta_key' definition
+* Fixed bug with Network Activation warning which prevented any activation on Wordpress Multisite
+* Fixed some broken jQuery
+* Fixed regression from v3.7.3 introduced in v3.9 in the way that additional select, checkbox, and radio field values were stored
+
 = 3.9.1 =
 February 5, 2012 by radiok
 
