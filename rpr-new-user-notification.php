@@ -32,7 +32,7 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 		}
 		if ( ( $pagenow == 'wp-login.php' && $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) == FALSE ) || 
 			( $pagenow != 'wp-login.php' && $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) == FALSE ) ) {
-			$register_plus_redux->sendAdminMessage( $user_id, $plaintext_pass, isset( $verification_code ) ? $verification_code : '' );
+			$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass, isset( $verification_code ) ? $verification_code : '' );
 		}
 	}
 }
