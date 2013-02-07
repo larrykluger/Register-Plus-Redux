@@ -519,14 +519,14 @@ April 10 2008 by Skullbit
 
 == Upgrade Notice ==
 
-= 3.6 =
+= 3.6.0 =
 First stable release by radiok with bugfixes to issues found in 3.5.1
 
 = 3.7.0 =
 Major change to avoid conflicts
 
 = 3.7.2 =
-New featues, can use email address as username and validate text fields with regex
+New features, can use email address as username and validate text fields with regex
 
-= 3.7.4 =
+= 3.9.0 =
 Notice: Custom CSS on Checkbox and Radio fields may need to be reviewed
