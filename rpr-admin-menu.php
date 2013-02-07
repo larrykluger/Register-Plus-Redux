@@ -1256,6 +1256,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							if ( $meta_field['display'] )
 							$meta_field['meta_key'] = 'rpr_' . $meta_field['label'];
 						}
+						// TODO: Convert clean_text to sanitize_title after key change check exists
 						$meta_field['meta_key'] = sanitize_text_field( $register_plus_redux->clean_text( $meta_field['meta_key'] ) );
 					}
 					$redux_usermeta[$usermeta_key++] = $meta_field;
@@ -1266,7 +1267,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				foreach ( $_POST['newMetaFields'] as $label ) {
 					$meta_field = array();
 					$meta_field['label'] = sanitize_text_field( $label );
-					$meta_field['meta_key'] = '';
+					$meta_field['meta_key'] = 'rpr_' . sanitize_title( $meta_field['label'] );
 					$meta_field['display'] = '';
 					$meta_field['options'] = '';
 					$meta_field['show_datepicker'] = '0';
@@ -1274,11 +1275,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					$meta_field['show_on_profile'] = '0';
 					$meta_field['show_on_registration'] = '0';
 					$meta_field['require_on_registration'] = '0';
-					if ( empty( $meta_field['meta_key'] ) ) {
-						if ( $meta_field['display'] )
-						$meta_field['meta_key'] = 'rpr_' . $meta_field['label'];
-					}
-					$meta_field['meta_key'] = sanitize_key( $register_plus_redux->clean_text( $meta_field['meta_key'] ) );
 					$redux_usermeta[$usermeta_key++] = $meta_field;
 				}
 			}
