@@ -112,7 +112,7 @@ HTML attributes should go in the following order name -> id -> class
 = 3.9.3 =
 February 7, 2012 by radiok
 
-* Added new dynamic keywords feature, %=key% will search user_meta and replace
+* Added new feature dynamic keywords for custom messages, %=keyword% will search user_meta for keyword and replace
 * Fixed bug with custom admin messages
 
 = 3.9.2 =
@@ -536,3 +536,6 @@ New features, can use email address as username and validate text fields with re
 
 = 3.9.0 =
 Notice: Custom CSS on Checkbox and Radio fields may need to be reviewed
+
+= 3.9.3 =
+New feature, dynamic keywords for custom messages, %=keyword% will search user_meta for keyword and replace
