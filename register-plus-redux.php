@@ -456,12 +456,23 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		function replace_keywords( $message = '', $user_info = array(), $plaintext_pass = '', $verification_code = '' ) {
 			global $pagenow;
 			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %stored_user_login% %user_password% %verification_code% %verification_url%';
+
+			preg_match_all( '/%=([^%]+)%/', $message, $keys );
+			if ( is_array( $keys ) && is_array( $keys[1] ) ) {
+				foreach( $keys[1] as $key ) {
+					$message = str_replace( "%=$key%", get_user_meta( $user_info->ID, $key, true ), $message );
+				}
+			}
+
 			// support renamed keywords for backcompat
 			$message = str_replace( '%verification_link%', '%verification_url%', $message );
 
 			$message = str_replace( '%blogname%', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $message );
 			$message = str_replace( '%site_url%', site_url(), $message );
-			$message = str_replace( '%pagenow%', $pagenow, $message ); //debug keyword
+			$message = str_replace( '%?pagenow%', $pagenow, $message ); //debug keyword
+			$message = str_replace( '%?user_info%', print_r( $user_info, TRUE ), $message ); //debug keyword
+			$message = str_replace( '%?keys%', print_r( $keys, TRUE ), $message ); //debug keyword
+
 			if ( !empty( $_SERVER ) ) {
 				$message = str_replace( '%http_referer%', isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '', $message );
 				$message = str_replace( '%http_user_agent%', isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '', $message );

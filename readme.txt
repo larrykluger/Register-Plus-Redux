@@ -109,6 +109,12 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 
+= 3.9.3 =
+February 7, 2012 by radiok
+
+* Added new dynamic keywords feature, %=key% will search user_meta and replace
+* Fixed bug with custom admin messages
+
 = 3.9.2 =
 February 6, 2012 by radiok
 
