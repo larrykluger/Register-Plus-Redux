@@ -98,7 +98,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Email Verification', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="verify_user_email" id="verify_user_email" class="showHideSettings" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Verify all new users email address...', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="verify_user_email" id="verify_user_email" class="showHideSettings" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'verify_user_email' ), 1 ); ?> />&nbsp;<?php _e( 'Verify all new users email address...', 'register-plus-redux' ); ?></label><br />
 							<?php _e( 'A verification code will be sent to any new users email address, new users will not be able to login or reset their password until they have completed the verification process. Administrators may authorize new users from the Unverified Users Page at their own discretion.', 'register-plus-redux' ); ?>
 							<div id="verify_user_email_settings"<?php if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<br /><?php _e( 'The following message will be shown to users after registering. You may include HTML in this message.', 'register-plus-redux' ); ?><br />
@@ -110,7 +110,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Admin Verification', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="verify_user_admin" id="verify_user_admin" class="showHideSettings" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Moderate all new user registrations...', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="verify_user_admin" id="verify_user_admin" class="showHideSettings" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'verify_user_admin' ), 1 ); ?> />&nbsp;<?php _e( 'Moderate all new user registrations...', 'register-plus-redux' ); ?></label><br />
 							<?php _e( 'New users will not be able to login or reset their password until they have been authorized by an administrator from the Unverified Users Page. If both verification options are enabled, users will not be able to login until an administrator authorizes them, regardless of whether they complete the email verification process.', 'register-plus-redux' ); ?>
 							<div id="verify_user_admin_settings"<?php if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<br /><?php _e( 'The following message will be shown to users after registering (or verifying their email if both verification options are enabled). You may include HTML in this message.', 'register-plus-redux' ); ?><br />
@@ -143,7 +143,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Autologin user', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="autologin_user" id="autologin_user" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) echo 'checked="checked"'; ?>/>&nbsp;<?php _e( 'Autologin user after registration.', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="autologin_user" id="autologin_user" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'autologin_user' ), 1 ); ?>/>&nbsp;<?php _e( 'Autologin user after registration.', 'register-plus-redux' ); ?></label><br />
 							<?php echo sprintf( __( 'Works if Email Verification and Admin Verification are turned off. By default users will be sent to %s, to change this behavior, set up Registration Redirect field above.', 'register-plus-redux' ), admin_url() ); ?>
 						</td>
 					</tr>						
@@ -159,11 +159,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Use Email as Username', 'register-plus-redux' ); ?></th>
-						<td><label><input type="checkbox" name="username_is_email" id="username_is_email" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'New users will not be asked to enter a username, instead their email address will be used as their username.', 'register-plus-redux' ); ?></label></td>
+						<td><label><input type="checkbox" name="username_is_email" id="username_is_email" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'username_is_email' ), 1 ); ?> />&nbsp;<?php _e( 'New users will not be asked to enter a username, instead their email address will be used as their username.', 'register-plus-redux' ); ?></label></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Confirm Email', 'register-plus-redux' ); ?></th>
-						<td><label><input type="checkbox" name="double_check_email" id="double_check_email" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Require new users to enter e-mail address twice during registration.', 'register-plus-redux' ); ?></label></td>
+						<td><label><input type="checkbox" name="double_check_email" id="double_check_email" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'double_check_email' ), 1 ); ?> />&nbsp;<?php _e( 'Require new users to enter e-mail address twice during registration.', 'register-plus-redux' ); ?></label></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Profile Fields', 'register-plus-redux' ); ?></th>
@@ -217,11 +217,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'User Set Password', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="user_set_password" id="user_set_password" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Require new users enter a password during registration...', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="user_set_password" id="user_set_password" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'user_set_password' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Require new users enter a password during registration...', 'register-plus-redux' ); ?></label><br />
 							<div id="password_settings"<?php if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<label><?php _e( 'Minimum password length: ', 'register-plus-redux' ); ?><input type="text" name="min_password_length" id="min_password_length" style="width:50px;" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'min_password_length' ) ); ?>" /></label><br />
-								<label><input type="checkbox" name="disable_password_confirmation" id="disable_password_confirmation" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) == TRUE ) echo 'checked="checked"'; ?>/>&nbsp;<?php _e( 'Do not require users to confirm password.', 'register-plus-redux' ); ?></label><br />
-								<label><input type="checkbox" name="show_password_meter" id="show_password_meter" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Show password strength meter...', 'register-plus-redux' ); ?></label>
+								<label><input type="checkbox" name="disable_password_confirmation" id="disable_password_confirmation" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ), 1 ); ?>/>&nbsp;<?php _e( 'Do not require users to confirm password.', 'register-plus-redux' ); ?></label><br />
+								<label><input type="checkbox" name="show_password_meter" id="show_password_meter" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'show_password_meter' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Show password strength meter...', 'register-plus-redux' ); ?></label>
 								<div id="meter_settings"<?php if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == FALSE ) echo ' style="display: none;"'; ?>>
 									<table>
 										<tr>
@@ -256,12 +256,12 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Invitation Code', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="enable_invitation_code" id="enable_invitation_code" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Use invitation codes to track or authorize new user registration...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="enable_invitation_code" id="enable_invitation_code" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Use invitation codes to track or authorize new user registration...', 'register-plus-redux' ); ?></label>
 							<div id="invitation_code_settings"<?php if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == FALSE ) echo ' style="display: none;"'; ?>>
-								<label><input type="checkbox" name="require_invitation_code" id="require_invitation_code" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Require new user enter one of the following invitation codes to register.', 'register-plus-redux' ); ?></label><br />
-								<label><input type="checkbox" name="invitation_code_case_sensitive" id="invitation_code_case_sensitive" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'invitation_code_case_sensitive' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Enforce case-sensitivity of invitation codes.', 'register-plus-redux' ); ?></label><br />
-								<label><input type="checkbox" name="invitation_code_unique" id="invitation_code_unique" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'invitation_code_unique' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Each invitation code may only be used once.', 'register-plus-redux' ); ?></label><br />
-								<label><input type="checkbox" name="enable_invitation_tracking_widget" id="enable_invitation_tracking_widget" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Show Invitation Code Tracking widget on Dashboard.', 'register-plus-redux' ); ?></label><br />
+								<label><input type="checkbox" name="require_invitation_code" id="require_invitation_code" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'require_invitation_code' ), 1 ); ?> />&nbsp;<?php _e( 'Require new user enter one of the following invitation codes to register.', 'register-plus-redux' ); ?></label><br />
+								<label><input type="checkbox" name="invitation_code_case_sensitive" id="invitation_code_case_sensitive" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'invitation_code_case_sensitive' ), 1 ); ?> />&nbsp;<?php _e( 'Enforce case-sensitivity of invitation codes.', 'register-plus-redux' ); ?></label><br />
+								<label><input type="checkbox" name="invitation_code_unique" id="invitation_code_unique" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'invitation_code_unique' ), 1 ); ?> />&nbsp;<?php _e( 'Each invitation code may only be used once.', 'register-plus-redux' ); ?></label><br />
+								<label><input type="checkbox" name="enable_invitation_tracking_widget" id="enable_invitation_tracking_widget" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ), 1 ); ?> />&nbsp;<?php _e( 'Show Invitation Code Tracking widget on Dashboard.', 'register-plus-redux' ); ?></label><br />
 								<div id="invitation_code_bank">
 								<?php
 									$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
@@ -284,7 +284,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Disclaimer', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="show_disclaimer" id="show_disclaimer" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Show Disclaimer during registration...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="show_disclaimer" id="show_disclaimer" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'show_disclaimer' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Show Disclaimer during registration...', 'register-plus-redux' ); ?></label>
 							<div id="disclaimer_settings"<?php if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<table width="60%">
 									<tr>
@@ -303,7 +303,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 									</tr>
 									<tr>
 										<td style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;">
-											<label><input type="checkbox" name="require_disclaimer_agree" id="require_disclaimer_agree" class="enableDisableText" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Require Agreement', 'register-plus-redux' ); ?></label>
+											<label><input type="checkbox" name="require_disclaimer_agree" id="require_disclaimer_agree" class="enableDisableText" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ), 1 ); ?> />&nbsp;<?php _e( 'Require Agreement', 'register-plus-redux' ); ?></label>
 										</td>
 										<td style="padding-top: 0px; padding-bottom: 0px;">
 											<input type="text" name="message_disclaimer_agree" id="message_disclaimer_agree" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'message_disclaimer_agree' ) ); ?>" <?php if ( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == FALSE ) echo 'readonly="readonly"'; ?> style="width: 100%;" />
@@ -316,7 +316,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'License Agreement' , 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="show_license" id="show_license" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Show License Agreement during registration...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="show_license" id="show_license" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'show_license' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Show License Agreement during registration...', 'register-plus-redux' ); ?></label>
 							<div id="license_settings"<?php if ( $register_plus_redux->rpr_get_option( 'show_license' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<table width="60%">
 									<tr>
@@ -335,7 +335,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 									</tr>
 									<tr>
 										<td style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;">
-											<label><input type="checkbox" name="require_license_agree" id="require_license_agree" class="enableDisableText" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'require_license_agree' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Require Agreement', 'register-plus-redux' ); ?></label>
+											<label><input type="checkbox" name="require_license_agree" id="require_license_agree" class="enableDisableText" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'require_license_agree' ), 1 ); ?> />&nbsp;<?php _e( 'Require Agreement', 'register-plus-redux' ); ?></label>
 										</td>
 										<td style="padding-top: 0px; padding-bottom: 0px;">
 											<input type="text" name="message_license_agree" id="message_license_agree" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'message_license_agree' ) ); ?>" <?php if ( $register_plus_redux->rpr_get_option( 'require_license_agree' ) == FALSE ) echo 'readonly="readonly"'; ?> style="width: 100%;" />
@@ -348,7 +348,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Privacy Policy', 'register-plus-redux' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="show_privacy_policy" id="show_privacy_policy" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Show Privacy Policy during registration...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="show_privacy_policy" id="show_privacy_policy" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Show Privacy Policy during registration...', 'register-plus-redux' ); ?></label>
 							<div id="privacy_policy_settings"<?php if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<table width="60%">
 									<tr>
@@ -367,7 +367,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 									</tr>
 									<tr>
 										<td style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;">
-											<label><input type="checkbox" name="require_privacy_policy_agree" id="require_privacy_policy_agree" class="enableDisableText" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Require Agreement', 'register-plus-redux' ); ?></label>
+											<label><input type="checkbox" name="require_privacy_policy_agree" id="require_privacy_policy_agree" class="enableDisableText" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ), 1 ); ?> />&nbsp;<?php _e( 'Require Agreement', 'register-plus-redux' ); ?></label>
 										</td>
 										<td style="padding-top: 0px; padding-bottom: 0px;">
 											<input type="text" name="message_privacy_policy_agree" id="message_privacy_policy_agree" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ); ?>" <?php if ( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == FALSE ) echo 'readonly="readonly"'; ?> style="width: 100%;" />
@@ -379,7 +379,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Use Default Style Rules', 'register-plus-redux' ); ?></th>
-						<td><label><input type="checkbox" name="default_css" id="default_css" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'default_css' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Apply default Wordpress styling to all fields.', 'register-plus-redux' ); ?></label></td>
+						<td><label><input type="checkbox" name="default_css" id="default_css" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'default_css' ), 1 ); ?> />&nbsp;<?php _e( 'Apply default Wordpress styling to all fields.', 'register-plus-redux' ); ?></label></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Required Fields Style Rules', 'register-plus-redux' ); ?></th>
@@ -387,7 +387,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					</tr>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Required Fields Asterisk', 'register-plus-redux' ); ?></th>
-						<td><label><input type="checkbox" name="required_fields_asterisk" id="required_fields_asterisk" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Add asterisk to left of all required field\'s name.', 'register-plus-redux' ); ?></label></td>
+						<td><label><input type="checkbox" name="required_fields_asterisk" id="required_fields_asterisk" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ), 1 ); ?> />&nbsp;<?php _e( 'Add asterisk to left of all required field\'s name.', 'register-plus-redux' ); ?></label></td>
 					</tr>
 					<?php if ( !is_multisite() ) { ?>
 					<tr valign="top">
@@ -418,13 +418,13 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 
 							echo "\n", '<tr><td>', __( 'Display', 'register-plus-redux' ), '</td>';
 							echo "\n", '<td><select name="display[', $index, ']" id="display[', $index, ']" class="enableDisableOptions" style="width: 100%;">';
-							echo "\n", '<option value="textbox"'; if ( $meta_field['display'] == 'textbox' ) echo ' selected="selected"'; echo '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="select"'; if ( $meta_field['display'] == 'select' ) echo ' selected="selected"'; echo '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="checkbox"'; if ( $meta_field['display'] == 'checkbox' ) echo ' selected="selected"'; echo '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="radio"'; if ( $meta_field['display'] == 'radio' ) echo ' selected="selected"'; echo '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="textarea"'; if ( $meta_field['display'] == 'textarea' ) echo ' selected="selected"'; echo '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="hidden"'; if ( $meta_field['display'] == 'hidden' ) echo ' selected="selected"'; echo '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="text"'; if ( $meta_field['display'] == 'text' ) echo ' selected="selected"'; echo '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="textbox"', selected( $meta_field['display'], 'textbox', false ), '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="select"', selected( $meta_field['display'], 'select', false ), '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="checkbox"', selected( $meta_field['display'], 'checkbox', false ), '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="radio"', selected( $meta_field['display'], 'radio', false ), '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="textarea"', selected( $meta_field['display'], 'textarea', false ), '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="hidden"', selected( $meta_field['display'], 'hidden', false ), '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="text"', selected( $meta_field['display'], 'text', false ), '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
 							echo "\n", '</select></td></tr>';
 	
 							echo "\n", '<tr><td>', __( 'Options', 'register-plus-redux' ), '</td>';
@@ -434,13 +434,13 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							echo "\n", '<td><input type="text" name="meta_key[', $index, ']" id="meta_key[', $index, ']" value="', esc_attr( $meta_field['meta_key'] ), '" style="width: 100%;" /></td></tr>';
 	
 							echo "\n", '<tr><td>', __( 'Show on Profile', 'register-plus-redux' ), '</td>';
-							echo "\n", '<td><input type="checkbox" name="show_on_profile[', $index, ']" id="show_on_profile[', $index, ']" value="1"'; if ( !empty( $meta_field['show_on_profile'] ) ) echo ' checked="checked"'; echo ' /></td></tr>';
+							echo "\n", '<td><input type="checkbox" name="show_on_profile[', $index, ']" id="show_on_profile[', $index, ']" value="1"', checked( $meta_field['show_on_profile'], 1 ), ' /></td></tr>';
 	
 							echo "\n", '<tr><td>', __( 'Show on Registration', 'register-plus-redux' ), '</td>';
-							echo "\n", '<td><input type="checkbox" name="show_on_registration[', $index, ']" id="show_on_registration[', $index, ']" value="1"'; if ( !empty( $meta_field['show_on_registration'] ) ) echo ' checked="checked"'; echo ' class="modifyNextRowCheckbox" /></td></tr>';
+							echo "\n", '<td><input type="checkbox" name="show_on_registration[', $index, ']" id="show_on_registration[', $index, ']" value="1"', checked( $meta_field['show_on_registration'], 1 ), ' class="modifyNextRowCheckbox" /></td></tr>';
 	
 							echo "\n", '<tr><td>', __( 'Required Field', 'register-plus-redux' ), '</td>';
-							echo "\n", '<td><input type="checkbox" name="require_on_registration[', $index, ']" id="require_on_registration[', $index, ']" value="1"'; if ( !empty( $meta_field['require_on_registration'] ) ) echo ' checked="checked"'; if ( empty( $meta_field['show_on_registration'] ) ) echo ' disabled="disabled"'; echo ' /></td></tr>';
+							echo "\n", '<td><input type="checkbox" name="require_on_registration[', $index, ']" id="require_on_registration[', $index, ']" value="1"', checked( $meta_field['require_on_registration'], 1 ); if ( empty( $meta_field['show_on_registration'] ) ) echo ' disabled="disabled"'; echo ' /></td></tr>';
 	
 							echo "\n", '<tr><td>', __( 'Actions', 'register-plus-redux' ), '</td>';
 							echo "\n", '<td><img src="', plugins_url( 'images\question.png', __FILE__ ), '" alt="', esc_attr__( 'Help', 'register-plus-redux' ), '" title="', esc_attr__( 'No help available', 'register-plus-redux' ), '" class="helpButton" style="cursor: pointer;" />';
@@ -463,32 +463,32 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						<td>
 							<label for="datepicker_firstdayofweek"><?php _e( 'First Day of the Week', 'register-plus-redux' ); ?>:</label>
 							<select type="select" name="datepicker_firstdayofweek" id="datepicker_firstdayofweek">
-								<option value="7" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '7' ) echo 'selected="selected"'; ?>><?php _e( 'Monday', 'register-plus-redux' ); ?></option>
-								<option value="1" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '1' ) echo 'selected="selected"'; ?>><?php _e( 'Tuesday', 'register-plus-redux' ); ?></option>
-								<option value="2" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '2' ) echo 'selected="selected"'; ?>><?php _e( 'Wednesday', 'register-plus-redux' ); ?></option>
-								<option value="3" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '3' ) echo 'selected="selected"'; ?>><?php _e( 'Thursday', 'register-plus-redux' ); ?></option>
-								<option value="4" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '4' ) echo 'selected="selected"'; ?>><?php _e( 'Friday', 'register-plus-redux' ); ?></option>
-								<option value="5" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '5' ) echo 'selected="selected"'; ?>><?php _e( 'Saturday', 'register-plus-redux' ); ?></option>
-								<option value="6" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ) == '6' ) echo 'selected="selected"'; ?>><?php _e( 'Sunday', 'register-plus-redux' ); ?></option>
+								<option value="7" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '7' ); ?>><?php _e( 'Monday', 'register-plus-redux' ); ?></option>
+								<option value="1" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '1' ); ?>><?php _e( 'Tuesday', 'register-plus-redux' ); ?></option>
+								<option value="2" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '2' ); ?>><?php _e( 'Wednesday', 'register-plus-redux' ); ?></option>
+								<option value="3" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '3' ); ?>><?php _e( 'Thursday', 'register-plus-redux' ); ?></option>
+								<option value="4" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '4' ); ?>><?php _e( 'Friday', 'register-plus-redux' ); ?></option>
+								<option value="5" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '5' ); ?>><?php _e( 'Saturday', 'register-plus-redux' ); ?></option>
+								<option value="6" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_firstdayofweek' ), '6' ); ?>><?php _e( 'Sunday', 'register-plus-redux' ); ?></option>
 							</select><br />
 							<label for="datepicker_dateformat"><?php _e( 'Date Format', 'register-plus-redux' ); ?>:</label><input type="text" name="datepicker_dateformat" id="datepicker_dateformat" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'datepicker_dateformat' ) ); ?>" style="width:100px;" /><br />
 							<label for="datepicker_startdate"><?php _e( 'First Selectable Date', 'register-plus-redux' ); ?>:</label><input type="text" name="datepicker_startdate" id="datepicker_startdate" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'datepicker_startdate' ) ); ?>" style="width:100px;" /><br />
 							<label for="datepicker_calyear"><?php _e( 'Default Year', 'register-plus-redux' ); ?>:</label><input type="text" name="datepicker_calyear" id="datepicker_calyear" value="<?php echo esc_attr( $register_plus_redux->rpr_get_option( 'datepicker_calyear' ) ); ?>" style="width:40px;" /><br />
 							<label for="datepicker_calmonth"><?php _e( 'Default Month', 'register-plus-redux' ); ?>:</label>
 							<select name="datepicker_calmonth" id="datepicker_calmonth">
-								<option value="cur" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == 'cur' ) echo 'selected="selected"'; ?>><?php _e( 'Current Month', 'register-plus-redux' ); ?></option>
-								<option value="0" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '0' ) echo 'selected="selected"'; ?>><?php _e( 'Jan', 'register-plus-redux' ); ?></option>
-								<option value="1" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '1' ) echo 'selected="selected"'; ?>><?php _e( 'Feb', 'register-plus-redux' ); ?></option>
-								<option value="2" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '2' ) echo 'selected="selected"'; ?>><?php _e( 'Mar', 'register-plus-redux' ); ?></option>
-								<option value="3" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '3' ) echo 'selected="selected"'; ?>><?php _e( 'Apr', 'register-plus-redux' ); ?></option>
-								<option value="4" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '4' ) echo 'selected="selected"'; ?>><?php _e( 'May', 'register-plus-redux' ); ?></option>
-								<option value="5" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '5' ) echo 'selected="selected"'; ?>><?php _e( 'Jun', 'register-plus-redux' ); ?></option>
-								<option value="6" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '6' ) echo 'selected="selected"'; ?>><?php _e( 'Jul', 'register-plus-redux' ); ?></option>
-								<option value="7" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '7' ) echo 'selected="selected"'; ?>><?php _e( 'Aug', 'register-plus-redux' ); ?></option>
-								<option value="8" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '8' ) echo 'selected="selected"'; ?>><?php _e( 'Sep', 'register-plus-redux' ); ?></option>
-								<option value="9" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '9' ) echo 'selected="selected"'; ?>><?php _e( 'Oct', 'register-plus-redux' ); ?></option>
-								<option value="10" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '10' ) echo 'selected="selected"'; ?>><?php _e( 'Nov', 'register-plus-redux' ); ?></option>
-								<option value="11" <?php if ( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ) == '11' ) echo 'selected="selected"'; ?>><?php _e( 'Dec', 'register-plus-redux' ); ?></option>
+								<option value="cur" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), 'cur' ); ?>><?php _e( 'Current Month', 'register-plus-redux' ); ?></option>
+								<option value="0" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '0' ); ?>><?php _e( 'Jan', 'register-plus-redux' ); ?></option>
+								<option value="1" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '1' ); ?>><?php _e( 'Feb', 'register-plus-redux' ); ?></option>
+								<option value="2" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '2' ); ?>><?php _e( 'Mar', 'register-plus-redux' ); ?></option>
+								<option value="3" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '3' ); ?>><?php _e( 'Apr', 'register-plus-redux' ); ?></option>
+								<option value="4" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '4' ); ?>><?php _e( 'May', 'register-plus-redux' ); ?></option>
+								<option value="5" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '5' ); ?>><?php _e( 'Jun', 'register-plus-redux' ); ?></option>
+								<option value="6" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '6' ); ?>><?php _e( 'Jul', 'register-plus-redux' ); ?></option>
+								<option value="7" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '7' ); ?>><?php _e( 'Aug', 'register-plus-redux' ); ?></option>
+								<option value="8" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '8' ); ?>><?php _e( 'Sep', 'register-plus-redux' ); ?></option>
+								<option value="9" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '9' ); ?>><?php _e( 'Oct', 'register-plus-redux' ); ?></option>
+								<option value="10" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '10' ); ?>><?php _e( 'Nov', 'register-plus-redux' ); ?></option>
+								<option value="11" <?php selected( $register_plus_redux->rpr_get_option( 'datepicker_calmonth' ), '11' ); ?>><?php _e( 'Dec', 'register-plus-redux' ); ?></option>
 							</select>
 						</td>
 					</tr>
@@ -504,14 +504,14 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><label><?php _e( 'New User Message', 'register-plus-redux' ); ?></label></th>
 						<td>
-							<label><input type="checkbox" name="disable_user_message_registered" id="disable_user_message_registered" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Do NOT send user an email after they are registered', 'register-plus-redux' ); ?></label><br />
-							<label><input type="checkbox" name="disable_user_message_created" id="disable_user_message_created" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Do NOT send user an email when created by an administrator', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="disable_user_message_registered" id="disable_user_message_registered" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ), 1 ); ?> />&nbsp;<?php _e( 'Do NOT send user an email after they are registered', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="disable_user_message_created" id="disable_user_message_created" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'disable_user_message_created' ), 1 ); ?> />&nbsp;<?php _e( 'Do NOT send user an email when created by an administrator', 'register-plus-redux' ); ?></label>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label><?php _e( 'Custom New User Message', 'register-plus-redux' ); ?></label></th>
 						<td>
-							<label><input type="checkbox" name="custom_user_message" id="custom_user_message" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'custom_user_message' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Enable...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="custom_user_message" id="custom_user_message" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'custom_user_message' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Enable...', 'register-plus-redux' ); ?></label>
 							<div id="custom_user_message_settings"<?php if ( $register_plus_redux->rpr_get_option( 'custom_user_message' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<table width="60%">
 									<tr>
@@ -531,8 +531,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 											<label for="user_message_body"><?php _e( 'User Message', 'register-plus-redux' ); ?></label><br />
 											<textarea name="user_message_body" id="user_message_body" style="width: 95%; height: 160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'user_message_body' ) ); ?></textarea><img src="<?php echo plugins_url( 'images\arrow-return-180.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" title="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" class="default" style="cursor: pointer;" /><br />
 											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords(); ?><br />
-											<label><input type="checkbox" name="send_user_message_in_html" id="send_user_message_in_html" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'send_user_message_in_html' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
-											<label><input type="checkbox" name="user_message_newline_as_br" id="user_message_newline_as_br" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'user_message_newline_as_br' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
+											<label><input type="checkbox" name="send_user_message_in_html" id="send_user_message_in_html" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'send_user_message_in_html' ), 1 ); ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
+											<label><input type="checkbox" name="user_message_newline_as_br" id="user_message_newline_as_br" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'user_message_newline_as_br' ), 1 ); ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
 										</td>
 									</tr>
 								</table>
@@ -542,7 +542,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><label><?php _e( 'Custom Verification Message', 'register-plus-redux' ); ?></label></th>
 						<td>
-							<label><input type="checkbox" name="custom_verification_message" id="custom_verification_message" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'custom_verification_message' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Enable...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="custom_verification_message" id="custom_verification_message" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'custom_verification_message' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Enable...', 'register-plus-redux' ); ?></label>
 							<div id="custom_verification_message_settings"<?php if ( $register_plus_redux->rpr_get_option( 'custom_verification_message' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<table width="60%">
 									<tr>
@@ -562,8 +562,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 											<label for="verification_message_body"><?php _e( 'User Message', 'register-plus-redux' ); ?></label><br />
 											<textarea name="verification_message_body" id="verification_message_body" style="width: 95%; height: 160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'verification_message_body' ) ); ?></textarea><img src="<?php echo plugins_url( 'images\arrow-return-180.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" title="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" class="default" style="cursor: pointer;" /><br />
 											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords(); ?><br />
-											<label><input type="checkbox" name="send_verification_message_in_html" id="send_verification_message_in_html" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'send_verification_message_in_html' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
-											<label><input type="checkbox" name="verification_message_newline_as_br" id="verification_message_newline_as_br" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'verification_message_newline_as_br' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
+											<label><input type="checkbox" name="send_verification_message_in_html" id="send_verification_message_in_html" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'send_verification_message_in_html' ), 1 ); ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
+											<label><input type="checkbox" name="verification_message_newline_as_br" id="verification_message_newline_as_br" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'verification_message_newline_as_br' ), 1 ); ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
 										</td>
 									</tr>
 								</table>
@@ -582,15 +582,15 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<tr valign="top">
 						<th scope="row"><label><?php _e( 'Admin Notification', 'register-plus-redux' ); ?></label></th>
 						<td>
-							<label><input type="checkbox" name="disable_admin_message_registered" id="disable_admin_message_registered" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Do NOT send administrator an email whenever a new user registers', 'register-plus-redux' ); ?></label><br />
-							<label><input type="checkbox" name="disable_admin_message_created" id="disable_admin_message_created" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Do NOT send administrator an email whenever a new user is created by an administrator', 'register-plus-redux' ); ?></label><br />
-							<label><input type="checkbox" name="admin_message_when_verified" id="admin_message_when_verified" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Send administrator an email after a new user is verified', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="disable_admin_message_registered" id="disable_admin_message_registered" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ), 1 ); ?> />&nbsp;<?php _e( 'Do NOT send administrator an email whenever a new user registers', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="disable_admin_message_created" id="disable_admin_message_created" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ), 1 ); ?> />&nbsp;<?php _e( 'Do NOT send administrator an email whenever a new user is created by an administrator', 'register-plus-redux' ); ?></label><br />
+							<label><input type="checkbox" name="admin_message_when_verified" id="admin_message_when_verified" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ), 1 ); ?> />&nbsp;<?php _e( 'Send administrator an email after a new user is verified', 'register-plus-redux' ); ?></label>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label><?php _e( 'Custom Admin Notification', 'register-plus-redux' ); ?></label></th>
 						<td>
-							<label><input type="checkbox" name="custom_admin_message" id="custom_admin_message" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'custom_admin_message' ) == TRUE ) echo 'checked="checked"'; ?> class="showHideSettings" />&nbsp;<?php _e( 'Enable...', 'register-plus-redux' ); ?></label>
+							<label><input type="checkbox" name="custom_admin_message" id="custom_admin_message" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'custom_admin_message' ), 1 ); ?> class="showHideSettings" />&nbsp;<?php _e( 'Enable...', 'register-plus-redux' ); ?></label>
 							<div id="custom_admin_message_settings"<?php if ( $register_plus_redux->rpr_get_option( 'custom_admin_message' ) == FALSE ) echo ' style="display: none;"'; ?>>
 								<table width="60%">
 									<tr>
@@ -610,8 +610,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 											<label for="admin_message_body"><?php _e( 'Admin Message', 'register-plus-redux' ); ?></label><br />
 											<textarea name="admin_message_body" id="admin_message_body" style="width: 95%; height: 160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'admin_message_body' ) ); ?></textarea><img src="<?php echo plugins_url( 'images\arrow-return-180.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" title="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" class="default" style="cursor: pointer;" /><br />
 											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords(); ?><br />
-											<label><input type="checkbox" name="send_admin_message_in_html" id="send_admin_message_in_html" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'send_admin_message_in_html' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
-											<label><input type="checkbox" name="admin_message_newline_as_br" id="admin_message_newline_as_br" value="1" <?php if ( $register_plus_redux->rpr_get_option( 'admin_message_newline_as_br' ) == TRUE ) echo 'checked="checked"'; ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
+											<label><input type="checkbox" name="send_admin_message_in_html" id="send_admin_message_in_html" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'send_admin_message_in_html' ), 1 ); ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
+											<label><input type="checkbox" name="admin_message_newline_as_br" id="admin_message_newline_as_br" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'admin_message_newline_as_br' ), 1 ); ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
 										</td>
 									</tr>
 								</table>
@@ -816,7 +816,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			jQuery(document).ready(function() {
 				jQuery(document).on("click", "#upload_custom_logo_button", function() {
 					formfield = jQuery("#custom_logo_url").prop("name");
-					tb_show("", "<?php echo admin_url('media-upload.php') ?>?post_id=0&type=image&context=custom-logo&TB_iframe=1");
+					tb_show("Upload a logo", "<?php echo admin_url('media-upload.php') ?>?post_id=0&type=image&context=custom-logo&TB_iframe=1");
 				});
 				 
 				window.send_to_editor = function(html) {
