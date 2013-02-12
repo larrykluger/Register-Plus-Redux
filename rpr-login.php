@@ -629,7 +629,6 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && count( $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) $required_fields = '#' . implode( ', #', $register_plus_redux->rpr_get_option( 'required_fields' ) );
 
 				echo "\n", '<style type="text/css">';
-				echo "\n", 'small { display:block; margin-bottom:8px; }';
 				if ( $register_plus_redux->rpr_get_option( 'default_css' ) == TRUE ) {
 					if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n", '#user_email2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( !empty( $show_fields ) ) echo "\n", $show_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
@@ -650,14 +649,16 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
 					echo "\n", '#reg_passmail { display: none; }';
 					if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
-						echo "\n", '#pass-strength-result { width: 100%; margin-top: 2px; margin-right: 6px; margin-bottom: 6px; border: 1px solid; padding: 3px; text-align: center; font-weight: bold; display: block; }';
+						echo "\n", '#pass-strength-result { width: 100%; margin-top: 0px; margin-right: 6px; margin-bottom: 6px; border: 1px solid; padding: 3px; text-align: center; font-weight: bold; display: block; }';
 						echo "\n", '#pass-strength-result { background-color: #eee; border-color: #ddd !important; }';
 						echo "\n", '#pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }';
 						echo "\n", '#pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }';
 						echo "\n", '#pass-strength-result.short { background-color: #ffa0a0; border-color: #f04040 !important; }';
 						echo "\n", '#pass-strength-result.strong { background-color: #c3ff88; border-color: #8dff1c !important; }';
 					}
+					echo "\n", '#pass_strength_msg { display:block; margin-bottom:16px; }';
 				}
+				if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) echo "\n", '#invitation_code_msg { display:block; margin-bottom:8px; }';
 				if ( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ) {
 					echo "\n", '#user_login, #user_email { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), '} ';
 					if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n", '#user_email2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
