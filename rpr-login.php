@@ -249,7 +249,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( isset( $_GET['accept_disclaimer'] ) ) $accept_disclaimer = $_GET['accept_disclaimer'];
 				echo "\n", '<p id="disclaimer-p">';
 				echo "\n", '<label id="disclaimer_title">', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), '</label><br />';
-				echo "\n", '<div name="disclaimer" id="disclaimer" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
+				echo "\n", '<div name="disclaimer" id="disclaimer"">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == TRUE ) {
 					echo "\n", '<label id="accept_disclaimer-label" class="accept_check" for="accept_disclaimer"><input type="checkbox" name="accept_disclaimer" id="accept_disclaimer" value="1"'; if ( !empty( $accept_disclaimer ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -262,7 +262,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( isset( $_GET['accept_license'] ) ) $accept_license = $_GET['accept_license'];
 				echo "\n", '<p id="license-p">';
 				echo "\n", '<label id="license_title">', esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), '</label><br />';
-				echo "\n", '<div name="license" id="license" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
+				echo "\n", '<div name="license" id="license"">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_license_agree' ) == TRUE ) {
 					echo "\n", '<label id="accept_license-label" class="accept_check" for="accept_license"><input type="checkbox" name="accept_license" id="accept_license" value="1"'; if ( !empty( $accept_license ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -275,7 +275,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( isset( $_GET['accept_privacy_policy'] ) ) $accept_privacy_policy = $_GET['accept_privacy_policy'];
 				echo "\n", '<p id="privacy_policy-p">';
 				echo "\n", '<label id="privacy_policy_title">', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), '</label><br />';
-				echo "\n", '<div name="privacy_policy" id="privacy_policy" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
+				echo "\n", '<div name="privacy_policy" id="privacy_policy">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == TRUE ) {
 					echo "\n", '<label id="accept_privacy_policy-label" class="accept_check" for="accept_privacy_policy"><input type="checkbox" name="accept_privacy_policy" id="accept_privacy_policy" value="1"'; if ( !empty( $accept_privacy_policy ) ) echo ' checked="checked" ';
 					if ( $tabindex != 0 ) echo 'tabindex="', $tabindex++, '" ';
@@ -642,9 +642,9 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n", '#pass1, #pass2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) echo "\n", '#invitation_code { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:4px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 				}
-				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) { echo "\n", '#disclaimer { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-				if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) { echo "\n", '#license { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-				if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) { echo "\n", '#privacy_policy { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) { echo "\n", '#disclaimer { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ) > 525) echo 'height: 160px; overflow-y:scroll;'; echo ' }'; }
+				if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) { echo "\n", '#license { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow-y:scroll;'; echo ' }'; }
+				if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) { echo "\n", '#privacy_policy { font-size:12px; display: block; width: 100%; padding: 3px; margin-top:2px; margin-right:6px; margin-bottom:8px; background-color:#fff; border:solid 1px #A7A6AA; font-weight:normal;'; if ( strlen( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ) > 525) echo 'height: 160px; overflow-y:scroll;'; echo ' }'; }
 				if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) echo "\n", '.accept_check { display:block; margin-bottom:8px; }';
 				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
 					echo "\n", '#reg_passmail { display: none; }';
