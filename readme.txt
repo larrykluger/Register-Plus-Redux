@@ -1,5 +1,5 @@
 === Register Plus Redux ===
-Contributors: skullbit, radiok
+Contributors: radiok, skullbit
 Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
@@ -109,14 +109,17 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 
+= 3.9.4 =
+* Misc. bug fixes, nothing significant
+
 = 3.9.3 =
-February 7, 2012 by radiok
+February 7, 2013 by radiok
 
 * Added new feature dynamic keywords for custom messages, %=keyword% will search user_meta for keyword and replace
 * Fixed bug with custom admin messages
 
 = 3.9.2 =
-February 6, 2012 by radiok
+February 6, 2013 by radiok
 
 * Improved initial 'meta_key' definition
 * Fixed bug with Network Activation warning which prevented any activation on Wordpress Multisite
@@ -124,7 +127,7 @@ February 6, 2012 by radiok
 * Fixed regression from v3.7.3 introduced in v3.9 in the way that additional select, checkbox, and radio field values were stored
 
 = 3.9.1 =
-February 5, 2012 by radiok
+February 5, 2013 by radiok
 
 * Removed hack to filter random passwords in messages
 * Fixed malformed labels for additional fields on signup page
@@ -378,42 +381,42 @@ September 13, 2010 by radiok
 * Started renaming settings
 
 = 3.5.1 =
-July 29, 2008 by Skullbit
+July 29, 2008 by skullbit
 
 * Added Logo link to login page
 
 = 3.5 =
-July 29, 2008 by Skullbit
+July 29, 2008 by skullbit
 
 * Changed Logo to link to site home page instead of wordpress.org and set the Logo title to "blogname - blogdescription"
 * Added Date Field ability for User Defined Fields - calendar pop-up on click with customization abilities
 
 = 3.4.1 =
-July 28, 2008 by Skullbit
+July 28, 2008 by skullbit
 
 * Fixed admin verification error
 
 = 3.4 =
-July 25, 2008 by Skullbit
+July 25, 2008 by skullbit
 
 * Fixed verification email sending errors
 * Fixed Custom Fields Extra Options duplications
 * Added Custom CSS option for login and register pages
 
 = 3.3 =
-July 23, 2008 by Skullbit
+July 23, 2008 by skullbit
 
 * Updated conflict warning error to only appear on the RegPlus options page only.
 
 = 3.2 =
-July 22, 2008 by Skullbit
+July 22, 2008 by skullbit
 
 * Fixed Custom Field Checkbox saving issue
 * Additional field types available for Custom Fields.
 * Password Meter is now optional and text is editable within options page
 
 = 3.1 =
-July 8, 2008 by Skullbit
+July 8, 2008 by skullbit
 
 * Added Logo Removal Option
 * Updated Email Validation text after registering
@@ -422,19 +425,19 @@ July 8, 2008 by Skullbit
 * Fixed bad version control code
 
 = 3.0.2 =
-June 23, 2008 by Skullbit
+June 23, 2008 by skullbit
 
 * Updated Email notifications to use a filter to replace the From Name and Email address
 
 = 3.0.1 =
-June 19, 2008 by Skullbit
+June 19, 2008 by skullbit
 
 * Added more localization files
 * Added documentation for auto-complete queries
 * Fixed Admin notification email to now actually really go to the administrator
 
 = 3.0 =
-June 18, 2008 by Skullbit
+June 18, 2008 by skullbit
 
 * Added localization to password strength text
 * Added stripslashes to missing areas
@@ -444,19 +447,19 @@ June 18, 2008 by Skullbit
 * Added ability to email all user data in notification emails
 
 = 2.9 =
-June 10, 2008 by Skullbit
+June 10, 2008 by skullbit
 
 * Fixed foreach error for custom invite codes
 * Custom logos can now be any size
 * Login fields are now hidden after registration if email verification is enabled.
 
 = 2.8 =
-June 9, 2008 by Skullbit
+June 9, 2008 by skullbit
 
 * Fixed Fatal Error on Options Page
 
 = 2.7 =
-June 8, 2008 by Skullbit
+June 8, 2008 by skullbit
 
 * Added full customization option to User Registration Email and Admin Email.
 * Added ability to disable Admin notification email.
@@ -464,24 +467,24 @@ June 8, 2008 by Skullbit
 * Added Custom Logo upload for replacing WP Logo on register & login pages
 
 = 2.6 =
-May 15, 2008 by Skullbit
+May 15, 2008 by skullbit
 
 * Fixed error on ranpass function.
 
 = 2.5 =
-May 14, 2008 by Skullbit
+May 14, 2008 by skullbit
 
 * Fixed registration password email to work when user set password is disabled
 
 = 2.4 =
-May 13, 2008 by Skullbit
+May 13, 2008 by skullbit
 
 * Fixed localization issue
 * Added License Agreement & Privacy Policy plus user defined titles and agree text for these and the Disclaimer
 * Fixed Javascript error in IE
 
 = 2.3 =
-May 12, 2008 by Skullbit
+May 12, 2008 by skullbit
 
 * Added reCAPTCHA support
 * Fixed PHP short-code issue
@@ -489,13 +492,13 @@ May 12, 2008 by Skullbit
 * Added ability to customize the registration email's From address, Subject and add your own message to the email body.
 
 = 2.2 =
-April 27, 2008 by Skullbit
+April 27, 2008 by skullbit
 
 * Fixed About Us Slashes from showing with apostrophes
 * Modified the Captcha code to hopefully fix some compatibility issues
 
 = 2.1 =
-April 26, 2008 by Skullbit
+April 26, 2008 by skullbit
 
 * Fixed Admin Registration Password issue
 * Added Dashboard Widget for showing invitation code tracking
@@ -503,7 +506,7 @@ April 26, 2008 by Skullbit
 * Unvalidated registrations are unable to login and are deleted after a set grace period
 
 = 2.0 =
-April 20, 2008 by Skullbit
+April 20, 2008 by skullbit
 
 * Added Profile Fields
 * Added Multiple Invitation Codes
@@ -511,14 +514,14 @@ April 20, 2008 by Skullbit
 * Added ability to ignore duplicate email registrations
 
 = 1.2 =
-April 13, 2008 by Skullbit
+April 13, 2008 by skullbit
 
 * Altered Options saving and retrievals for less database interactions
 * Added Disclaimer Feature
 * Allowed register fields to retain values on submission if there is an error.
 
 = 1.1 =
-April 10 2008 by Skullbit
+April 10 2008 by skullbit
 
 * Fixed Invitation Code from displaying when disabled.
 * Added Captcha Feature
@@ -538,4 +541,4 @@ New features, can use email address as username and validate text fields with re
 Notice: Custom CSS on Checkbox and Radio fields may need to be reviewed
 
 = 3.9.3 =
-New feature, dynamic keywords for custom messages, %=keyword% will search user_meta for keyword and replace
+New feature, meta keywords for custom messages, %=keyword% will search user_meta for keyword and replace
