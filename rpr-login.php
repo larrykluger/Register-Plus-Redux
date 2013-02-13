@@ -541,6 +541,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 						margin: 0 0 0 8px;
 						<?php if ( !empty( $width ) ) echo 'width: ', $width, 'px;', "\n"; ?>
 						<?php if ( !empty( $height ) ) echo 'height: ', $height, 'px;', "\n"; ?>
+						<?php if ( !empty( $width ) && !empty( $height ) ) echo 'background-size: ', $width, 'px ', $height, 'px;', "\n"; ?>
 					}
 				</style>
 				<?php
