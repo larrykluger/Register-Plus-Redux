@@ -422,7 +422,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				echo "\n", '<label id="disclaimer-label" for="disclaimer">', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), ':</label>';
 				echo "\n", '<div name="disclaimer" id="disclaimer" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == TRUE ) {
-					echo "\n", '<label id="accept_disclaimer-label"><input type="checkbox" name="accept_disclaimer" id="accept_disclaimer" value="1"'; if ( $accept_disclaimer ) echo ' checked="checked" />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_agree' ) ), '</label>';
+					echo "\n", '<label id="accept_disclaimer-label"><input type="checkbox" name="accept_disclaimer" id="accept_disclaimer" value="1"'; if ( $accept_disclaimer ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('disclaimer') ) {
 					echo '<p class="error">'.$errmsg.'</p>';
@@ -434,7 +434,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				echo "\n", '<label id="license-label" for="license">', esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), ':</label>';
 				echo "\n", '<div name="license" id="license" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_license_agree' ) == TRUE ) {
-					echo "\n", '<label id="accept_license-label"><input type="checkbox" name="accept_license" id="accept_license" value="1"'; if ( $accept_license ) echo ' checked="checked" />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_license_agree' ) ), '</label>';
+					echo "\n", '<label id="accept_license-label"><input type="checkbox" name="accept_license" id="accept_license" value="1"'; if ( $accept_license ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_license_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('license') ) {
 					echo '<p class="error">'.$errmsg.'</p>';
@@ -446,7 +446,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				echo "\n", '<label id="privacy_policy-label" for="privacy_policy">', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), ':</label>';
 				echo "\n", '<div name="privacy_policy" id="privacy_policy" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
 				if ( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == TRUE ) {
-					echo "\n", '<label id="accept_privacy_policy-label"><input type="checkbox" name="accept_privacy_policy" id="accept_privacy_policy" value="1"'; if ( $accept_privacy_policy ) echo ' checked="checked" />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), '</label>';
+					echo "\n", '<label id="accept_privacy_policy-label"><input type="checkbox" name="accept_privacy_policy" id="accept_privacy_policy" value="1"'; if ( $accept_privacy_policy ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('privacy_policy') ) {
 					echo '<p class="error">'.$errmsg.'</p>';
