@@ -80,15 +80,29 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			}
 			*/
 
-			// TODO: Verify autologin works
+			// TODO: Eh, semi-autologin works
 			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE && $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
-				$user_info = get_userdata( $user_id );
-				$credentials['user_login'] = $user_info->user_login;
-				$credentials['user_password'] = $password;
-				$credentials['remember'] = FALSE;
-				$user = wp_signon( $credentials, FALSE ); 
-				//wp_redirect( admin_url() );
-				//exit();
+				$user = get_userdata( (int) $user_id );
+				?>
+				<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
+				<input type="hidden" name="log" value="<?php echo $user->user_login; ?>">
+				<input type="hidden" name="pwd" value="<?php echo $password; ?>">
+				</form>
+				
+				<script type="text/javascript">
+				jQuery(document).ready(function() {
+					jQuery(document).on("click", "a:contains('Log in')", function(eventObject) {
+						eventObject.preventDefault();
+						//jQuery.post("<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>", { log: "<?php echo $user->user_login; ?>", pwd: "<?php echo $password; ?>" } );
+						//window.location.assign("http://radiok.info/wp-admin/");
+						jQuery("#loginform").submit();
+					});
+				});
+				window.onbeforeunload = function(e) {
+					jQuery.post("<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>", { log: "<?php echo $user->user_login; ?>", pwd: "<?php echo $password; ?>" } );
+				};
+				</script>
+				<?php
 			}
 		}
 
