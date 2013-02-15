@@ -139,7 +139,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php echo sprintf( __( 'By default, after verifying, users will be sent to %s/wp-login.php, leave this value empty if you do not wish to change this behavior. You may enter another address here, however, if that addresses is not on the same domain, Wordpress will ignore the redirect.', 'register-plus-redux' ), home_url() ); ?><br />
 						</td>
 					</tr>
-					<?php if ( !is_multisite() ) { ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Autologin user', 'register-plus-redux' ); ?></th>
 						<td>
@@ -147,7 +146,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php echo sprintf( __( 'Works if Email Verification and Admin Verification are turned off. By default users will be sent to %s, to change this behavior, set up Registration Redirect field above.', 'register-plus-redux' ), admin_url() ); ?>
 						</td>
 					</tr>						
-					<?php } ?>
 				</table>
 				<?php if ( !is_multisite() ) { ?>
 				<h3 class="title"><?php _e( 'Registration Form', 'register-plus-redux' ); ?></h3>
@@ -949,6 +947,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
 							wp_set_password( $plaintext_pass, $user_id );
 						}
+						do_action( 'rpr_signup_complete' );
 						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
 							$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
 						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
