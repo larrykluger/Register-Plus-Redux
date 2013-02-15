@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.3
+Stable tag: 3.9.4
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -36,7 +36,7 @@ Enhancements to registration include:
 
 * Add your own disclaimer, license agreement, or privacy policy to registration or signup page
 
-* Add additional custom fields (textbox, select, checkboxes, radio buttons, textarea) to registration, signup, or profile __(textboxes be validated against regex)__
+* Add additional custom fields (textbox, select, checkboxes, radio buttons, textarea) to registration, signup, or profile __(textboxes can be validated against regex)__
 
 * Customize message to new users
 
@@ -110,7 +110,10 @@ HTML attributes should go in the following order name -> id -> class
 == Changelog ==
 
 = 3.9.4 =
+February 15, 2013 by radiok
+* Created action, 'rpr_signup_complete' which occurs after any verification in place and after user data is committed but prior to messages being sent out
 * Misc. bug fixes, nothing significant
+* Improved CSS on various elements
 
 = 3.9.3 =
 February 7, 2013 by radiok
