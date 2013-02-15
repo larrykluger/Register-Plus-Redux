@@ -111,6 +111,7 @@ HTML attributes should go in the following order name -> id -> class
 
 = 3.9.4 =
 February 15, 2013 by radiok
+
 * Created action, 'rpr_signup_complete' which occurs after any verification in place and after user data is committed but prior to messages being sent out
 * Misc. bug fixes, nothing significant
 * Improved CSS on various elements
