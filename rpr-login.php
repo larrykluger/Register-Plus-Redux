@@ -654,7 +654,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
 					echo "\n", '#reg_passmail { display: none; }';
 					if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
-						echo "\n", '#pass-strength-result { width: 100%; margin-top: 0px; margin-right: 6px; margin-bottom: 6px; border: 1px solid; padding: 3px; text-align: center; font-weight: bold; display: block; }';
+						echo "\n", '.login #pass-strength-result { width: 100%; margin-top: 0px; margin-right: 6px; margin-bottom: 8px; margin-left: 0px; border-width: 1px; border-style: solid; padding: 3px 0; text-align: center; font-weight: bold; display: block; }';
 						echo "\n", '#pass-strength-result { background-color: #eee; border-color: #ddd !important; }';
 						echo "\n", '#pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }';
 						echo "\n", '#pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }';
