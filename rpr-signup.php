@@ -637,7 +637,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 
 		function rpr_signup_finished() {
 			global $register_plus_redux;
-			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE ) {
+			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) {
 				?>
 				<script type="text/javascript">
 				document.getElementById("content").innerHTML = "<?php $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ?>";
