@@ -109,6 +109,11 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 
+= 3.9.5 =
+February 15, 2013 by radiok
+
+* Misc. bug fixes, nothing significant
+
 = 3.9.4 =
 February 15, 2013 by radiok
 
