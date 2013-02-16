@@ -420,7 +420,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			if ( ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) && isset( $_GET['verification_code'] ) ) {
 				global $wpdb;
 				$verification_code = get_magic_quotes_gpc() ? stripslashes( $_GET['verification_code'] ) : $_GET['verification_code'];
-				$user_id = $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'email_verification_code' AND meta_value = %s;", $verification_code ) );
+				$user_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'email_verification_code' AND meta_value = %s;", $verification_code ) );
 				if ( !empty( $user_id ) ) {
 					if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
 						$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
