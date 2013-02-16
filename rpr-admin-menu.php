@@ -977,7 +977,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			}
 			if ( ( isset( $_REQUEST['action'] ) && ( $_REQUEST['action'] == 'delete_users' ) ) || isset( $_REQUEST['delete_users'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
-				check_admin_referer( 'delete-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
 					$update = 'delete_users';
 					//necessary for wp_delete_user to function
@@ -1046,7 +1045,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 										<strong><?php if ( current_user_can( 'edit_users' ) ) echo '<a href="', esc_url( add_query_arg( array( 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php') ) , '">', $user_info->stored_user_login, '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
 										<div class="row-actions">
 											<?php if ( current_user_can( 'edit_users' ) ) echo '<span class="edit"><a href="', esc_url( add_query_arg( array( 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php') ), '">', __( 'Edit', 'register-plus-redux' ), '</a></span>', "\n"; ?>
-											<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'action' => 'delete', 'user' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'), 'delete-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), '</a></span>', "\n"; ?>
+											<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'action' => 'delete', 'user' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'), 'bulk-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), '</a></span>', "\n"; ?>
 										</div>
 									</td>
 									<td><?php echo $user_info->user_login; ?></td>
