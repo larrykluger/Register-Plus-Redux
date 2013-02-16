@@ -965,8 +965,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
 					$update = 'send_verification_email';
 					foreach ( (array) $_REQUEST['users'] as $id ) {
-						$id = (int) $id;
-						if ( !current_user_can( 'promote_user', $id ) )
+						$user_id = (int) $id;
+						if ( !current_user_can( 'promote_user', $user_id ) )
 							wp_die( __( 'You cannot edit that user.', 'register-plus-redux' ) );
 						$verification_code = wp_generate_password( 20, FALSE );
 						update_user_meta( $user_id, 'email_verification_code', $verification_code );
