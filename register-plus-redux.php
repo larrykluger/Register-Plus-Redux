@@ -481,15 +481,15 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			if ( !empty( $user_info ) ) {
 				if ( ( $this->rpr_get_option( 'verify_user_email' ) == TRUE ) || ( $this->rpr_get_option( 'verify_user_admin' ) == TRUE ) ) {
-					$user_login = $user_info->stored_user_login;
-					if ( empty( $user_login ) ) $login = $user_info->user_login;
+					$user_login = get_user_meta( $user_info->ID, 'stored_user_login', TRUE );
+					if ( empty( $user_login ) ) $user_login = $user_info->user_login;
 					$message = str_replace( '%user_login%', $user_login, $message );
 				}
 				else {
 					$message = str_replace( '%user_login%', $user_info->user_login, $message );
 				}
 				$message = str_replace( '%user_email%', $user_info->user_email, $message );
-				$message = str_replace( '%stored_user_login%', $user_info->stored_user_login, $message );
+				$message = str_replace( '%stored_user_login%', get_user_meta( $user_info->ID, 'stored_user_login', TRUE ), $message );
 			}
 			if ( !empty( $plaintext_pass ) ) {
 				$message = str_replace( '%user_password%', $plaintext_pass, $message );

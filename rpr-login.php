@@ -423,26 +423,26 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$user_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'email_verification_code' AND meta_value = %s;", $verification_code ) );
 				if ( !empty( $user_id ) ) {
 					if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
-						$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
-						$stored_user_password = get_user_meta( $user_id, 'stored_user_password', TRUE );
-						$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
+						$user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
+						$user_password = get_user_meta( $user_id, 'stored_user_password', TRUE );
+						$wpdb->update( $wpdb->users, array( 'user_login' => $user_login ), array( 'ID' => $user_id ) );
 						delete_user_meta( $user_id, 'email_verification_code' );
 						delete_user_meta( $user_id, 'email_verification_sent' );
 						delete_user_meta( $user_id, 'stored_user_login' );
 						delete_user_meta( $user_id, 'stored_user_password' );
-						if ( empty( $stored_user_password ) ) {
-							$stored_user_password = wp_generate_password();
-							wp_set_password( $stored_user_password, $user_id );
+						if ( empty( $user_password ) ) {
+							$user_password = wp_generate_password();
+							wp_set_password( $user_password, $user_id );
 						}
 						do_action( 'rpr_signup_complete', $user_id );
 						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
-							$register_plus_redux->send_welcome_user_mail( $user_id, $stored_user_password );
+							$register_plus_redux->send_welcome_user_mail( $user_id, $user_password );
 						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
-							$register_plus_redux->send_admin_mail( $user_id, $stored_user_password );
+							$register_plus_redux->send_admin_mail( $user_id, $user_password );
 						if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE )
-							$errors->add( 'account_verified', sprintf( __( 'Thank you %s, your account has been verified, please login with the password you specified during registration.', 'register-plus-redux' ), $stored_user_login ), 'message' );
+							$errors->add( 'account_verified', sprintf( __( 'Thank you %s, your account has been verified, please login with the password you specified during registration.', 'register-plus-redux' ), $user_login ), 'message' );
 						else
-							$errors->add( 'account_verified_checkemail', sprintf( __( 'Thank you %s, your account has been verified, your password will be emailed to you.', 'register-plus-redux' ), $stored_user_login ), 'message' );
+							$errors->add( 'account_verified_checkemail', sprintf( __( 'Thank you %s, your account has been verified, your password will be emailed to you.', 'register-plus-redux' ), $user_login ), 'message' );
 					}
 					elseif ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) {
 						update_user_meta( $user_id, 'email_verified', gmdate( 'Y-m-d H:i:s' ) );
