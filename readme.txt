@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.4
+Stable tag: 3.9.5
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -110,9 +110,13 @@ HTML attributes should go in the following order name -> id -> class
 == Changelog ==
 
 = 3.9.5 =
-February 15, 2013 by radiok
+February 19, 2013 by radiok
 
-* Misc. bug fixes, nothing significant
+* Added user_id parameter to rpr_signup_complete action
+* Fixed bug, could not delete users from unverified users page
+* Fixed CSS on additional checkbox and radio fields on signup page
+* Fixed bug with signup not validating due to bad $pagenow check
+* Fixed bug, %user_login% was not replaced properly in messages following email verification
 
 = 3.9.4 =
 February 15, 2013 by radiok
@@ -551,3 +555,6 @@ Notice: Custom CSS on Checkbox and Radio fields may need to be reviewed
 
 = 3.9.3 =
 New feature, meta keywords for custom messages, %=keyword% will search user_meta for keyword and replace
+
+= 3.9.5 =
+WordPress Multisite users please update, signup pages were not validating, any information entered was accepted, also Email as Username was not functioning, same root cause
