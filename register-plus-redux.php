@@ -537,7 +537,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 // include secondary php files outside of object otherwise $register_plus_redux will not be an instance yet
 if ( class_exists( 'Register_Plus_Redux' ) ) {
-	global $pagenow;
 	//rumor has it this may need to declared global in order to be available at plugin activation
 	$register_plus_redux = new Register_Plus_Redux();
 

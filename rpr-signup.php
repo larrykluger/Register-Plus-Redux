@@ -485,7 +485,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 		function rpr_filter_wpmu_validate_user_signup( $result ) {
 			global $register_plus_redux;
 			global $pagenow;
-			if ( $pagenow != 'signup.php' ) return $result;
+			if ( $pagenow != 'wp-signup.php' ) return $result;
 			//trigger_error( sprintf( __( 'Register Plus Redux DEBUG: filter_wpmu_validate_user_signup($result=%s) from %s', 'register-plus-redux' ), $result, $pagenow ) ); 
 			if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) {
 				global $wpdb;
