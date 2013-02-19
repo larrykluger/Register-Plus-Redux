@@ -947,7 +947,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
 							wp_set_password( $plaintext_pass, $user_id );
 						}
-						do_action( 'rpr_signup_complete' );
+						do_action( 'rpr_signup_complete', $user_id );
 						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
 							$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
 						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )

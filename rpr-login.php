@@ -434,7 +434,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							$stored_user_password = wp_generate_password();
 							wp_set_password( $stored_user_password, $user_id );
 						}
-						do_action( 'rpr_signup_complete' );
+						do_action( 'rpr_signup_complete', $user_id );
 						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
 							$register_plus_redux->send_welcome_user_mail( $user_id, $stored_user_password );
 						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
@@ -513,7 +513,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 
 			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) {
-				do_action( 'rpr_signup_complete' );
+				do_action( 'rpr_signup_complete', $user_id );
 				if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) {
 					$user_info = get_userdata( $user_id );
 					$credentials['user_login'] = $user_info->user_login;
