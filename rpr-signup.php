@@ -32,19 +32,23 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					if ( $meta_field['display'] == 'checkbox' ) {
 						$field_options = explode( ',', $meta_field['options'] );
 						foreach ( $field_options as $field_option ) {
-							if ( empty( $show_custom_checkbox_fields ) )
+							if ( empty( $show_custom_checkbox_fields ) ) {
 								$show_custom_checkbox_fields = '.mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
-							else
+							}
+							else {
 								$show_custom_checkbox_fields .= ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+							}
 						}
 					}
 					if ( $meta_field['display'] == 'radio' ) {
 						$field_options = explode( ',', $meta_field['options'] );
 						foreach ( $field_options as $field_option ) {
-							if ( empty( $show_custom_radio_fields ) )
+							if ( empty( $show_custom_radio_fields ) ) {
 								$show_custom_radio_fields = '.mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
-							else
+							}
+							else {
 								$show_custom_radio_fields .= ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+							}
 						}
 					}
 					if ( $meta_field['display'] == 'textarea' ) {
@@ -72,8 +76,8 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo "\n", '.mu_register #description { width:100%; font-size:24px; height: 60px; margin:5px 0; }';
 				if ( !empty( $show_custom_text_fields ) ) echo "\n", $show_custom_text_fields, ' { width:100%; font-size: 24px; margin:5px 0; }';
 				if ( !empty( $show_custom_select_fields ) ) echo "\n", $show_custom_select_fields, ' { width:100%; font-size:24px; margin:5px 0; }';
-				if ( !empty( $show_custom_checkbox_fields ) ) echo "\n", $show_custom_checkbox_fields, ' { width:100%; font-size:18px; margin:5px 0; }';
-				if ( !empty( $show_custom_radio_fields ) ) echo "\n", $show_custom_radio_fields, ' { width:100%; font-size:18px; margin:5px 0; }';
+				if ( !empty( $show_custom_checkbox_fields ) ) echo "\n", $show_custom_checkbox_fields, ' { font-size:18px; margin:5px 0; display: inline; }';
+				if ( !empty( $show_custom_radio_fields ) ) echo "\n", $show_custom_radio_fields, ' { font-size:18px; margin:5px 0; display: inline; }';
 				if ( !empty( $show_custom_textarea_fields ) ) echo "\n", $show_custom_textarea_fields, ' { width:100%; font-size:24px; height: 60px; margin:5px 0; }';
 				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n", '.mu_register #pass1, .mu_register #pass2 { width:100%; font-size: 24px; margin:5px 0; }';
 				if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) echo "\n", '.mu_register #invitation_code { width:100%; font-size: 24px; margin:5px 0; }';
@@ -84,7 +88,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) echo "\n", '.mu_register .accept_check { display:block; margin:5px 0; }';
 			if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
 				if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
-					echo "\n", '.mu_register #pass-strength-result { width: 100%; margin: 5px 0; border: 1px solid; padding: 6px; text-align: center; font-weight: bold; display: block; }';
+					echo "\n", '.mu_register #pass-strength-result { width: 100%; margin: 10px 0; border: 1px solid; padding: 6px; text-align: center; font-weight: bold; display: block; }';
 					echo "\n", '.mu_register #pass-strength-result { background-color: #eee; border-color: #ddd !important; }';
 					echo "\n", '.mu_register #pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }';
 					echo "\n", '.mu_register #pass-strength-result.good { background-color: #ffec8b; border-color: #fc0 !important; }';
@@ -354,7 +358,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
 								if ( is_array( $meta_value ) && in_array( esc_attr( $field_option ), $meta_value ) ) echo 'checked="checked" ';
 								if ( !is_array( $meta_value ) && ( $meta_value == esc_attr( $field_option ) ) ) echo 'checked="checked" ';
-								echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label>';
+								echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
 							}
 							break;
 						case 'radio':
@@ -362,7 +366,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 							foreach ( $field_options as $field_option ) {
 								echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
 								if ( $meta_value == esc_attr( $field_option ) ) echo 'checked="checked" ';
-								echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label>';
+								echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
 							}
 							break;
 						case 'textarea':
