@@ -1,11 +1,11 @@
 <?php
 if ( !class_exists( 'RPR_Dashboard_Widget' ) ) {
 	class RPR_Dashboard_Widget {
-		function __construct() {
+		public function __construct() {
 			add_action( 'wp_dashboard_setup', array( $this, 'rpr_dashboard_setup' ) );
 		}
 
-		function rpr_dashboard_setup() {
+		public function rpr_dashboard_setup() {
 			global $register_plus_redux;
 
 			if ( !current_user_can( 'manage_options' ) ) return;
@@ -14,7 +14,7 @@ if ( !class_exists( 'RPR_Dashboard_Widget' ) ) {
 				wp_add_dashboard_widget( 'rpr_invitation_tracking_widget', __( 'Invitation Code Tracking', 'register-plus-redux' ), array( $this, 'rpr_invitation_tracking_widget' ) );
 		}
 
-		function rpr_invitation_tracking_widget() {
+		public function rpr_invitation_tracking_widget() {
 			global $wpdb;
 			$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
 			foreach ( $invitation_code_bank as $invitation_code ) {

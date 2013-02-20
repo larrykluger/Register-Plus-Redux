@@ -1,7 +1,7 @@
 <?php
 if ( !class_exists( 'RPR_Signup' ) ) {
 	class RPR_Signup {
-		function __construct() {
+		public function __construct() {
 			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 0 );
 			add_action( 'signup_extra_fields', array( $this, 'rpr_signup_extra_fields' ), 9, 1 ); // Higher priority to avoid getting bumped by other plugins
 			add_action( 'after_signup_form', array( $this, 'rpr_after_signup_form' ), 10, 0 ); // Closest thing to signup_footer
@@ -10,7 +10,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			add_action( 'signup_finished', array( $this, 'rpr_signup_finished' ), 10, 0 );
 		}
 
-		function rpr_signup_header() {
+		public function rpr_signup_header() {
 			global $register_plus_redux;
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
@@ -228,7 +228,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 		}
 
-		function rpr_signup_extra_fields( $errors ) {
+		public function rpr_signup_extra_fields( $errors ) {
 			global $register_plus_redux;
 			if ( get_magic_quotes_gpc() ) $_POST = stripslashes_deep( $_POST );
 			if ( get_magic_quotes_gpc() ) $_GET = stripslashes_deep( $_GET );
@@ -458,7 +458,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 		}
 
-		function rpr_after_signup_form() {
+		public function rpr_after_signup_form() {
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) {
 				?>
@@ -482,7 +482,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 		}
 
-		function rpr_filter_wpmu_validate_user_signup( $result ) {
+		public function rpr_filter_wpmu_validate_user_signup( $result ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( $pagenow != 'wp-signup.php' ) return $result;
@@ -630,7 +630,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			return $result;
 		}
 
-		function filter_add_signup_meta( $meta ) {
+		public function filter_add_signup_meta( $meta ) {
 			foreach ( $_POST as $key => $value )
 				$meta[$key] = $value;
 			$meta['signup_http_referer'] = $_SERVER['HTTP_REFERER'];
@@ -639,7 +639,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			return $meta;
 		}
 
-		function rpr_signup_finished() {
+		public function rpr_signup_finished() {
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) {
 				?>

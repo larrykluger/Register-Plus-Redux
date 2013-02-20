@@ -1,7 +1,7 @@
 <?php
 if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 	class RPR_Admin_Menu {
-		function __construct() {
+		public function __construct() {
 			global $wp_version;
 			if ( $wp_version < 3.2 )
 				add_action( 'admin_notices', array( $this, 'rpr_version_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
@@ -11,14 +11,14 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
 		}
 
-		function rpr_version_warning() {
+		public function rpr_version_warning() {
 			global $wp_version;
 			global $pagenow;
 			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
 				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux requires WordPress 3.2 or greater. You are currently using WordPress %s, please upgrade WordPress or deactivate Register Plus Redux.', 'register-plus-redux' ), $wp_version ), '</strong></p></div>', "\n";
 		}
 
-		function rpr_network_activate_warning() {
+		public function rpr_network_activate_warning() {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( !$register_plus_redux->rpr_is_network_activated() ) {
@@ -27,13 +27,13 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			}
 		}
 
-		function rpr_new_user_notification_warning() {
+		public function rpr_new_user_notification_warning() {
 			global $pagenow;
 			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
 				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'There is another active plugin that is conflicting with Register Plus Redux. The conflicting plugin is creating its own wp_new_user_notification function, this function is used to alter the messages sent out following the creation of a new user. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wp_new_user_notification-conflicts/' ), '</strong></p></div>', "\n";
 		}
 
-		function rpr_admin_menu() {
+		public function rpr_admin_menu() {
 			global $register_plus_redux;
 			global $wpdb;
 			$admin_menu_hook = array( $this, 'rpr_options_submenu' );
@@ -48,7 +48,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				add_submenu_page( 'users.php', __( 'Unverified Users', 'register-plus-redux' ), __( 'Unverified Users', 'register-plus-redux' ), 'promote_users', 'unverified-users', array( $this, 'rpr_users_submenu' ) );
 		}
 
-		function rpr_filter_plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
+		public function rpr_filter_plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
 			// before other links
 			array_unshift( $actions, '<a href="options-general.php?page=register-plus-redux">' . __( 'Settings', 'register-plus-redux' ) . '</a>' );
 			// ... or after other links
@@ -56,18 +56,18 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			return $actions;
 		}
 
-		function rpr_options_submenu_scripts() {
+		public function rpr_options_submenu_scripts() {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			if ( !is_multisite() ) wp_enqueue_script( 'media-upload' );
 			if ( !is_multisite() ) wp_enqueue_script( 'thickbox' );
 		}
 
-		function rpr_options_submenu_styles() {
+		public function rpr_options_submenu_styles() {
 			if ( !is_multisite() ) wp_enqueue_style( 'thickbox' );
 		}
 
-		function rpr_options_submenu() {
+		public function rpr_options_submenu() {
 			global $register_plus_redux;
 			if ( isset( $_POST['update_settings'] ) ) {
 				check_admin_referer( 'register-plus-redux-update-settings' );
@@ -645,7 +645,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			<?php
 		}
 
-		function rpr_options_submenu_footer() {
+		public function rpr_options_submenu_footer() {
 			global $register_plus_redux;
 			?>
 			<script type="text/javascript">
@@ -930,7 +930,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			<?php
 		}
 
-		function rpr_users_submenu() {
+		public function rpr_users_submenu() {
 			global $register_plus_redux;
 			global $wpdb;
 			if ( ( isset( $_REQUEST['action'] ) && ( $_REQUEST['action'] == 'verify_users' ) ) || isset( $_REQUEST['verify_users'] ) ) {
@@ -1074,7 +1074,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			<?php
 		}
 
-		function update_settings() {
+		public function update_settings() {
 			global $register_plus_redux;
 			$options = array();
 			$redux_usermeta = array();

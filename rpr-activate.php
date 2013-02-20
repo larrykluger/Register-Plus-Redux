@@ -1,14 +1,14 @@
 <?php
 if ( !class_exists( 'RPR_Activate' ) ) {
 	class RPR_Activate {
-		function __construct() {
+		public function __construct() {
 			add_filter( 'random_password', array( $this, 'rpr_activate_filter_random_password' ), 10, 1 ); // Replace random password with user set password
 			add_filter( 'wpmu_welcome_user_notification', array( $this, 'rpr_filter_wpmu_welcome_user_notification' ), 10, 3 );
 			add_action( 'wpmu_activate_user', array( $this, 'rpr_wpmu_activate_user' ), 10, 3 ); // Restore metadata to activated user's profile
 			//add_action( 'wpmu_activate_blog', array( $this, 'rpr_wpmu_activate_blog' ), 10, 5 );
 		}
 
-		function rpr_activate_filter_random_password( $password ) {
+		public function rpr_activate_filter_random_password( $password ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( $pagenow == 'wp-activate.php' && $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
@@ -30,13 +30,13 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			return $password;
 		}
 
-		function rpr_filter_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
+		public function rpr_filter_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == TRUE ) return FALSE;
 			else return TRUE;
 		}
 
-		function rpr_wpmu_activate_user( $user_id, $password, $meta ) {
+		public function rpr_wpmu_activate_user( $user_id, $password, $meta ) {
 			global $register_plus_redux;
 
 			//TODO: Not the most elegant solution, it would be better to interupt the activation and keep the data in the signups table with a flag to alert admin to complete activation			
@@ -106,7 +106,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			}
 		}
 
-		function rpr_wpmu_activate_blog( $blog_id, $user_id, $password, $signup, $meta ) {
+		public function rpr_wpmu_activate_blog( $blog_id, $user_id, $password, $signup, $meta ) {
 			$this->rpr_wpmu_activate_user( $user_id, $password, $meta );
 		}
 	}

@@ -29,7 +29,7 @@ Domain Path: /languages
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
 		private $_options;
-		function __construct() {
+		public function __construct() {
 			add_action( 'init', array( $this, 'rpr_i18n_init' ), 10, 1 );
 
 			if ( !is_multisite() ) {
@@ -44,12 +44,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			add_action( 'admin_head-user-edit.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 		}
 
-		function rpr_i18n_init() {
+		public function rpr_i18n_init() {
 			// Place your language file in the languages subfolder and name it "register-plus-redux-{language}.mo" replace {language} with your language value from wp-config.php
 			load_plugin_textdomain( 'register-plus-redux', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		}
 
-		function rpr_filter_pre_user_login_swp( $user_login ) {
+		public function rpr_filter_pre_user_login_swp( $user_login ) {
 			// TODO: Review, this could be overriding some other stuff
 			if ( $this->rpr_get_option( 'username_is_email' ) == TRUE ) {
 				if ( array_key_exists( 'user_email', $_POST ) ) {
@@ -61,7 +61,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return $user_login;
 		}
 
-		function rpr_show_custom_fields( $profileuser ) {
+		public function rpr_show_custom_fields( $profileuser ) {
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			if ( $this->rpr_get_option( 'enable_invitation_code' ) == TRUE || !empty( $redux_usermeta ) ) {
@@ -147,7 +147,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
-		function rpr_save_custom_fields( $user_id ) {
+		public function rpr_save_custom_fields( $user_id ) {
 			// TODO: Error check invitation code?
 			if ( array_key_exists( 'invitation_code', $_POST ) ) {
 				$invitation_code = get_magic_quotes_gpc() ? stripslashes( $_POST['invitation_code'] ) : $_POST['invitation_code'];
@@ -164,7 +164,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
-		function rpr_update_user_meta( $user_id, $meta_field, $meta_value ) {
+		public function rpr_update_user_meta( $user_id, $meta_field, $meta_value ) {
 			// convert array to string
 			if ( is_array( $meta_value ) && count( $meta_value ) ) $meta_value = implode( ',', $meta_value );
 			// sanitize url
@@ -185,7 +185,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		//TODO: Raname or ... something
-		function DatepickerHead() {
+		public function DatepickerHead() {
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			foreach ( $redux_usermeta as $index => $meta_field ) {
@@ -214,7 +214,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
-		function rpr_update_options( $options = array() ) {
+		public function rpr_update_options( $options = array() ) {
 			global $_options;
 			if ( empty( $options ) && empty( $_options ) ) return FALSE;
 			if ( !empty( $options ) ) {
@@ -227,7 +227,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return TRUE;
 		}
 
-		function rpr_get_option( $option ) {
+		public function rpr_get_option( $option ) {
 			global $_options;
 			if ( empty( $option ) ) return NULL;
 			$this->rpr_get_options( FALSE );
@@ -236,7 +236,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return NULL;
 		}
 
-		function rpr_get_options( $force_refresh = FALSE ) {
+		public function rpr_get_options( $force_refresh = FALSE ) {
 			global $_options;
 			if ( empty( $_options ) || $force_refresh === TRUE ) {
 				$_options = get_option( 'register_plus_redux_options' );
@@ -246,7 +246,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
-		function rpr_set_option( $option, $value, $save_now = FALSE ) {
+		public function rpr_set_option( $option, $value, $save_now = FALSE ) {
 			global $_options;
 			if ( empty( $option ) ) return FALSE;
 			$this->rpr_get_options( FALSE );
@@ -257,7 +257,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return TRUE;
 		}
 
-		function rpr_unset_option( $option, $save_now = FALSE ) {
+		public function rpr_unset_option( $option, $save_now = FALSE ) {
 			global $_options;
 			if ( empty( $option ) ) return FALSE;
 			$this->rpr_get_options( FALSE );
@@ -268,7 +268,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return TRUE;
 		}
 
-		function default_options( $option = '' )
+		public function default_options( $option = '' )
 		{
 			$blogname = stripslashes( wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
 			$default = array(
@@ -374,7 +374,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				return $default;
 		}
 
-		function clean_text( $text ) {
+		public function clean_text( $text ) {
 			$text = str_replace( ' ', '_', $text );
 			$text = str_replace( '"' , '', $text );
 			$text = str_replace( "'" , '', $text );
@@ -382,12 +382,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return $text;
 		}
 
-		function rpr_is_network_activated() {
+		public function rpr_is_network_activated() {
 			if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 			return is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' );
 		}
 
-		function send_verification_mail( $user_id, $verification_code ) {
+		public function send_verification_mail( $user_id, $verification_code ) {
 			$user_info = get_userdata( $user_id );
 			$subject = $this->default_options( 'verification_message_subject' );
 			$message = $this->default_options( 'verification_message_body' );
@@ -409,7 +409,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			wp_mail( $user_info->user_email, $subject, $message );
 		}
 
-		function send_welcome_user_mail( $user_id, $plaintext_pass ) {
+		public function send_welcome_user_mail( $user_id, $plaintext_pass ) {
 			$user_info = get_userdata( $user_id );
 			$subject = $this->default_options( 'user_message_subject' );
 			$message = $this->default_options( 'user_message_body' );
@@ -431,7 +431,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			wp_mail( $user_info->user_email, $subject, $message );
 		}
 
-		function send_admin_mail( $user_id, $plaintext_pass, $verification_code = '' ) {
+		public function send_admin_mail( $user_id, $plaintext_pass, $verification_code = '' ) {
 			$user_info = get_userdata( $user_id );
 			$subject = $this->default_options( 'admin_message_subject' );
 			$message = $this->default_options( 'admin_message_body' );
@@ -453,7 +453,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			wp_mail( get_option( 'admin_email' ), $subject, $message );
 		}
 
-		function replace_keywords( $message = '', $user_info = array(), $plaintext_pass = '', $verification_code = '' ) {
+		public function replace_keywords( $message = '', $user_info = array(), $plaintext_pass = '', $verification_code = '' ) {
 			global $pagenow;
 			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %stored_user_login% %user_password% %verification_code% %verification_url%';
 
@@ -501,35 +501,35 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return $message;
 		}
 
-		function rpr_filter_verification_mail_from( $from_email ) {
+		public function rpr_filter_verification_mail_from( $from_email ) {
 			return is_email( $this->rpr_get_option( 'verification_message_from_email' ) );
 		}
 
-		function rpr_filter_verification_mail_from_name( $from_name ) {
+		public function rpr_filter_verification_mail_from_name( $from_name ) {
 			return esc_html( $this->rpr_get_option( 'verification_message_from_name' ) );
 		}
 
-		function rpr_filter_welcome_user_mail_from( $from_email ) {
+		public function rpr_filter_welcome_user_mail_from( $from_email ) {
 			return is_email( $this->rpr_get_option( 'user_message_from_email' ) );
 		}
 
-		function rpr_filter_welcome_user_mail_from_name( $from_name ) {
+		public function rpr_filter_welcome_user_mail_from_name( $from_name ) {
 			return esc_html( $this->rpr_get_option( 'user_message_from_name' ) );
 		}
 
-		function rpr_filter_admin_mail_from( $from_email ) {
+		public function rpr_filter_admin_mail_from( $from_email ) {
 			return is_email( $this->rpr_get_option( 'admin_message_from_email' ) );
 		}
 
-		function rpr_filter_admin_mail_from_name( $from_name ) {
+		public function rpr_filter_admin_mail_from_name( $from_name ) {
 			return esc_html( $this->rpr_get_option( 'admin_message_from_name' ) );
 		}
 
-		function rpr_filter_mail_content_type_text( $content_type ) {
+		public function rpr_filter_mail_content_type_text( $content_type ) {
 			return 'text/plain';
 		}
 
-		function rpr_filter_mail_content_type_html( $content_type ) {
+		public function rpr_filter_mail_content_type_html( $content_type ) {
 			return 'text/html';
 		}
 	}

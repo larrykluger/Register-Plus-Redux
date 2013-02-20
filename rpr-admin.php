@@ -1,12 +1,12 @@
 <?php
 if ( !class_exists( 'RPR_Admin' ) ) {
 	class RPR_Admin {
-		function __construct() {
+		public function __construct() {
 			add_action( 'init', array( $this, 'rpr_admin_init' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
 			add_action( 'init', array( $this, 'rpr_delete_unverified_users' ), 10, 1 ); // Runs after WordPress has finished loading but before any headers are sent.
 		}
 
-		function rpr_admin_init() {
+		public function rpr_admin_init() {
 			global $register_plus_redux;
 			// TODO: Write function to migrate register plus settings to redux
 			// should not be in init, likely to use similar code to rename
@@ -116,7 +116,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			}
 		}
 
-		function rpr_delete_unverified_users() {
+		public function rpr_delete_unverified_users() {
 			global $register_plus_redux;
 
 			if ( !current_user_can( 'delete_users' ) ) return;

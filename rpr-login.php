@@ -1,7 +1,7 @@
 <?php
 if ( !class_exists( 'RPR_Login' ) ) {
 	class RPR_Login {
-		function __construct() {
+		public function __construct() {
 			add_filter( 'random_password', array( $this, 'rpr_login_filter_random_password' ), 10, 1 ); // Replace random password with user set password
 			add_filter( 'update_user_metadata', array( $this, 'rpr_filter_update_user_metadata' ), 10, 5 );
 
@@ -20,7 +20,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			add_filter( 'allow_password_reset', array( $this, 'rpr_filter_allow_password_reset' ), 10, 2 );
 		}
 
-		function rpr_login_filter_random_password( $password ) {
+		public function rpr_login_filter_random_password( $password ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( $pagenow == 'wp-login.php' && $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
@@ -35,7 +35,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			return $password;
 		}
 
-		function rpr_filter_update_user_metadata( $return, $object_id, $meta_key, $meta_value, $prev_value ) {
+		public function rpr_filter_update_user_metadata( $return, $object_id, $meta_key, $meta_value, $prev_value ) {
 			// $object_id = $user_id
 			global $register_plus_redux;
 			global $pagenow;
@@ -49,7 +49,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			return $return;
 		}
 
-		function rpr_register_form() {
+		public function rpr_register_form() {
 			global $register_plus_redux;
 			if ( get_magic_quotes_gpc() ) $_POST = stripslashes_deep( $_POST );
 			if ( get_magic_quotes_gpc() ) $_GET = stripslashes_deep( $_GET );
@@ -285,7 +285,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 		}
 
-		function rpr_registration_errors( $errors, $sanitized_user_login, $user_email ) {
+		public function rpr_registration_errors( $errors, $sanitized_user_login, $user_email ) {
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE )  {
 				if ( is_array( $errors->errors ) && array_key_exists( 'empty_username', $errors->errors ) ) unset( $errors->errors['empty_username'] );
@@ -413,7 +413,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			return $errors;
 		}
 
-		function rpr_filter_login_message( $message ) {
+		public function rpr_filter_login_message( $message ) {
 			global $register_plus_redux;
 			// WordPress quirk, must throw errors now
 			global $errors;
@@ -468,11 +468,11 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			return $message;
 		}
 
-		function rpr_login_form_verifyemail() {
+		public function rpr_login_form_verifyemail() {
 			//TODO: Move some code from rpr_filter_login_message perhaps to get autologin working after verification
 		}
 
-		function rpr_user_register( $user_id ) {
+		public function rpr_user_register( $user_id ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( $pagenow != 'wp-login.php' ) return;
@@ -525,7 +525,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 
 		}
 
-		function rpr_filter_registration_redirect( $redirect_to ) {
+		public function rpr_filter_registration_redirect( $redirect_to ) {
 			global $register_plus_redux;
 			//NOTE: default $redirect_to = 'wp-login.php?checkemail=registered'
 			if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE && $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == FALSE ) $redirect_to = admin_url();
@@ -533,7 +533,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			return $redirect_to;
 		}
 
-		function rpr_login_head() {
+		public function rpr_login_head() {
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'custom_logo_url' ) ) {
 				if ( ini_get( 'allow_url_fopen' ) )
@@ -798,7 +798,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 		}
 
-		function rpr_login_footer() {
+		public function rpr_login_footer() {
 			global $register_plus_redux;
 			if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) {
 				if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'register' ) ) {
@@ -846,11 +846,11 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 		}
 
-		function rpr_filter_login_headerurl( $href ) {
+		public function rpr_filter_login_headerurl( $href ) {
 			return home_url();
 		}
 
-		function rpr_filter_login_headertitle( $title ) {
+		public function rpr_filter_login_headertitle( $title ) {
 			$desc = get_option( 'blogdescription' );
 			if ( empty( $desc ) )
 				$title = get_option( 'blogname' ) . ' - ' . $desc;
@@ -859,7 +859,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			return $title;
 		}
 
-		function rpr_filter_allow_password_reset( $allow, $user_id ) {
+		public function rpr_filter_allow_password_reset( $allow, $user_id ) {
 			global $wpdb;
 			if ( $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = 'stored_user_login';", $user_id ) ) ) $allow = FALSE;
 			return $allow;
