@@ -29,7 +29,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			}
 
 			// Load defaults for any options
-			foreach ( $register_plus_redux->default_options() as $option => $default_value ) {
+			foreach ( Register_Plus_Redux::default_options() as $option => $default_value ) {
 				$option_value = $register_plus_redux->rpr_get_option( $option );
 				if ( !isset( $option_value ) ) {
 					$register_plus_redux->rpr_set_option( $option, $default_value );

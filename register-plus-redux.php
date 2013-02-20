@@ -268,7 +268,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return TRUE;
 		}
 
-		public function default_options( $option = '' )
+		public static function default_options( $option = '' )
 		{
 			$blogname = stripslashes( wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
 			$default = array(

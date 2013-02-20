@@ -646,7 +646,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		}
 
 		public function rpr_options_submenu_footer() {
-			global $register_plus_redux;
 			?>
 			<script type="text/javascript">
 			function addInvitationCode() {
@@ -713,11 +712,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				else {
 					jQuery("#custom_verification_message").prop("disabled", false);
 					jQuery("#user_message_summary").append("<?php _e( 'The following message will be sent when a user is registered:', 'register-plus-redux' ); ?>");
-					var verification_message_from_name = "<?php echo $register_plus_redux->default_options( 'verification_message_from_name' ); ?>";
-					var verification_message_from_email = "<?php echo $register_plus_redux->default_options( 'verification_message_from_email' ); ?>";
-					var verification_message_subject = "<?php echo $register_plus_redux->default_options( 'verification_message_subject' ); ?>";
+					var verification_message_from_name = "<?php echo Register_Plus_Redux::default_options( 'verification_message_from_name' ); ?>";
+					var verification_message_from_email = "<?php echo Register_Plus_Redux::default_options( 'verification_message_from_email' ); ?>";
+					var verification_message_subject = "<?php echo Register_Plus_Redux::default_options( 'verification_message_subject' ); ?>";
 					var verification_message_content_type = "text/plain";
-					var verification_message_body = "<?php echo str_replace( "\n", '\n', $register_plus_redux->default_options( 'verification_message_body' ) ); ?>";
+					var verification_message_body = "<?php echo str_replace( "\n", '\n', Register_Plus_Redux::default_options( 'verification_message_body' ) ); ?>";
 					if (jQuery("#custom_verification_message").prop("checked")) {
 						verification_message_from_name = jQuery("#verification_message_from_name").val();
 						verification_message_from_email = jQuery("#verification_message_from_email").val();
@@ -752,11 +751,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					if (jQuery("#verify_user_admin").prop("checked"))
 						when = when + "<?php _e( 'an administrator has approved the new user', 'register-plus-redux' ); ?>";
 					jQuery("#user_message_summary").append(when + ":");
-					var user_message_from_name = "<?php echo $register_plus_redux->default_options( 'user_message_from_name' ); ?>";
-					var user_message_from_email = "<?php echo $register_plus_redux->default_options( 'user_message_from_email' ); ?>";
-					var user_message_subject = "<?php echo $register_plus_redux->default_options( 'user_message_subject' ); ?>";
+					var user_message_from_name = "<?php echo Register_Plus_Redux::default_options( 'user_message_from_name' ); ?>";
+					var user_message_from_email = "<?php echo Register_Plus_Redux::default_options( 'user_message_from_email' ); ?>";
+					var user_message_subject = "<?php echo Register_Plus_Redux::default_options( 'user_message_subject' ); ?>";
 					var user_message_content_type = "text/plain";
-					var user_message_body = "<?php echo str_replace( "\n", '\n', $register_plus_redux->default_options( 'user_message_body' ) ); ?>";
+					var user_message_body = "<?php echo str_replace( "\n", '\n', Register_Plus_Redux::default_options( 'user_message_body' ) ); ?>";
 					if (jQuery("#custom_user_message").prop("checked")) {
 						user_message_from_name = jQuery("#user_message_from_name").val();
 						user_message_from_email = jQuery("#user_message_from_email").val();
@@ -789,11 +788,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					if (!jQuery("#disable_admin_message_registered").prop("checked") && !jQuery("#disable_admin_message_created").prop("checked")) when = when + "<?php _e( ' or ', 'register-plus-redux' ); ?>";
 					if (!jQuery("#disable_admin_message_created").prop("checked")) when = when + "<?php _e( 'created', 'register-plus-redux' ); ?>";
 					jQuery("#admin_message_summary").append(when + ":");
-					var admin_message_from_name = "<?php echo $register_plus_redux->default_options( 'admin_message_from_name' ); ?>";
-					var admin_message_from_email = "<?php echo $register_plus_redux->default_options( 'admin_message_from_email' ); ?>";
-					var admin_message_subject = "<?php echo $register_plus_redux->default_options( 'admin_message_subject' ); ?>";
+					var admin_message_from_name = "<?php echo Register_Plus_Redux::default_options( 'admin_message_from_name' ); ?>";
+					var admin_message_from_email = "<?php echo Register_Plus_Redux::default_options( 'admin_message_from_email' ); ?>";
+					var admin_message_subject = "<?php echo Register_Plus_Redux::default_options( 'admin_message_subject' ); ?>";
 					var admin_message_content_type = "text/plain";
-					var admin_message_body = "<?php echo str_replace( "\n", '\n', $register_plus_redux->default_options( 'admin_message_body' ) ); ?>";
+					var admin_message_body = "<?php echo str_replace( "\n", '\n', Register_Plus_Redux::default_options( 'admin_message_body' ) ); ?>";
 					if (jQuery("#custom_admin_message").prop("checked")) {
 						admin_message_from_name = jQuery("#admin_message_from_name").val();
 						admin_message_from_email = jQuery("#admin_message_from_email").val();
