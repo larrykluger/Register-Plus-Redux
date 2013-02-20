@@ -543,6 +543,8 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( is_admin() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-admin.php' );
 
 	if ( is_admin() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu.php' );
+	
+	if ( is_admin() && file_exists( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu-wip.php' ) ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu-wip.php' );
 
 	$do_include = FALSE;
 	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) == TRUE ) $do_include = TRUE;
