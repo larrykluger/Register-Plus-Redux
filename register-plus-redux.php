@@ -431,7 +431,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			wp_mail( $user_info->user_email, $subject, $message );
 		}
 
-		function send_admin_mail( $user_id, $plaintext_pass, $verification_code ) {
+		function send_admin_mail( $user_id, $plaintext_pass, $verification_code = '' ) {
 			$user_info = get_userdata( $user_id );
 			$subject = $this->default_options( 'admin_message_subject' );
 			$message = $this->default_options( 'admin_message_body' );
