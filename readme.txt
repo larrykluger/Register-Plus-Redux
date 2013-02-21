@@ -48,19 +48,21 @@ Register Plus Redux was forked from Register Plus, developed by skullbit, after 
 
 Available in the following translations:
 
-de_DE Germany German
+de_DE German
 
-fr_FR France French
+es_ES Spanish
 
-ir_FA Islamic Republic of Iran Persian
+fr_FR French
 
-it_IT Italy Italian
+ir_FA Persian
 
-ro_RO Romania Romanian
+it_IT Italian
 
-ru_RU Russia Russian
+ro_RO Romanian
 
-tr_TR Turkey Turkish
+ru_RU Russian
+
+tr_TR Turkish
 
 == Installation ==
 
