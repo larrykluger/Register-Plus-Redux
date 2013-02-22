@@ -48,6 +48,8 @@ Register Plus Redux was forked from Register Plus, developed by skullbit, after 
 
 Available in the following translations:
 
+nl_NL Dutch
+
 de_DE German
 
 es_ES Spanish
