@@ -1,211 +1,148 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Register Plus Redux 3.6.21\n"
+"Project-Id-Version: Register Plus Redux 3.9.5\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/register-plus-redux\n"
-"POT-Creation-Date: 2010-11-05 15:12+0000\n"
-"PO-Revision-Date: 2013-02-21 06:33+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2013-01-21 09:10:25+00:00\n"
+"PO-Revision-Date: 2013-02-22 06:46-0500\n"
+"Last-Translator: Marcel <info@wwwebhost.nl>\n"
 "Language-Team: \n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Textdomain-Support: yes\n"
-"Language: de_DE\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: .\n"
 
 # @ register-plus-redux
-#: dashboard_invitation_tracking_widget.php:9
-msgid "Invitation Code Tracking"
-msgstr "Uitnodigings Tracking Code"
+#: register-plus-redux.php:68
+msgid "Additional Information"
+msgstr "Extra informatie"
 
 # @ register-plus-redux
-#: register-plus-redux.php:160 register-plus-redux.php:161
-#: register-plus-redux.php:651
-msgid "Remove Code"
-msgstr "Code verwijderen"
+#: register-plus-redux.php:72 rpr-admin-menu.php:256 rpr-login.php:238
+#: rpr-signup.php:414
+msgid "Invitation Code"
+msgstr "Verkeerde uitnodigingscode"
 
-# @ register-plus-redux
-#: register-plus-redux.php:187 register-plus-redux.php:796
-#: register-plus-redux.php:824
-msgid "Text Field"
-msgstr "Tekstveld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:188 register-plus-redux.php:797
-#: register-plus-redux.php:825
-msgid "Select Field"
-msgstr "Selecteerveld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:189 register-plus-redux.php:798
-#: register-plus-redux.php:826
-msgid "Checkbox Fields"
-msgstr "Checkbox Veld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:190 register-plus-redux.php:799
-#: register-plus-redux.php:827
-msgid "Radio Fields"
-msgstr "Radiobuttons"
-
-# @ register-plus-redux
-#: register-plus-redux.php:191 register-plus-redux.php:800
-#: register-plus-redux.php:828
-msgid "Text Area"
-msgstr "Tekst ruimte"
-
-# @ register-plus-redux
-#: register-plus-redux.php:192 register-plus-redux.php:801
-#: register-plus-redux.php:829
-msgid "Date Field"
-msgstr "Datum veld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:193 register-plus-redux.php:802
-#: register-plus-redux.php:830
-msgid "URL Field"
-msgstr "URL Veld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:194 register-plus-redux.php:803
-#: register-plus-redux.php:831
-msgid "Hidden Field"
-msgstr "Verborgen tekst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:249 register-plus-redux.php:250
-#: register-plus-redux.php:813 register-plus-redux.php:841
-msgid "Remove Field"
-msgstr "Verwijder veld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:257 register-plus-redux.php:258
-#: register-plus-redux.php:814 register-plus-redux.php:842
-msgid "Move this Field Up"
-msgstr "Verplaats dit veld omhoog"
-
-# @ register-plus-redux
-#: register-plus-redux.php:265 register-plus-redux.php:266
-#: register-plus-redux.php:815 register-plus-redux.php:843
-msgid "Move this Field Down"
-msgstr "Verplaats dit veld omlaag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:285
-msgid "The following message will be sent when a user is registered:"
-msgstr ""
-"Het volgende bericht zal worden verzonden wanneer een gebruiker zich "
-"registreerd:"
-
-# @ register-plus-redux
-#: register-plus-redux.php:308
+#: register-plus-redux.php:288
 msgid ""
-"No message will be sent to user whether they are registered or created by an "
-"administrator."
+"<h2>%user_login% is your new username</h2>\n"
+"<p>But, before you can start using your new username, <strong>you must "
+"activate it</strong></p>\n"
+"<p>Check your inbox at <strong>%user_email%</strong> and click the link "
+"given.</p>\n"
+"<p>If you do not activate your username within two days, you will have to "
+"sign up again.</p>"
 msgstr ""
-"Er zal geen bericht verstuurd worden indien een gebruiker door de beheerder "
-"is ingeschreven of gecreëerd."
 
 # @ register-plus-redux
-#: register-plus-redux.php:311 register-plus-redux.php:353
-msgid "The following message will be sent when a user is "
-msgstr "Het volgende bericht zal worden verstuurd wanneer een gebruiker is "
-
-# @ register-plus-redux
-#: register-plus-redux.php:312 register-plus-redux.php:354
-msgid "registered"
-msgstr "geregistreerd "
-
-# @ register-plus-redux
-#: register-plus-redux.php:313 register-plus-redux.php:355
-msgid " or "
-msgstr "of "
-
-# @ register-plus-redux
-#: register-plus-redux.php:314 register-plus-redux.php:356
-msgid "created"
-msgstr "gecreëerd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:315
-msgid " after "
-msgstr "erna"
-
-# @ register-plus-redux
-#: register-plus-redux.php:318
-msgid " and/or "
-msgstr "en/of"
-
-# @ register-plus-redux
-#: register-plus-redux.php:320
-msgid "an administrator has approved the new user"
-msgstr "een beheerder heeft de nieuwe gebruiker goedgekeurd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:298 register-plus-redux.php:334
-#: register-plus-redux.php:370
-msgid "To: "
-msgstr "Aan: "
-
-# @ register-plus-redux
-#: register-plus-redux.php:299 register-plus-redux.php:335
-#: register-plus-redux.php:371
-msgid "From: "
-msgstr "Van: "
-
-# @ register-plus-redux
-#: register-plus-redux.php:300 register-plus-redux.php:336
-#: register-plus-redux.php:372
-msgid "Subject: "
-msgstr "Onderwerp: "
-
-# @ register-plus-redux
-#: register-plus-redux.php:301 register-plus-redux.php:337
-#: register-plus-redux.php:373
-msgid "Content-Type: "
-msgstr "Content-Typ: "
-
-# @ register-plus-redux
-#: register-plus-redux.php:350
+#: register-plus-redux.php:289
 msgid ""
-"No message will be sent to administrator whether a user is registered or "
-"created."
+"Please verify your account using the verification link sent to your email "
+"address."
 msgstr ""
-"Er zal geen bericht verstuurd worden indien een gebruiker is ingeschreven of "
-"gecreëerd."
+"Controleer uw account met de verificatielink die naar uw e-mailadres is "
+"verstuurt."
 
 # @ register-plus-redux
-#: register-plus-redux.php:469
-msgid "Settings Saved"
-msgstr "Instellingen opgeslagen"
+#: register-plus-redux.php:291 rpr-login.php:451
+msgid ""
+"Your account will be reviewed by an administrator and you will be notified "
+"when it is activated."
+msgstr ""
+"Uw account zal door de beheerder worden beoordeelt, u ontvangt een "
+"bevestiging zodra uw account is geactiveerd."
 
 # @ register-plus-redux
-#: register-plus-redux.php:131 register-plus-redux.php:473
+#: register-plus-redux.php:347
+msgid "Your Login Information"
+msgstr "Uw inloggegevens"
+
+# @ register-plus-redux
+#: register-plus-redux.php:354
+msgid "Verify Your Account"
+msgstr "Verifieer uw account"
+
+# @ register-plus-redux
+#: register-plus-redux.php:365
+msgid "New User Registered"
+msgstr "Nieuwe geregistreerde gebruiker"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:19
+msgid ""
+"Register Plus Redux requires WordPress 3.2 or greater. You are currently "
+"using WordPress %s, please upgrade WordPress or deactivate Register Plus "
+"Redux."
+msgstr ""
+"Register Plus Redux benötigt WordPress 3.2 oder neuer. Du benutzt momentan "
+"WordPress %s. Bitte aktualisiere Wordpress oder deaktiviere Register Plus "
+"Redux."
+
+#: rpr-admin-menu.php:26
+msgid ""
+"Register Plus Redux must be Network Activated by Super Admin under WordPress "
+"Multisite. You will have limited functionality while not Network Activated. "
+"Please refer to <a href=\"%s\">radiok.info</a> for help resolving this issue."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:32
+#, fuzzy
+msgid ""
+"There is another active plugin that is conflicting with Register Plus Redux. "
+"The conflicting plugin is creating its own wp_new_user_notification "
+"function, this function is used to alter the messages sent out following the "
+"creation of a new user. Please refer to <a href=\"%s\">radiok.info</a> for "
+"help resolving this issue."
+msgstr ""
+"Er is nog een actief-plugin die is strijdig met Register Plus Redux. De "
+"conflicterende plugin is een eigen wp_new_user_notification functie te "
+"creëren, wordt deze functie gebruikt om de berichten die worden verzonden "
+"naar aanleiding van de oprichting van een nieuwe gebruiker te veranderen. "
+"Raadpleeg <a href=\"http://radiok.info/blog/wp_new_user_notification-"
+"conflicts/\">http://radiok.info/blog/wp_new_user_notification-conflicts/</a> "
+"voor een oplossing van dit probleem."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:40 rpr-admin-menu.php:78
 msgid "Register Plus Redux Settings"
 msgstr "Register Plus Redux Instellingen"
 
 # @ register-plus-redux
-#: register-plus-redux.php:479
+#: rpr-admin-menu.php:47 rpr-admin-menu.php:1008
+msgid "Unverified Users"
+msgstr "Niet geverifieerde gebruikers"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:52
+msgid "Settings"
+msgstr "Instellingen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:74
+msgid "Settings Saved"
+msgstr "Instellingen opgeslagen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:84
 msgid "Custom Logo URL"
 msgstr "URL van je eigen Logo"
 
 # @ register-plus-redux
-#: register-plus-redux.php:482
-msgid "Upload a new logo:"
+#: rpr-admin-menu.php:86
+#, fuzzy
+msgid "Upload Image"
 msgstr "Upload een nieuwe Logo:"
 
 # @ register-plus-redux
-#: register-plus-redux.php:483
-msgid "You must Save Changes to upload logo."
-msgstr "Sla de veranderingen op alvorens een nieuwe Logo te kunnn uploaden."
-
-# @ register-plus-redux
-#: register-plus-redux.php:484
+#: rpr-admin-menu.php:87
 msgid ""
 "Custom Logo will be shown on Registration and Login Forms in place of the "
 "default Wordpress logo. For the best results custom logo should not exceed "
@@ -216,27 +153,27 @@ msgstr ""
 "mag het Logo niet groter zijn dan 350px breedt."
 
 # @ register-plus-redux
-#: register-plus-redux.php:489
+#: rpr-admin-menu.php:92
 msgid "Remove Logo"
 msgstr "Verwijder Logo"
 
 # @ register-plus-redux
-#: register-plus-redux.php:490
+#: rpr-admin-menu.php:93
 msgid "You must Save Changes to remove logo."
 msgstr "Sla de veranderingen op alvorens het Logo te verwijderen."
 
 # @ register-plus-redux
-#: register-plus-redux.php:495
+#: rpr-admin-menu.php:98
 msgid "Email Verification"
 msgstr "E-Mail Verificatie"
 
 # @ register-plus-redux
-#: register-plus-redux.php:497
+#: rpr-admin-menu.php:100
 msgid "Verify all new users email address..."
 msgstr "Verifiëer het e-mailadres van alle nieuwe gebruikers..."
 
 # @ register-plus-redux
-#: register-plus-redux.php:498
+#: rpr-admin-menu.php:101
 msgid ""
 "A verification code will be sent to any new users email address, new users "
 "will not be able to login or reset their password until they have completed "
@@ -249,7 +186,7 @@ msgstr ""
 "eigen inzicht nieuwe gebruikers toestaan een pagina te bezoeken."
 
 # @ register-plus-redux
-#: register-plus-redux.php:500
+#: rpr-admin-menu.php:103
 msgid ""
 "The following message will be shown to users after registering. You may "
 "include HTML in this message."
@@ -258,17 +195,17 @@ msgstr ""
 "HTML gebruiken in het bericht."
 
 # @ register-plus-redux
-#: register-plus-redux.php:506
+#: rpr-admin-menu.php:110
 msgid "Admin Verification"
 msgstr "Beheer Verificatie"
 
 # @ register-plus-redux
-#: register-plus-redux.php:508
+#: rpr-admin-menu.php:112
 msgid "Moderate all new user registrations..."
 msgstr "Modificeer alle registraties van nieuwe gebruikers..."
 
 # @ register-plus-redux
-#: register-plus-redux.php:509
+#: rpr-admin-menu.php:113
 msgid ""
 "New users will not be able to login or reset their password until they have "
 "been authorized by an administrator from the Unverified Users Page. If both "
@@ -283,7 +220,7 @@ msgstr ""
 "of ze completeren het e-mail verificatie proces."
 
 # @ register-plus-redux
-#: register-plus-redux.php:511
+#: rpr-admin-menu.php:115
 msgid ""
 "The following message will be shown to users after registering (or verifying "
 "their email if both verification options are enabled). You may include HTML "
@@ -294,17 +231,17 @@ msgstr ""
 "ingeschakeld). U mag HTML gebruiken in dit bericht."
 
 # @ register-plus-redux
-#: register-plus-redux.php:517
+#: rpr-admin-menu.php:121
 msgid "Grace Period"
 msgstr "Termijn"
 
 # @ register-plus-redux
-#: register-plus-redux.php:519
+#: rpr-admin-menu.php:123
 msgid "days"
 msgstr "Dagen"
 
 # @ register-plus-redux
-#: register-plus-redux.php:520
+#: rpr-admin-menu.php:124
 msgid ""
 "All unverified users will automatically be deleted after the Grace Period "
 "specified, to disable this process enter 0 to never automatically delete "
@@ -315,1022 +252,12 @@ msgstr ""
 "niet-geverifieerde gebruikers."
 
 # @ register-plus-redux
-#: register-plus-redux.php:538
-msgid "Registration Page"
-msgstr "Registratie Pagina"
-
-# @ register-plus-redux
-#: register-plus-redux.php:539
-msgid ""
-"Select which fields to show on the Registration Page. Users will not be able "
-"to register without completing any fields marked required."
-msgstr ""
-"Selecteer welke velden je wilt  te laten zien op de registratie pagina. "
-"Gebruikers zullen niet in staat zijn om de registratie te beëindigen zonder "
-"het invullen van alle velden die vereist zijn."
-
-# @ register-plus-redux
-#: register-plus-redux.php:546
-msgid "Confirm Email"
-msgstr "Bevestigings E-mail"
-
-# @ register-plus-redux
-#: register-plus-redux.php:547
-msgid "Require new users to enter e-mail address twice during registration."
-msgstr ""
-"Verplicht nieuwe gebruikers het e-mail adres te bevestigen tijdens het "
-"registreren."
-
-# @ register-plus-redux
-#: register-plus-redux.php:550
-msgid "Profile Fields"
-msgstr "Profiel velden"
-
-# @ register-plus-redux
-#: register-plus-redux.php:555
-msgid "Show"
-msgstr "Zichtbaar"
-
-# @ register-plus-redux
-#: register-plus-redux.php:556 register-plus-redux.php:784
-msgid "Require"
-msgstr "Verplicht"
-
-# @ register-plus-redux
-#: register-plus-redux.php:562 register-plus-redux.php:1597
-msgid "First Name"
-msgstr "Voornaam"
-
-# @ register-plus-redux
-#: register-plus-redux.php:567 register-plus-redux.php:1605
-msgid "Last Name"
-msgstr "Achternaam"
-
-# @ register-plus-redux
-#: register-plus-redux.php:572 register-plus-redux.php:1613
-msgid "Website"
-msgstr "Website"
-
-# @ register-plus-redux
-#: register-plus-redux.php:577 register-plus-redux.php:1621
-msgid "AIM"
-msgstr "AIM"
-
-# @ register-plus-redux
-#: register-plus-redux.php:582 register-plus-redux.php:1629
-msgid "Yahoo IM"
-msgstr "Yahoo IM"
-
-# @ register-plus-redux
-#: register-plus-redux.php:587 register-plus-redux.php:1637
-msgid "Jabber / Google Talk"
-msgstr "Jabber / Google Talk"
-
-# @ register-plus-redux
-#: register-plus-redux.php:592 register-plus-redux.php:1645
-msgid "About Yourself"
-msgstr "Over jezelf"
-
-# @ register-plus-redux
-#: register-plus-redux.php:601
-msgid "User Set Password"
-msgstr "Verander wachtwoord"
-
-# @ register-plus-redux
-#: register-plus-redux.php:603
-msgid "Require new users enter a password during registration..."
-msgstr ""
-"Dwing nieuwe gebruikers het wachtwoord te veranderen tijdens registratie..."
-
-# @ register-plus-redux
-#: register-plus-redux.php:605
-msgid "Minimum password length: "
-msgstr "Minimale wachtwoord lengte: "
-
-# @ register-plus-redux
-#: register-plus-redux.php:606
-msgid "Show password strength meter..."
-msgstr "Laat wachtwoord sterkte zien....."
-
-# @ register-plus-redux
-#: register-plus-redux.php:610
-msgid "Empty"
-msgstr "Leeg"
-
-# @ register-plus-redux
-#: register-plus-redux.php:614
-msgid "Short"
-msgstr "Te kort"
-
-# @ register-plus-redux
-#: register-plus-redux.php:618
-msgid "Bad"
-msgstr "Verkeerd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:622
-msgid "Good"
-msgstr "Goed"
-
-# @ register-plus-redux
-#: register-plus-redux.php:626
-msgid "Strong"
-msgstr "Starkes Passwort"
-
-# @ register-plus-redux
-#: register-plus-redux.php:630
-msgid "Mismatch"
-msgstr "Verkeerde herhaling"
-
-# @ register-plus-redux
-#: register-plus-redux.php:639 register-plus-redux.php:1758
-#: register-plus-redux.php:2069
-msgid "Invitation Code"
-msgstr "Verkeerde uitnodigingscode"
-
-# @ register-plus-redux
-#: register-plus-redux.php:641
-msgid "Use invitation codes to track or authorize new user registration..."
-msgstr ""
-"Gebruik een uitnodigingscode of autoriseer niuewe gebruikers middels "
-"registratie..."
-
-# @ register-plus-redux
-#: register-plus-redux.php:643
-msgid ""
-"Require new user enter one of the following invitation codes to register."
-msgstr ""
-"Verplicht nieuwe gebruikers een uitnodigingscode in te vullen tijdens "
-"registratie."
-
-# @ register-plus-redux
-#: register-plus-redux.php:644
-msgid "Enforce case-sensitivity of invitation codes."
-msgstr "Forceer hoofdletter gevoelige uitnodigingscode."
-
-# @ register-plus-redux
-#: register-plus-redux.php:645
-msgid "Show Invitation Code Tracking widget on Dashboard."
-msgstr "Toon uitnodigingscode in widget op het Dashboard."
-
-# @ register-plus-redux
-#: register-plus-redux.php:654
-msgid "Add Code"
-msgstr "Code toevoegen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:654
-msgid "Add a new invitation code"
-msgstr "Voeg een nieuwe uitnodigingscode toe"
-
-# @ register-plus-redux
-#: register-plus-redux.php:659
-msgid "Disclaimer"
-msgstr "Disclaimer"
-
-# @ register-plus-redux
-#: register-plus-redux.php:661
-msgid "Show Disclaimer during registration..."
-msgstr "Laat Disclaimer zien tijdens registratie..."
-
-# @ register-plus-redux
-#: register-plus-redux.php:666
-msgid "Disclaimer Title"
-msgstr "Titel van Disclaimer"
-
-# @ register-plus-redux
-#: register-plus-redux.php:674
-msgid "Disclaimer Content"
-msgstr "Inhoud van Disclaimer"
-
-# @ register-plus-redux
-#: register-plus-redux.php:680 register-plus-redux.php:712
-#: register-plus-redux.php:744
-msgid "Require Agreement"
-msgstr "Verplichte overeenkomst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:691
-msgid "License Agreement"
-msgstr "Licentie overeenkomst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:693
-msgid "Show License Agreement during registration..."
-msgstr "Laat Licentie overeenkomst zien tijdens registratie..."
-
-# @ register-plus-redux
-#: register-plus-redux.php:698
-msgid "License Agreement Title"
-msgstr "Titel van Licentie overeenkomst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:706
-msgid "License Agreement Content"
-msgstr "Inhoud van Licentie overeenkomst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:723
-msgid "Privacy Policy"
-msgstr "Privacy Policy"
-
-# @ register-plus-redux
-#: register-plus-redux.php:725
-msgid "Show Privacy Policy during registration..."
-msgstr "Laat Privacy Policy zien tijdens registratie..."
-
-# @ register-plus-redux
-#: register-plus-redux.php:730
-msgid "Privacy Policy Title"
-msgstr "Titel van Privacy Policy"
-
-# @ register-plus-redux
-#: register-plus-redux.php:738
-msgid "Privacy Policy Content"
-msgstr "Inhoud van Privacy Policy"
-
-# @ register-plus-redux
-#: register-plus-redux.php:755
-msgid "Use Default Style Rules"
-msgstr "Gebruik standaard Stijlregels"
-
-# @ register-plus-redux
-#: register-plus-redux.php:756
-msgid "Apply default Wordpress 3.0.1 styling to all fields."
-msgstr "Gebruik standaard Wordpress 3.0.1 styling voor alle velden."
-
-# @ register-plus-redux
-#: register-plus-redux.php:759
-msgid "Required Fields Style Rules"
-msgstr "Gewenste veldstijl regels"
-
-# @ register-plus-redux
-#: register-plus-redux.php:763
-msgid "Required Fields Asterisk"
-msgstr "Verplichte velden Sterretje"
-
-# @ register-plus-redux
-#: register-plus-redux.php:764
-msgid "Add asterisk to left of all required field's name."
-msgstr "Voeg sterretje links van de naam van alle vereiste velden."
-
-# @ register-plus-redux
-#: register-plus-redux.php:767
-msgid "Starting Tabindex"
-msgstr "Vanaf Tabindex"
-
-# @ register-plus-redux
-#: register-plus-redux.php:774
-msgid "Additional Fields"
-msgstr "Extra velden"
-
-# @ register-plus-redux
-#: register-plus-redux.php:778
-msgid "Name"
-msgstr "Naam"
-
-# @ register-plus-redux
-#: register-plus-redux.php:779
-msgid "Type"
-msgstr "Type"
-
-# @ register-plus-redux
-#: register-plus-redux.php:780
-msgid "Options"
-msgstr "Opties"
-
-# @ register-plus-redux
-#: register-plus-redux.php:782
-msgid "Profile"
-msgstr "Profiel"
-
-# @ register-plus-redux
-#: register-plus-redux.php:783
-msgid "Registration"
-msgstr "Registratie"
-
-# @ register-plus-redux
-#: register-plus-redux.php:785
-msgid "Actions"
-msgstr "Akties"
-
-# @ register-plus-redux
-#: register-plus-redux.php:850
-msgid "Add Field"
-msgstr "Veld toevoegen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:850
-msgid "Add a new custom field."
-msgstr "Voeg een nieuw gebruikersveld toe."
-
-# @ register-plus-redux
-#: register-plus-redux.php:853
-msgid "Date Field Settings"
-msgstr "Datumveld instelling"
-
-# @ register-plus-redux
-#: register-plus-redux.php:855
-msgid "First Day of the Week"
-msgstr "Eerste dag van de week"
-
-# @ register-plus-redux
-#: register-plus-redux.php:857
-msgid "Monday"
-msgstr "Maandag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:858
-msgid "Tuesday"
-msgstr "Dinsdag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:859
-msgid "Wednesday"
-msgstr "Woensdag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:860
-msgid "Thursday"
-msgstr "Donderdag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:861
-msgid "Friday"
-msgstr "Vrijdag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:862
-msgid "Saturday"
-msgstr "Zaterdag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:863
-msgid "Sunday"
-msgstr "Zondag"
-
-# @ register-plus-redux
-#: register-plus-redux.php:865
-msgid "Date Format"
-msgstr "Datum format"
-
-# @ register-plus-redux
-#: register-plus-redux.php:866
-msgid "First Selectable Date"
-msgstr "Eerste Selecteerbare Datum"
-
-# @ register-plus-redux
-#: register-plus-redux.php:867
-msgid "Default Year"
-msgstr "Standaard Jaar"
-
-# @ register-plus-redux
-#: register-plus-redux.php:868
-msgid "Default Month"
-msgstr "Standaard Maand"
-
-# @ register-plus-redux
-#: register-plus-redux.php:870
-msgid "Current Month"
-msgstr "Huidige Maand"
-
-# @ register-plus-redux
-#: register-plus-redux.php:871
-msgid "Jan"
-msgstr "Jan"
-
-# @ register-plus-redux
-#: register-plus-redux.php:872
-msgid "Feb"
-msgstr "Feb"
-
-# @ register-plus-redux
-#: register-plus-redux.php:873
-msgid "Mar"
-msgstr "Mrt"
-
-# @ register-plus-redux
-#: register-plus-redux.php:874
-msgid "Apr"
-msgstr "Apr"
-
-# @ register-plus-redux
-#: register-plus-redux.php:875
-msgid "May"
-msgstr "Mei"
-
-# @ register-plus-redux
-#: register-plus-redux.php:876
-msgid "Jun"
-msgstr "Jun"
-
-# @ register-plus-redux
-#: register-plus-redux.php:877
-msgid "Jul"
-msgstr "Jul"
-
-# @ register-plus-redux
-#: register-plus-redux.php:878
-msgid "Aug"
-msgstr "Aug"
-
-# @ register-plus-redux
-#: register-plus-redux.php:879
-msgid "Sep"
-msgstr "Sep"
-
-# @ register-plus-redux
-#: register-plus-redux.php:880
-msgid "Oct"
-msgstr "Okt"
-
-# @ register-plus-redux
-#: register-plus-redux.php:881
-msgid "Nov"
-msgstr "Nov"
-
-# @ register-plus-redux
-#: register-plus-redux.php:882
-msgid "Dec"
-msgstr "Dec"
-
-# @ register-plus-redux
-#: register-plus-redux.php:887
-msgid "Auto-Complete Queries"
-msgstr "Autom. aanvul Queries"
-
-# @ register-plus-redux
-#: register-plus-redux.php:888
-msgid ""
-"You can now link to the registration page with queries to autocomplete "
-"specific fields for the user. I have included the query keys below and an "
-"example of a query URL."
-msgstr ""
-"U kunt nu de registratie-pagina koppelen aan automatische kopelvelden van "
-"een gebuiker, Hieronder zijn de Queries toegevoegd met een voorbeeld van een "
-"querie URL."
-
-# @ register-plus-redux
-#: register-plus-redux.php:896
-#, php-format
-msgid ""
-"For any custom fields, use your custom field label with the text all "
-"lowercase, using underscores instead of spaces. For example if your custom "
-"field was \"Middle Name\" your query key would be %middle_name%"
-msgstr ""
-"Voor alle aangepaste velden, gebruik in uw aangepaste veld de labeltekst in "
-"kleine letters, met behulp van streepjes in plaats van spaties. Bijvoorbeeld "
-"als uw aangepaste veld is \"Middle Name \" uw vraag sleutel moet dan % "
-"middle_name% zijn."
-
-# @ register-plus-redux
-#: register-plus-redux.php:897
-msgid "Example Query URL"
-msgstr "Voorbeeld  Query URL"
-
-# @ register-plus-redux
-#: register-plus-redux.php:899
-msgid "New User Message Settings"
-msgstr "Nieuwe gebruikers bericht instelling"
-
-# @ register-plus-redux
-#: register-plus-redux.php:902
-msgid "New User Message"
-msgstr "Nieuwe gebruikers bericht"
-
-# @ register-plus-redux
-#: register-plus-redux.php:904
-msgid "Do NOT send user an email after they are registered"
-msgstr "Verstuur geen e-mail aan gebruiker voordat deze heeft geregistreerd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:905
-msgid "Do NOT send user an email when created by an administrator"
-msgstr ""
-"Verstuur geen e-mail aan gebruiker als deze is aangemaakt door een beheerder."
-
-# @ register-plus-redux
-#: register-plus-redux.php:909
-msgid "Custom New User Message"
-msgstr "Aangepaste nieuwe gebruikers bericht"
-
-# @ register-plus-redux
-#: register-plus-redux.php:911 register-plus-redux.php:949
-#: register-plus-redux.php:996
-msgid "Enable..."
-msgstr "Inschakelen..."
-
-# @ register-plus-redux
-#: register-plus-redux.php:915 register-plus-redux.php:953
-#: register-plus-redux.php:1000
-msgid "From Email"
-msgstr "Afzenders E-mail"
-
-# @ register-plus-redux
-#: register-plus-redux.php:916 register-plus-redux.php:920
-#: register-plus-redux.php:924 register-plus-redux.php:929
-#: register-plus-redux.php:954 register-plus-redux.php:958
-#: register-plus-redux.php:962 register-plus-redux.php:967
-#: register-plus-redux.php:1001 register-plus-redux.php:1005
-#: register-plus-redux.php:1009 register-plus-redux.php:1014
-msgid "Restore Default"
-msgstr "Terug naar standaard"
-
-# @ register-plus-redux
-#: register-plus-redux.php:919 register-plus-redux.php:957
-#: register-plus-redux.php:1004
-msgid "From Name"
-msgstr "Afzendersnaam"
-
-# @ register-plus-redux
-#: register-plus-redux.php:923 register-plus-redux.php:961
-#: register-plus-redux.php:1008
-msgid "Subject"
-msgstr "Onderwerp"
-
-# @ register-plus-redux
-#: register-plus-redux.php:928 register-plus-redux.php:966
-msgid "User Message"
-msgstr "Gebruikers bericht"
-
-# @ register-plus-redux
-#: register-plus-redux.php:930 register-plus-redux.php:968
-#: register-plus-redux.php:1015
-msgid "Replacement Keywords"
-msgstr "Vervangings Trefwoorden"
-
-# @ register-plus-redux
-#: register-plus-redux.php:931 register-plus-redux.php:969
-#: register-plus-redux.php:1016
-msgid "Send as HTML"
-msgstr "Als HTML versturen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:932 register-plus-redux.php:970
-#: register-plus-redux.php:1017
-msgid "Convert new lines to &lt;br /&gt; tags (HTML only)"
-msgstr "Nieuwe regel beginnen met &lt;br /&gt; tags (alleen HTML)"
-
-# @ register-plus-redux
-#: register-plus-redux.php:936
-msgid "Login URL"
-msgstr "Inlog URL"
-
-# @ register-plus-redux
-#: register-plus-redux.php:939
-msgid "This will redirect the users login after registration."
-msgstr "Nieuwe gebruikers omleiden na registratie."
-
-# @ register-plus-redux
-#: register-plus-redux.php:947
-msgid "Custom Verification Message"
-msgstr "Aangepaste verificatie bericht"
-
-# @ register-plus-redux
-#: register-plus-redux.php:978 register-plus-redux.php:1025
-msgid "Summary"
-msgstr "Beknopte tekst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:984
-msgid "Admin Notification Settings"
-msgstr "Admin Meldingsinstelling"
-
-# @ register-plus-redux
-#: register-plus-redux.php:987
-msgid "Admin Notification"
-msgstr "Admin Melding"
-
-# @ register-plus-redux
-#: register-plus-redux.php:989
-msgid "Do NOT send administrator an email whenever a new user registers"
-msgstr ""
-"Stuur de beheerder geen e-mail wanneer een nieuwe gebruiker zich registreert"
-
-# @ register-plus-redux
-#: register-plus-redux.php:990
-msgid ""
-"Do NOT send administrator an email whenever a new user is created by an "
-"administrator"
-msgstr ""
-"Stuur de beheerder geen e-mail wanneer een nieuwe gebruiker door de "
-"beheerder is aangemaakt"
-
-# @ register-plus-redux
-#: register-plus-redux.php:994
-msgid "Custom Admin Notification"
-msgstr "Aangepaste Admin Melding"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1013
-msgid "Admin Message"
-msgstr "Admin Bericht"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1032
-msgid "Custom CSS for Register & Login Pages"
-msgstr "Aangepastes CSS voor registratie- en loginpagina"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1033
-msgid "CSS Rule Example:"
-msgstr "CSS regel voorbeeld:"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1036
-msgid "Custom Register CSS"
-msgstr "Aangepaste registratie CSS"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1040
-msgid "Custom Login CSS"
-msgstr "Aangepaste inlog CSS"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1045
-msgid "Hacks & Fixes"
-msgstr "Hacks & Fixes"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1048
-msgid "Non-English Custom Fields"
-msgstr "Non Engels aangepast veld"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1050
-msgid "Do not sanitize keys."
-msgstr "Do not sanitize keys."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1051
-msgid ""
-"Custom fields with non-english characters may not work, this hack will stop "
-"sanitizing the custom field name which may resolve this issue."
-msgstr ""
-"Aangepaste velden met non-Engelese tekenset kunnen niet werken, deze hack "
-"stopt het reinigen van aangepaste velden zodat het probleem wordt opgelost."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1055
-msgid "URL File Access is Disabled"
-msgstr "URL bestandsbeheer uitgeschakelt"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1057
-msgid "Do not open URL files."
-msgstr "Open geen URL bestanden"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1058
-msgid ""
-"Some PHP configurations do not allow accessing URL objects like files "
-"(allow_url_fopen=disabled in php.ini), this hack will stop trying to open "
-"URL files as if they were local files. Custom logo must be exactly 326x67 "
-"with this hack enabled, otherwise it will be cropped."
-msgstr ""
-"Sommige PHP configuraties hebben mogelijk geen toegang tot URL-objecten, "
-"zoals bestanden (allow_url_fopen = uitgeschakeld in php.ini), deze hack zal "
-"stoppen met proberen om URL-bestanden te openen alsof ze lokale bestanden. "
-"Aangepast logo moet precies 326x67 zijn als deze hack is ingeschakeld, "
-"anders word deze bijgesneden."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1063
-msgid "Save Changes"
-msgstr "Sla veranderingen op"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1220
-msgid "You cannot edit that user."
-msgstr "Deze gebruiker kan niet veranderd worden."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1240
-msgid "Users approved."
-msgstr "Gebruikers goedgekeurd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1243
-msgid "Verification emails sent."
-msgstr "Verificatie e-mail verzonden"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1246
-msgid "Users deleted."
-msgstr "Gebruikers verwijderd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:137 register-plus-redux.php:1252
-msgid "Unverified Users"
-msgstr "Niet geverifieerde gebruikers"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1257
-msgid "Bulk Actions"
-msgstr "Massa akties"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1258
-msgid "Approve"
-msgstr "Goedgekeurd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1259
-msgid "Send E-mail Verification"
-msgstr "Verstuur e-mail verificatie"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1260 register-plus-redux.php:1295
-msgid "Delete"
-msgstr "Verwijderen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1262
-msgid "Apply"
-msgstr "Toepassen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1272
-msgid "Username"
-msgstr "Gebruikersnaam"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1273
-msgid "Temp Username"
-msgstr "Tijdelijke Gebruikersnaam"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1274
-msgid "E-mail"
-msgstr "E-Mail"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1275
-msgid "Registered"
-msgstr "Geregistreerd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1276
-msgid "Verification Sent"
-msgstr "Verificatie verzonden"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1277
-msgid "Verified"
-msgstr "Geverifieerd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1294
-msgid "Edit"
-msgstr "Veranderen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1299
-msgid "E-mail: "
-msgstr "E-Mail: "
-
-# @ register-plus-redux
-#: register-plus-redux.php:1310
-msgid "Approve Selected Users"
-msgstr "Selectie goed gekeurde gebruikers"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1311
-msgid "Send E-mail Verification to Selected Users"
-msgstr "Verstuur verificatie e-mail naar geselecteerde gebruikers"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1312
-msgid "Delete Selected Users"
-msgstr "Verwijder geselecteerde gebruikers"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1587
-msgid "Confirm E-mail"
-msgstr "Bevestig E-Mail"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1646
-msgid ""
-"Share a little biographical information to fill out your profile. This may "
-"be shown publicly."
-msgstr ""
-"Deel enkele biografische gegevens in uw profiel. Dit kan openbaar worden "
-"gemaakt."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1741
-msgid "Password"
-msgstr "Wachtwoord"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1746
-msgid "Confirm Password"
-msgstr "Bevestig Wachtwoord"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1751
-#, php-format
-msgid ""
-"Your password must be at least %d characters long. To make your password "
-"stronger, use upper and lower case letters, numbers, and the following "
-"symbols !@#$%%^&amp;*()"
-msgstr ""
-"Uw wachtwoord moet minstens% d tekens lang zijn. Maak uw wachtwoord sterker "
-"en gebruik hoofdletters en kleine letters, cijfers en de volgende symbolen! "
-"@ # $%% ^ & * ()"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1762
-msgid ""
-"This website is currently closed to public registrations. You will need an "
-"invitation code to register."
-msgstr ""
-"Deze website is momenteel gesloten voor publiek registraties. U heeft een "
-"uitnodigingcode nodig om te kunnen registreren."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1764
-msgid "Have an invitation code? Enter it here. (This is not required)"
-msgstr "Heeft u een uitnodigingcode? Hier invoeren. (Dit is niet verplicht)"
-
-# @ register-plus-redux
-#: register-plus-redux.php:1817 register-plus-redux.php:1926
-msgid ""
-"<strong>ERROR</strong>: This username is already registered, please choose "
-"another one."
-msgstr ""
-"<strong>Fout:</strong> Deze gebruikersnaam is al gebruikts, kies een andere "
-"aub."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1822 register-plus-redux.php:1931
-msgid "<strong>ERROR</strong>: Please confirm your e-mail address."
-msgstr "<strong>Fout:</strong> U dient uw e-mailadres te bevestigen."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1824 register-plus-redux.php:1933
-msgid "<strong>ERROR</strong>: Your e-mail address does not match."
-msgstr "<strong>Fout:</strong> Uw e-mail adres komt niet overeen."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1831 register-plus-redux.php:1940
-msgid "<strong>ERROR</strong>: Please enter your first name."
-msgstr "<strong>Fout:</strong> Vul uw voornaam in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1836 register-plus-redux.php:1945
-msgid "<strong>ERROR</strong>: Please enter your last name."
-msgstr "<strong>Fout:</strong> Vul uw achternaam in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1841 register-plus-redux.php:1950
-msgid "<strong>ERROR</strong>: Please enter your website URL."
-msgstr "<strong>Fout:</strong> Vul de URL van uw website in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1846 register-plus-redux.php:1955
-msgid "<strong>ERROR</strong>: Please enter your AIM username."
-msgstr "<strong>Fout:</strong> Vul uw AIM gebruikersnaam in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1851 register-plus-redux.php:1960
-msgid "<strong>ERROR</strong>: Please enter your Yahoo IM username."
-msgstr "<strong>Fout:</strong> Vul uw Yahoo IM gebruikersnaam in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1856 register-plus-redux.php:1965
-msgid ""
-"<strong>ERROR</strong>: Please enter your Jabber / Google Talk username."
-msgstr "<strong>Fout:</strong> Vul uw Jabber / Google Talk gebruikersnaam in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1861 register-plus-redux.php:1970
-msgid "<strong>ERROR</strong>: Please enter some information about yourself."
-msgstr "<strong>Fout:</strong> Vul extra informatie over uw zelf in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1869 register-plus-redux.php:1978
-#, php-format
-msgid "<strong>ERROR</strong>: Please complete %s."
-msgstr "<strong>Fout:</strong> Maak %s compleet."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1877 register-plus-redux.php:1986
-msgid "<strong>ERROR</strong>: Please enter a password."
-msgstr "<strong>Fout:</strong> Vul een wachtwoord in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1879 register-plus-redux.php:1988
-msgid "<strong>ERROR</strong>: Your password does not match."
-msgstr "<strong>Fout:</strong> Het wachtwoord komt niet overeen."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1881 register-plus-redux.php:1990
-#, php-format
-msgid ""
-"<strong>ERROR</strong>: Your password must be at least %d characters in "
-"length."
-msgstr ""
-"<strong>Fout:</strong> Het wachtwoord moet minimaal %d karakters lang zijn."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1888 register-plus-redux.php:1997
-msgid "<strong>ERROR</strong>: Please enter an invitation code."
-msgstr "<strong>Fout:</strong> Vul uw uitnodigingscode in."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1899 register-plus-redux.php:2008
-msgid "<strong>ERROR</strong>: That invitation code is invalid."
-msgstr "<strong>Fout:</strong> Deze uitnodigingscode is niet geldig."
-
-# @ register-plus-redux
-#: register-plus-redux.php:1905 register-plus-redux.php:1910
-#: register-plus-redux.php:1915 register-plus-redux.php:2014
-#: register-plus-redux.php:2019 register-plus-redux.php:2024
-#, php-format
-msgid "<strong>ERROR</strong>: Please accept the %s"
-msgstr "<strong>Fout:</strong> AUB accepteer %s"
-
-# @ register-plus-redux
-#: register-plus-redux.php:2214 register-plus-redux.php:2477
-msgid ""
-"Your account will be reviewed by an administrator and you will be notified "
-"when it is activated."
-msgstr ""
-"Uw account zal door de beheerder worden beoordeelt, u ontvangt een "
-"bevestiging zodra uw account is geactiveerd."
-
-# @ register-plus-redux
-#: register-plus-redux.php:2065
-msgid "Additional Information"
-msgstr "Extra informatie"
-
-# @ register-plus-redux
-#: register-plus-redux.php:2212
-msgid ""
-"Please verify your account using the verification link sent to your email "
-"address."
-msgstr ""
-"Controleer uw account met de verificatielink die naar uw e-mailadres is "
-"verstuurt."
-
-# @ register-plus-redux
-#: register-plus-redux.php:2266
-msgid "Your Login Information"
-msgstr "Uw inloggegevens"
-
-# @ register-plus-redux
-#: register-plus-redux.php:2274
-msgid "Verify Your Account"
-msgstr "Verifieer uw account"
-
-# @ register-plus-redux
-#: register-plus-redux.php:2284
-msgid "New User Registered"
-msgstr "Nieuwe geregistreerde gebruiker"
-
-# @ register-plus-redux
-#: register-plus-redux.php:2508
-msgid "Settings"
-msgstr "Instellingen"
-
-# @ register-plus-redux
-#: register-plus-redux.php:2562
-#, php-format
-msgid ""
-"Register Plus Redux requires WordPress 3.0 or greater. You are currently "
-"using WordPress %s, please upgrade or deactivate Register Plus Redux."
-msgstr ""
-"Register Plus Redux benötigt WordPress 3.0 oder neuer. Du benutzt momentan "
-"WordPress %s. Bitte aktualisiere Wordpress oder deaktiviere Register Plus "
-"Redux."
-
-# @ register-plus-redux
-#: register-plus-redux.php:195 register-plus-redux.php:804
-#: register-plus-redux.php:832
-msgid "Static Text"
-msgstr "Statische tekst"
-
-# @ register-plus-redux
-#: register-plus-redux.php:211 register-plus-redux.php:808
-#: register-plus-redux.php:836
-msgid "No help available"
-msgstr "Geen hulp beschikbaar"
-
-# @ register-plus-redux
-#: register-plus-redux.php:317
-msgid "the user has verified their email address"
-msgstr "de gebruiker heeft zijn e-mail adres bevestigd"
-
-# @ register-plus-redux
-#: register-plus-redux.php:524
+#: rpr-admin-menu.php:128
 msgid "Registration Redirect"
 msgstr "Registratie omleiding"
 
 # @ register-plus-redux
-#: register-plus-redux.php:527
-#, php-format
+#: rpr-admin-menu.php:131
 msgid ""
 "By default, after registering, users will be sent to %s/wp-login.php?"
 "checkemail=registered, leave this value empty if you do not wish to change "
@@ -1343,15 +270,15 @@ msgstr ""
 "adres niet op hetzelfde domein staat, zal Wordpress de omleiding negeren."
 
 # @ register-plus-redux
-#: register-plus-redux.php:531
+#: rpr-admin-menu.php:135
 msgid "Verification Redirect"
 msgstr "Verificatie omleiding"
 
 # @ register-plus-redux
-#: register-plus-redux.php:534
-#, php-format
+#: rpr-admin-menu.php:138
+#, fuzzy
 msgid ""
-"By default, after verifing, users will be sent to %s/wp-login.php, leave "
+"By default, after verifying, users will be sent to %s/wp-login.php, leave "
 "this value empty if you do not wish to change this behavior. You may enter "
 "another address here, however, if that addresses is not on the same domain, "
 "Wordpress will ignore the redirect."
@@ -1361,13 +288,62 @@ msgstr ""
 "veranderd. U kunt hier een ander adres invoeren, maar als dat adressen niet "
 "op hetzelfde domeinis , zal Wordpress de omleiding negeren."
 
+#: rpr-admin-menu.php:143
+msgid "Autologin user"
+msgstr ""
+
 # @ register-plus-redux
-#: register-plus-redux.php:542
+#: rpr-admin-menu.php:145
+#, fuzzy
+msgid "Autologin user after registration."
+msgstr "Nieuwe gebruikers omleiden na registratie."
+
+#: rpr-admin-menu.php:146
+msgid ""
+"Works if Email Verification and Admin Verification are turned off. By "
+"default users will be sent to %s, to change this behavior, set up "
+"Registration Redirect field above."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:152
+#, fuzzy
+msgid "Registration Form"
+msgstr "Registratie"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:153
+#, fuzzy
+msgid ""
+"Select which fields to show on the Registration Form. Users will not be able "
+"to register without completing any fields marked required."
+msgstr ""
+"Selecteer welke velden je wilt  te laten zien op de registratie pagina. "
+"Gebruikers zullen niet in staat zijn om de registratie te beëindigen zonder "
+"het invullen van alle velden die vereist zijn."
+
+#: rpr-admin-menu.php:155
+msgid "Signup Form"
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:156
+#, fuzzy
+msgid ""
+"Select which fields to show on the Signup Form. Users will not be able to "
+"signup without completing any fields marked required."
+msgstr ""
+"Selecteer welke velden je wilt  te laten zien op de registratie pagina. "
+"Gebruikers zullen niet in staat zijn om de registratie te beëindigen zonder "
+"het invullen van alle velden die vereist zijn."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:160
 msgid "Use Email as Username"
 msgstr "Gebruik het e-mail adres als gebruikersnaam"
 
 # @ register-plus-redux
-#: register-plus-redux.php:543
+#: rpr-admin-menu.php:161
 msgid ""
 "New users will not be asked to enter a username, instead their email address "
 "will be used as their username."
@@ -1376,7 +352,272 @@ msgstr ""
 "in plaats daarvan zal het e-mail adres worden gebruikt als gebruikersnaam."
 
 # @ register-plus-redux
-#: register-plus-redux.php:770
+#: rpr-admin-menu.php:164
+msgid "Confirm Email"
+msgstr "Bevestigings E-mail"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:165
+msgid "Require new users to enter e-mail address twice during registration."
+msgstr ""
+"Verplicht nieuwe gebruikers het e-mail adres te bevestigen tijdens het "
+"registreren."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:168
+msgid "Profile Fields"
+msgstr "Profiel velden"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:173
+msgid "Show"
+msgstr "Zichtbaar"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:174
+msgid "Require"
+msgstr "Verplicht"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:178 rpr-login.php:72 rpr-signup.php:249
+msgid "First Name"
+msgstr "Voornaam"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:183 rpr-login.php:81 rpr-signup.php:260
+msgid "Last Name"
+msgstr "Achternaam"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:188 rpr-login.php:90 rpr-signup.php:271
+msgid "Website"
+msgstr "Website"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:193 rpr-login.php:99 rpr-signup.php:282
+msgid "AIM"
+msgstr "AIM"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:198 rpr-login.php:108 rpr-signup.php:293
+msgid "Yahoo IM"
+msgstr "Yahoo IM"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:203 rpr-login.php:117 rpr-signup.php:304
+msgid "Jabber / Google Talk"
+msgstr "Jabber / Google Talk"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:208 rpr-login.php:126 rpr-signup.php:315
+msgid "About Yourself"
+msgstr "Over jezelf"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:217
+msgid "User Set Password"
+msgstr "Verander wachtwoord"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:219
+msgid "Require new users enter a password during registration..."
+msgstr ""
+"Dwing nieuwe gebruikers het wachtwoord te veranderen tijdens registratie..."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:221
+msgid "Minimum password length: "
+msgstr "Minimale wachtwoord lengte: "
+
+#: rpr-admin-menu.php:222
+msgid "Do not require users to confirm password."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:223
+msgid "Show password strength meter..."
+msgstr "Laat wachtwoord sterkte zien....."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:227
+msgid "Empty"
+msgstr "Leeg"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:231
+msgid "Short"
+msgstr "Te kort"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:235
+msgid "Bad"
+msgstr "Verkeerd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:239
+msgid "Good"
+msgstr "Goed"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:243
+msgid "Strong"
+msgstr "Starkes Passwort"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:247
+msgid "Mismatch"
+msgstr "Verkeerde herhaling"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:258
+msgid "Use invitation codes to track or authorize new user registration..."
+msgstr ""
+"Gebruik een uitnodigingscode of autoriseer niuewe gebruikers middels "
+"registratie..."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:260
+msgid ""
+"Require new user enter one of the following invitation codes to register."
+msgstr ""
+"Verplicht nieuwe gebruikers een uitnodigingscode in te vullen tijdens "
+"registratie."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:261
+msgid "Enforce case-sensitivity of invitation codes."
+msgstr "Forceer hoofdletter gevoelige uitnodigingscode."
+
+#: rpr-admin-menu.php:262
+msgid "Each invitation code may only be used once."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:263
+msgid "Show Invitation Code Tracking widget on Dashboard."
+msgstr "Toon uitnodigingscode in widget op het Dashboard."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:272 rpr-admin-menu.php:676 rpr-admin-menu.php:677
+msgid "Remove Code"
+msgstr "Code verwijderen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:275
+#, fuzzy
+msgid "Show %d hidden invitation code"
+msgid_plural "Show %d hidden invitation codes"
+msgstr[0] "Voeg een nieuwe uitnodigingscode toe"
+msgstr[1] "Voeg een nieuwe uitnodigingscode toe"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:279
+msgid "Add Code"
+msgstr "Code toevoegen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:279
+msgid "Add a new invitation code"
+msgstr "Voeg een nieuwe uitnodigingscode toe"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:284
+msgid "Disclaimer"
+msgstr "Disclaimer"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:286
+msgid "Show Disclaimer during registration..."
+msgstr "Laat Disclaimer zien tijdens registratie..."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:291
+msgid "Disclaimer Title"
+msgstr "Titel van Disclaimer"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:299
+msgid "Disclaimer Content"
+msgstr "Inhoud van Disclaimer"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:305 rpr-admin-menu.php:337 rpr-admin-menu.php:369
+msgid "Require Agreement"
+msgstr "Verplichte overeenkomst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:316
+msgid "License Agreement"
+msgstr "Licentie overeenkomst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:318
+msgid "Show License Agreement during registration..."
+msgstr "Laat Licentie overeenkomst zien tijdens registratie..."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:323
+msgid "License Agreement Title"
+msgstr "Titel van Licentie overeenkomst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:331
+msgid "License Agreement Content"
+msgstr "Inhoud van Licentie overeenkomst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:348
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:350
+msgid "Show Privacy Policy during registration..."
+msgstr "Laat Privacy Policy zien tijdens registratie..."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:355
+msgid "Privacy Policy Title"
+msgstr "Titel van Privacy Policy"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:363
+msgid "Privacy Policy Content"
+msgstr "Inhoud van Privacy Policy"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:380
+msgid "Use Default Style Rules"
+msgstr "Gebruik standaard Stijlregels"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:381
+#, fuzzy
+msgid "Apply default Wordpress styling to all fields."
+msgstr "Gebruik standaard Wordpress 3.0.1 styling voor alle velden."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:384
+msgid "Required Fields Style Rules"
+msgstr "Gewenste veldstijl regels"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:388
+msgid "Required Fields Asterisk"
+msgstr "Verplichte velden Sterretje"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:389
+msgid "Add asterisk to left of all required field's name."
+msgstr "Voeg sterretje links van de naam van alle vereiste velden."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:393
+msgid "Starting Tabindex"
+msgstr "Vanaf Tabindex"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:396
 msgid ""
 "The first field added will have this tabindex, the tabindex will increment "
 "by 1 for each additional field. Enter 0 to remove all tabindex's."
@@ -1386,7 +627,12 @@ msgstr ""
 "verwijderen."
 
 # @ register-plus-redux
-#: register-plus-redux.php:775
+#: rpr-admin-menu.php:401
+msgid "Additional Fields"
+msgstr "Extra velden"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:402
 msgid ""
 "Enter additional fields to show on the User Profile and/or Registration "
 "Pages. Additional fields will be shown after existing profile fields on User "
@@ -1407,48 +653,693 @@ msgstr ""
 "mogelijke waarde. Bijvoorbeeld, een Radio veld met de naam \"Geslacht\" kan "
 "u weergeven met de opties, \"man,vrouw\"."
 
+#: rpr-admin-menu.php:413
+msgid "Reorder"
+msgstr ""
+
+#: rpr-admin-menu.php:413
+msgid "Drag to Reorder"
+msgstr ""
+
+#: rpr-admin-menu.php:418
+msgid "Display"
+msgstr ""
+
 # @ register-plus-redux
-#: register-plus-redux.php:1064
+#: rpr-admin-menu.php:420
+#, fuzzy
+msgid "Textbox Field"
+msgstr "Tekstveld"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:421
+msgid "Select Field"
+msgstr "Selecteerveld"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:422
+msgid "Checkbox Fields"
+msgstr "Checkbox Veld"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:423
+msgid "Radio Fields"
+msgstr "Radiobuttons"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:424
+msgid "Text Area"
+msgstr "Tekst ruimte"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:425
+msgid "Hidden Field"
+msgstr "Verborgen tekst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:426
+msgid "Static Text"
+msgstr "Statische tekst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:429
+msgid "Options"
+msgstr "Opties"
+
+#: rpr-admin-menu.php:432
+msgid "Database Key"
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:435
+#, fuzzy
+msgid "Show on Profile"
+msgstr "Profiel"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:438
+#, fuzzy
+msgid "Show on Registration"
+msgstr "Registratie"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:441
+#, fuzzy
+msgid "Required Field"
+msgstr "Verplichte velden Sterretje"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:444
+msgid "Actions"
+msgstr "Akties"
+
+#: rpr-admin-menu.php:445 rpr-admin-menu.php:709
+msgid "Help"
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:445
+msgid "No help available"
+msgstr "Geen hulp beschikbaar"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:446 rpr-admin-menu.php:701
+#, fuzzy
+msgid "Remove"
+msgstr "Code verwijderen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:446 rpr-admin-menu.php:702
+msgid "Remove Field"
+msgstr "Verwijder veld"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:457
+msgid "Add Field"
+msgstr "Veld toevoegen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:457
+msgid "Add a new custom field."
+msgstr "Voeg een nieuw gebruikersveld toe."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:496
+#, fuzzy
+msgid "Autocomplete URL"
+msgstr "Autom. aanvul Queries"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:497
+#, fuzzy
+msgid ""
+"You can create a URL to autocomplete specific fields for the user. "
+"Additional fields use the database key. Included below are available keys "
+"and an example URL."
+msgstr ""
+"U kunt nu de registratie-pagina koppelen aan automatische kopelvelden van "
+"een gebuiker, Hieronder zijn de Queries toegevoegd met een voorbeeld van een "
+"querie URL."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:501
+msgid "New User Message Settings"
+msgstr "Nieuwe gebruikers bericht instelling"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:504
+msgid "New User Message"
+msgstr "Nieuwe gebruikers bericht"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:506
+msgid "Do NOT send user an email after they are registered"
+msgstr "Verstuur geen e-mail aan gebruiker voordat deze heeft geregistreerd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:507
+msgid "Do NOT send user an email when created by an administrator"
+msgstr ""
+"Verstuur geen e-mail aan gebruiker als deze is aangemaakt door een beheerder."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:511
+msgid "Custom New User Message"
+msgstr "Aangepaste nieuwe gebruikers bericht"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:513 rpr-admin-menu.php:544 rpr-admin-menu.php:592
+msgid "Enable..."
+msgstr "Inschakelen..."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:517 rpr-admin-menu.php:548 rpr-admin-menu.php:596
+msgid "From Email"
+msgstr "Afzenders E-mail"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:518 rpr-admin-menu.php:522 rpr-admin-menu.php:526
+#: rpr-admin-menu.php:531 rpr-admin-menu.php:549 rpr-admin-menu.php:553
+#: rpr-admin-menu.php:557 rpr-admin-menu.php:562 rpr-admin-menu.php:597
+#: rpr-admin-menu.php:601 rpr-admin-menu.php:605 rpr-admin-menu.php:610
+msgid "Restore Default"
+msgstr "Terug naar standaard"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:521 rpr-admin-menu.php:552 rpr-admin-menu.php:600
+msgid "From Name"
+msgstr "Afzendersnaam"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:525 rpr-admin-menu.php:556 rpr-admin-menu.php:604
+msgid "Subject"
+msgstr "Onderwerp"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:530 rpr-admin-menu.php:561
+msgid "User Message"
+msgstr "Gebruikers bericht"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:532 rpr-admin-menu.php:563 rpr-admin-menu.php:611
+msgid "Replacement Keywords"
+msgstr "Vervangings Trefwoorden"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:533 rpr-admin-menu.php:564 rpr-admin-menu.php:612
+msgid "Send as HTML"
+msgstr "Als HTML versturen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:534 rpr-admin-menu.php:565 rpr-admin-menu.php:613
+msgid "Convert new lines to &lt;br /&gt; tags (HTML only)"
+msgstr "Nieuwe regel beginnen met &lt;br /&gt; tags (alleen HTML)"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:542
+msgid "Custom Verification Message"
+msgstr "Aangepaste verificatie bericht"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:573 rpr-admin-menu.php:621
+msgid "Summary"
+msgstr "Beknopte tekst"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:579
+msgid "Admin Notification Settings"
+msgstr "Admin Meldingsinstelling"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:582
+msgid "Admin Notification"
+msgstr "Admin Melding"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:584
+msgid "Do NOT send administrator an email whenever a new user registers"
+msgstr ""
+"Stuur de beheerder geen e-mail wanneer een nieuwe gebruiker zich registreert"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:585
+msgid ""
+"Do NOT send administrator an email whenever a new user is created by an "
+"administrator"
+msgstr ""
+"Stuur de beheerder geen e-mail wanneer een nieuwe gebruiker door de "
+"beheerder is aangemaakt"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:586
+#, fuzzy
+msgid "Send administrator an email after a new user is verified"
+msgstr ""
+"Stuur de beheerder geen e-mail wanneer een nieuwe gebruiker zich registreert"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:590
+msgid "Custom Admin Notification"
+msgstr "Aangepaste Admin Melding"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:609
+msgid "Admin Message"
+msgstr "Admin Bericht"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:628
+msgid "Custom CSS for Register & Login Pages"
+msgstr "Aangepastes CSS voor registratie- en loginpagina"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:629
+msgid "CSS Rule Example:"
+msgstr "CSS regel voorbeeld:"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:632
+msgid "Custom Register CSS"
+msgstr "Aangepaste registratie CSS"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:636
+msgid "Custom Login CSS"
+msgstr "Aangepaste inlog CSS"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:641
+msgid "Hacks & Fixes"
+msgstr "Hacks & Fixes"
+
+#: rpr-admin-menu.php:644
+msgid "Random Password Appears in Messages"
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:646
+#, fuzzy
+msgid "Filter Random Passwords."
+msgstr "Bevestig Wachtwoord"
+
+#: rpr-admin-menu.php:647
+msgid ""
+"When user set password is enabled, and another plugin is being used to "
+"modify outgoing messages, a random password may appear in those messages, "
+"regardless of the fact that a user entered password was specified. This "
+"option will filter all password requests and show the user entered password "
+"if possible."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:652
+msgid "Save Changes"
+msgstr "Sla veranderingen op"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:653
 msgid "Preview Registration Page"
 msgstr "Voorbeeld Registratie Pagina"
 
-# @ register-plus-redux
-#: register-plus-redux.php:1811
-msgid ""
-"<strong>ERROR</strong>: Email address is not appropriate as a username, "
-"please enter another email address."
+#: rpr-admin-menu.php:690
+msgid "New"
 msgstr ""
-"<strong>Fout:</strong> Dit e-mail adres mag niet gebruikt worden als "
-"gebruikersnaam, vul aub een ander e-mail adres in."
 
 # @ register-plus-redux
-#: register-plus-redux.php:1872 register-plus-redux.php:1981
-#, php-format
+#: rpr-admin-menu.php:691
+#, fuzzy
+msgid "New Field"
+msgstr "Tekstveld"
+
+#: rpr-admin-menu.php:710
 msgid ""
-"<strong>ERROR</strong>: Please enter new value for %s, value specified is "
-"not in the correct format."
+"You must save after adding new fields before all options become available."
 msgstr ""
-"<strong>Fout:</strong> Geef een andere waarde voor %s in, deze waarde heeft "
-"niet de juiste format."
-
-# @ default
-#: register-plus-redux.php:2444
-msgid "Invalid verification code."
-msgstr "Ongeldige verificatiecode."
 
 # @ register-plus-redux
-#: register-plus-redux.php:2472
-#, php-format
+#: rpr-admin-menu.php:727
+msgid "The following message will be sent when a user is registered:"
+msgstr ""
+"Het volgende bericht zal worden verzonden wanneer een gebruiker zich "
+"registreerd:"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:741 rpr-admin-menu.php:780 rpr-admin-menu.php:817
+msgid "To: "
+msgstr "Aan: "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:742 rpr-admin-menu.php:781 rpr-admin-menu.php:818
+msgid "From: "
+msgstr "Van: "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:743 rpr-admin-menu.php:782 rpr-admin-menu.php:819
+msgid "Subject: "
+msgstr "Onderwerp: "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:744 rpr-admin-menu.php:783 rpr-admin-menu.php:820
+msgid "Content-Type: "
+msgstr "Content-Typ: "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:752
 msgid ""
-"Thank you %s, your account has been verified, your password will be emailed "
-"to you."
+"No message will be sent to user whether they are registered or created by an "
+"administrator."
 msgstr ""
-"Dank u %s, het account is geverifieerd, u krijgt uw wachtwoord naar nog "
-"gemaild."
+"Er zal geen bericht verstuurd worden indien een gebruiker door de beheerder "
+"is ingeschreven of gecreëerd."
 
 # @ register-plus-redux
-#: register-plus-redux.php:2474
-#, php-format
+#: rpr-admin-menu.php:756 rpr-admin-menu.php:799
+msgid "The following message will be sent when a user is "
+msgstr "Het volgende bericht zal worden verstuurd wanneer een gebruiker is "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:757 rpr-admin-menu.php:800
+msgid "registered"
+msgstr "geregistreerd "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:758 rpr-admin-menu.php:801
+msgid " or "
+msgstr "of "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:759 rpr-admin-menu.php:802
+msgid "created"
+msgstr "gecreëerd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:760
+msgid " after "
+msgstr "erna"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:762
+msgid "the user has verified their email address"
+msgstr "de gebruiker heeft zijn e-mail adres bevestigd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:763
+msgid " and/or "
+msgstr "en/of"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:765
+msgid "an administrator has approved the new user"
+msgstr "een beheerder heeft de nieuwe gebruiker goedgekeurd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:795
+msgid ""
+"No message will be sent to administrator whether a user is registered or "
+"created."
+msgstr ""
+"Er zal geen bericht verstuurd worden indien een gebruiker is ingeschreven of "
+"gecreëerd."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:972
+msgid "You cannot edit that user."
+msgstr "Deze gebruiker kan niet veranderd worden."
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:996
+msgid "Users approved."
+msgstr "Gebruikers goedgekeurd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:999
+msgid "Verification emails sent."
+msgstr "Verificatie e-mail verzonden"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1002
+msgid "Users deleted."
+msgstr "Gebruikers verwijderd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1014
+msgid "Bulk Actions"
+msgstr "Massa akties"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1015
+msgid "Approve"
+msgstr "Goedgekeurd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1016
+msgid "Send E-mail Verification"
+msgstr "Verstuur e-mail verificatie"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1017 rpr-admin-menu.php:1051
+msgid "Delete"
+msgstr "Verwijderen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1019
+msgid "Apply"
+msgstr "Toepassen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1028
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1029
+msgid "Temp Username"
+msgstr "Tijdelijke Gebruikersnaam"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1030 rpr-login.php:821 rpr-login.php:826
+#: rpr-login.php:835 rpr-login.php:840
+msgid "E-mail"
+msgstr "E-Mail"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1031
+msgid "Registered"
+msgstr "Geregistreerd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1032
+msgid "Verification Sent"
+msgstr "Verificatie verzonden"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1033
+msgid "Verified"
+msgstr "Geverifieerd"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1050
+msgid "Edit"
+msgstr "Veranderen"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1055
+msgid "E-mail: "
+msgstr "E-Mail: "
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1068
+msgid "Approve Selected Users"
+msgstr "Selectie goed gekeurde gebruikers"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1069
+msgid "Send E-mail Verification to Selected Users"
+msgstr "Verstuur verificatie e-mail naar geselecteerde gebruikers"
+
+# @ register-plus-redux
+#: rpr-admin-menu.php:1070
+msgid "Delete Selected Users"
+msgstr "Verwijder geselecteerde gebruikers"
+
+# @ register-plus-redux
+#: rpr-dashboard-widget.php:14
+msgid "Invitation Code Tracking"
+msgstr "Uitnodigings Tracking Code"
+
+# @ register-plus-redux
+#: rpr-dashboard-widget.php:22
+#, fuzzy
+msgid "%s Users Registered."
+msgstr "Nieuwe geregistreerde gebruiker"
+
+# @ register-plus-redux
+#: rpr-login.php:63 rpr-signup.php:238
+msgid "Confirm E-mail"
+msgstr "Bevestig E-Mail"
+
+# @ register-plus-redux
+#: rpr-login.php:127 rpr-signup.php:320
+msgid ""
+"Share a little biographical information to fill out your profile. This may "
+"be shown publicly."
+msgstr ""
+"Deel enkele biografische gegevens in uw profiel. Dit kan openbaar worden "
+"gemaakt."
+
+# @ register-plus-redux
+#: rpr-login.php:218 rpr-signup.php:390
+msgid "Password"
+msgstr "Wachtwoord"
+
+# @ register-plus-redux
+#: rpr-login.php:224 rpr-signup.php:398
+msgid "Confirm Password"
+msgstr "Bevestig Wachtwoord"
+
+# @ register-plus-redux
+#: rpr-login.php:230 rpr-signup.php:406
+msgid ""
+"Your password must be at least %d characters long. To make your password "
+"stronger, use upper and lower case letters, numbers, and the following "
+"symbols !@#$%%^&amp;*()"
+msgstr ""
+"Uw wachtwoord moet minstens% d tekens lang zijn. Maak uw wachtwoord sterker "
+"en gebruik hoofdletters en kleine letters, cijfers en de volgende symbolen! "
+"@ # $%% ^ & * ()"
+
+# @ register-plus-redux
+#: rpr-login.php:243 rpr-signup.php:420
+msgid ""
+"This website is currently closed to public registrations. You will need an "
+"invitation code to register."
+msgstr ""
+"Deze website is momenteel gesloten voor publiek registraties. U heeft een "
+"uitnodigingcode nodig om te kunnen registreren."
+
+# @ register-plus-redux
+#: rpr-login.php:246 rpr-signup.php:422
+msgid "Have an invitation code? Enter it here. (This is not required)"
+msgstr "Heeft u een uitnodigingcode? Hier invoeren. (Dit is niet verplicht)"
+
+#: rpr-login.php:298 rpr-login.php:304 rpr-login.php:309 rpr-login.php:312
+#: rpr-login.php:317 rpr-login.php:322 rpr-login.php:327 rpr-login.php:332
+#: rpr-login.php:337 rpr-login.php:342 rpr-login.php:347 rpr-login.php:355
+#: rpr-login.php:358 rpr-login.php:363 rpr-login.php:366 rpr-login.php:369
+#: rpr-login.php:374 rpr-login.php:385 rpr-login.php:395 rpr-login.php:403
+#: rpr-login.php:408 rpr-login.php:413
+msgid "ERROR"
+msgstr "FOUT"
+
+# @ register-plus-redux
+#: rpr-login.php:298
+msgid ""
+"Email address is not appropriate as a username, please enter another email "
+"address."
+msgstr ""
+"Dit e-mail adres mag niet gebruikt worden als gebruikersnaam, vul aub een "
+"ander e-mail adres in."
+
+# @ register-plus-redux
+#: rpr-login.php:304
+msgid "This username is already registered, please choose another one."
+msgstr "Deze gebruikersnaam is al gebruikts, kies een andere aub."
+
+# @ register-plus-redux
+#: rpr-login.php:309 rpr-signup.php:519
+msgid "Please confirm your e-mail address."
+msgstr "U dient uw e-mailadres te bevestigen."
+
+# @ register-plus-redux
+#: rpr-login.php:312 rpr-signup.php:522
+msgid "Your e-mail address does not match."
+msgstr "Uw e-mail adres komt niet overeen."
+
+# @ register-plus-redux
+#: rpr-login.php:317 rpr-signup.php:527
+msgid "Please enter your first name."
+msgstr "Vul uw voornaam in."
+
+# @ register-plus-redux
+#: rpr-login.php:322 rpr-signup.php:532
+msgid "Please enter your last name."
+msgstr "Vul uw achternaam in."
+
+# @ register-plus-redux
+#: rpr-login.php:327 rpr-signup.php:537
+msgid "Please enter your website URL."
+msgstr "Vul de URL van uw website in."
+
+# @ register-plus-redux
+#: rpr-login.php:332 rpr-signup.php:542
+msgid "Please enter your AIM username."
+msgstr "Vul uw AIM gebruikersnaam in."
+
+# @ register-plus-redux
+#: rpr-login.php:337 rpr-signup.php:547
+msgid "Please enter your Yahoo IM username."
+msgstr "Vul uw Yahoo IM gebruikersnaam in."
+
+# @ register-plus-redux
+#: rpr-login.php:342 rpr-signup.php:552
+msgid "Please enter your Jabber / Google Talk username."
+msgstr "Vul uw Jabber / Google Talk gebruikersnaam in."
+
+# @ register-plus-redux
+#: rpr-login.php:347 rpr-signup.php:557
+msgid "Please enter some information about yourself."
+msgstr "Vul extra informatie over uw zelf in."
+
+#: rpr-login.php:355 rpr-signup.php:565
+msgid "Please enter a value for %s."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-login.php:358 rpr-signup.php:568
+msgid ""
+"Please enter new value for %s, value specified is not in the correct format."
+msgstr ""
+"Geef een andere waarde voor %s in, deze waarde heeft niet de juiste format."
+
+# @ register-plus-redux
+#: rpr-login.php:363 rpr-signup.php:573
+msgid "Please enter a password."
+msgstr "Vul een wachtwoord in."
+
+# @ register-plus-redux
+#: rpr-login.php:366 rpr-signup.php:576
+msgid "Your password must be at least %d characters in length."
+msgstr "Het wachtwoord moet minimaal %d karakters lang zijn."
+
+# @ register-plus-redux
+#: rpr-login.php:369 rpr-signup.php:579
+msgid "Your password does not match."
+msgstr "Het wachtwoord komt niet overeen."
+
+# @ register-plus-redux
+#: rpr-login.php:374 rpr-signup.php:589
+msgid "Please enter an invitation code."
+msgstr "Vul uw uitnodigingscode in."
+
+# @ register-plus-redux
+#: rpr-login.php:385 rpr-signup.php:600
+msgid "That invitation code is invalid."
+msgstr "Deze uitnodigingscode is niet geldig."
+
+#: rpr-login.php:395 rpr-signup.php:610
+msgid ""
+"This invitation code is already in use, please enter a unique invitation "
+"code."
+msgstr ""
+
+# @ register-plus-redux
+#: rpr-login.php:403 rpr-login.php:408 rpr-login.php:413 rpr-signup.php:618
+#: rpr-signup.php:623 rpr-signup.php:628
+msgid "Please accept the %s"
+msgstr "AUB accepteer %s"
+
+# @ register-plus-redux
+#: rpr-login.php:445
 msgid ""
 "Thank you %s, your account has been verified, please login with the password "
 "you specified during registration."
@@ -1457,19 +1348,52 @@ msgstr ""
 "de registratie heeft ingegeven."
 
 # @ register-plus-redux
-#: register-plus-redux.php:2557
+#: rpr-login.php:447
 msgid ""
-"There is another active plugin that is conflicting with Register Plus Redux. "
-"The conflicting plugin is creating its own wp_new_user_notification "
-"function, this function is used to alter the messages sent out following the "
-"creation of a new user. Please refer to <a href=\"http://radiok.info/blog/"
-"wp_new_user_notification-conflicts/\">http://radiok.info/blog/"
-"wp_new_user_notification-conflicts/</a> for help resolving this issue."
+"Thank you %s, your account has been verified, your password will be emailed "
+"to you."
 msgstr ""
-"Er is nog een actief-plugin die is strijdig met Register Plus Redux. De "
-"conflicterende plugin is een eigen wp_new_user_notification functie te "
-"creëren, wordt deze functie gebruikt om de berichten die worden verzonden "
-"naar aanleiding van de oprichting van een nieuwe gebruiker te veranderen. "
-"Raadpleeg <a href=\"http://radiok.info/blog/wp_new_user_notification-"
-"conflicts/\">http://radiok.info/blog/wp_new_user_notification-conflicts/</a> "
-"voor een oplossing van dit probleem."
+"Dank u %s, het account is geverifieerd, u krijgt uw wachtwoord naar nog "
+"gemaild."
+
+# @ default
+#: rpr-login.php:455
+msgid "Invalid verification code."
+msgstr "Ongeldige verificatiecode."
+
+#: rpr-signup.php:502
+msgid "Sorry, that username already exists!"
+msgstr ""
+
+#: rpr-signup.php:511
+msgid ""
+"That username is currently reserved but may be available in a couple of days."
+msgstr ""
+
+#: rpr-signup.php:514
+msgid "username and email used"
+msgstr ""
+
+# @ register-plus-redux
+#. Plugin Name of the plugin/theme
+#, fuzzy
+msgid "Register Plus Redux"
+msgstr "Register Plus Redux Instellingen"
+
+#. Plugin URI of the plugin/theme
+msgid "http://radiok.info/blog/category/register-plus-redux/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Enhances the user registration process with complete customization and "
+"additional administration options."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "radiok"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://radiok.info/"
+msgstr ""
