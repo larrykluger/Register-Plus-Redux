@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Register Plus Redux 3.9.5\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/register-plus-redux\n"
 "POT-Creation-Date: 2013-01-21 09:10:25+00:00\n"
-"PO-Revision-Date: 2013-02-22 06:46-0500\n"
+"PO-Revision-Date: 2013-02-22 14:45+0100\n"
 "Last-Translator: Marcel <info@wwwebhost.nl>\n"
 "Language-Team: \n"
 "Language: nl_NL\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -40,6 +40,13 @@ msgid ""
 "<p>If you do not activate your username within two days, you will have to "
 "sign up again.</p>"
 msgstr ""
+"<h2>%user_login% is uw nieuwe gebruikersnaam</h2>\n"
+"<p>Maar voordat u uw nieuwe gebruikersnaam kunt gebruiken , <strong>moet u "
+"deze eerst activeren</strong></p>\n"
+"<p>Controleer uw binnengekomen e-mail <strong>%user_email%</strong> en klik "
+"op de ontvangen link.</p>\n"
+"<p>Indien u niet binnen  dagen de gebruikersnaam activeerd zult u opnieuw "
+"moeten registreren.</p>"
 
 # @ register-plus-redux
 #: register-plus-redux.php:289
@@ -91,10 +98,13 @@ msgid ""
 "Multisite. You will have limited functionality while not Network Activated. "
 "Please refer to <a href=\"%s\">radiok.info</a> for help resolving this issue."
 msgstr ""
+"Register Plus Redux moet geactiveerd worden door de Super Admin van het "
+"netwerk in een WordPress Multisite omgeving. U heeft beperkte mogelijkheden "
+"als deze niet geactiveerd is . Raadpleeg <a href=\"%s\">radiok.info</a> voor "
+"hulp bij oplossen van dit probleem."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:32
-#, fuzzy
 msgid ""
 "There is another active plugin that is conflicting with Register Plus Redux. "
 "The conflicting plugin is creating its own wp_new_user_notification "
@@ -103,7 +113,7 @@ msgid ""
 "help resolving this issue."
 msgstr ""
 "Er is nog een actief-plugin die is strijdig met Register Plus Redux. De "
-"conflicterende plugin is een eigen wp_new_user_notification functie te "
+"conflicterende plugin is een eigen wp_new_user_notification functie aan het "
 "creëren, wordt deze functie gebruikt om de berichten die worden verzonden "
 "naar aanleiding van de oprichting van een nieuwe gebruiker te veranderen. "
 "Raadpleeg <a href=\"http://radiok.info/blog/wp_new_user_notification-"
@@ -137,9 +147,8 @@ msgstr "URL van je eigen Logo"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:86
-#, fuzzy
 msgid "Upload Image"
-msgstr "Upload een nieuwe Logo:"
+msgstr "Upload afbeelding"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:87
@@ -276,7 +285,6 @@ msgstr "Verificatie omleiding"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:138
-#, fuzzy
 msgid ""
 "By default, after verifying, users will be sent to %s/wp-login.php, leave "
 "this value empty if you do not wish to change this behavior. You may enter "
@@ -290,13 +298,12 @@ msgstr ""
 
 #: rpr-admin-menu.php:143
 msgid "Autologin user"
-msgstr ""
+msgstr "Autologin gebruiker"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:145
-#, fuzzy
 msgid "Autologin user after registration."
-msgstr "Nieuwe gebruikers omleiden na registratie."
+msgstr "Autologin gebruikers na registratie."
 
 #: rpr-admin-menu.php:146
 msgid ""
@@ -304,37 +311,37 @@ msgid ""
 "default users will be sent to %s, to change this behavior, set up "
 "Registration Redirect field above."
 msgstr ""
+"Werkt zodra E-mail Verificatie en Admin Verificatie zijn uitgeschakeld. "
+"Standaard gebruikers worden doorgestuurd naar %s, om dit gedrag te "
+"veranderen, stelt u het Registratie Redirect veld in."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:152
-#, fuzzy
 msgid "Registration Form"
-msgstr "Registratie"
+msgstr "Registratieformulier"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:153
-#, fuzzy
 msgid ""
 "Select which fields to show on the Registration Form. Users will not be able "
 "to register without completing any fields marked required."
 msgstr ""
-"Selecteer welke velden je wilt  te laten zien op de registratie pagina. "
+"Selecteer welke velden je wilt  te laten zien op het registratieformulier. "
 "Gebruikers zullen niet in staat zijn om de registratie te beëindigen zonder "
 "het invullen van alle velden die vereist zijn."
 
 #: rpr-admin-menu.php:155
 msgid "Signup Form"
-msgstr ""
+msgstr "Aanvraagformulier"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:156
-#, fuzzy
 msgid ""
 "Select which fields to show on the Signup Form. Users will not be able to "
 "signup without completing any fields marked required."
 msgstr ""
-"Selecteer welke velden je wilt  te laten zien op de registratie pagina. "
-"Gebruikers zullen niet in staat zijn om de registratie te beëindigen zonder "
+"Selecteer welke velden je wilt  te laten zien op de Aanmeldformulier. "
+"Gebruikers zullen niet in staat zijn om de aanmelden  te beëindigen zonder "
 "het invullen van alle velden die vereist zijn."
 
 # @ register-plus-redux
@@ -431,7 +438,7 @@ msgstr "Minimale wachtwoord lengte: "
 
 #: rpr-admin-menu.php:222
 msgid "Do not require users to confirm password."
-msgstr ""
+msgstr "Gebruikers hoeven hun wachtwoord niet te bevestigen."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:223
@@ -490,7 +497,7 @@ msgstr "Forceer hoofdletter gevoelige uitnodigingscode."
 
 #: rpr-admin-menu.php:262
 msgid "Each invitation code may only be used once."
-msgstr ""
+msgstr "Elke uitnodiging code kan slechts één keer worden gebruikt."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:263
@@ -504,11 +511,10 @@ msgstr "Code verwijderen"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:275
-#, fuzzy
 msgid "Show %d hidden invitation code"
 msgid_plural "Show %d hidden invitation codes"
 msgstr[0] "Voeg een nieuwe uitnodigingscode toe"
-msgstr[1] "Voeg een nieuwe uitnodigingscode toe"
+msgstr[1] "Voeg nieuwe uitnodigingscodes toe"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:279
@@ -592,7 +598,6 @@ msgstr "Gebruik standaard Stijlregels"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:381
-#, fuzzy
 msgid "Apply default Wordpress styling to all fields."
 msgstr "Gebruik standaard Wordpress 3.0.1 styling voor alle velden."
 
@@ -655,21 +660,20 @@ msgstr ""
 
 #: rpr-admin-menu.php:413
 msgid "Reorder"
-msgstr ""
+msgstr "Opnieuw ordenen"
 
 #: rpr-admin-menu.php:413
 msgid "Drag to Reorder"
-msgstr ""
+msgstr "Sleep om opnieuw ordenen"
 
 #: rpr-admin-menu.php:418
 msgid "Display"
-msgstr ""
+msgstr "Tonen"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:420
-#, fuzzy
 msgid "Textbox Field"
-msgstr "Tekstveld"
+msgstr "Tekstbox veld"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:421
@@ -708,25 +712,22 @@ msgstr "Opties"
 
 #: rpr-admin-menu.php:432
 msgid "Database Key"
-msgstr ""
+msgstr "Database sleutel"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:435
-#, fuzzy
 msgid "Show on Profile"
-msgstr "Profiel"
+msgstr "Laat op Profiel zien"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:438
-#, fuzzy
 msgid "Show on Registration"
-msgstr "Registratie"
+msgstr "Laat op Registratie zien"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:441
-#, fuzzy
 msgid "Required Field"
-msgstr "Verplichte velden Sterretje"
+msgstr "Verplicht veld"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:444
@@ -735,7 +736,7 @@ msgstr "Akties"
 
 #: rpr-admin-menu.php:445 rpr-admin-menu.php:709
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:445
@@ -744,9 +745,8 @@ msgstr "Geen hulp beschikbaar"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:446 rpr-admin-menu.php:701
-#, fuzzy
 msgid "Remove"
-msgstr "Code verwijderen"
+msgstr "Verwijderen"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:446 rpr-admin-menu.php:702
@@ -765,21 +765,19 @@ msgstr "Voeg een nieuw gebruikersveld toe."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:496
-#, fuzzy
 msgid "Autocomplete URL"
-msgstr "Autom. aanvul Queries"
+msgstr "Autom. aanvullen URL"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:497
-#, fuzzy
 msgid ""
 "You can create a URL to autocomplete specific fields for the user. "
 "Additional fields use the database key. Included below are available keys "
 "and an example URL."
 msgstr ""
-"U kunt nu de registratie-pagina koppelen aan automatische kopelvelden van "
-"een gebuiker, Hieronder zijn de Queries toegevoegd met een voorbeeld van een "
-"querie URL."
+"U kunt een URL aanmken om het automatisch aanvullen van specifieke velden "
+"voor de gebruiker. Voor Extra velden maakt u gebruik van door op database "
+"sleutel te drukken. Hieronder  zijn sleutels en een voorbeeld URL opgenomen."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:501
@@ -892,10 +890,9 @@ msgstr ""
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:586
-#, fuzzy
 msgid "Send administrator an email after a new user is verified"
 msgstr ""
-"Stuur de beheerder geen e-mail wanneer een nieuwe gebruiker zich registreert"
+"Stuur de beheerder een e-mail wanneer een nieuwe gebruiker is geverifieerd"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:590
@@ -934,13 +931,12 @@ msgstr "Hacks & Fixes"
 
 #: rpr-admin-menu.php:644
 msgid "Random Password Appears in Messages"
-msgstr ""
+msgstr "Willekeurig wachtwoord wordt weergegeven in berichten"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:646
-#, fuzzy
 msgid "Filter Random Passwords."
-msgstr "Bevestig Wachtwoord"
+msgstr "Filter willekeurige wachtwoorden."
 
 #: rpr-admin-menu.php:647
 msgid ""
@@ -950,6 +946,12 @@ msgid ""
 "option will filter all password requests and show the user entered password "
 "if possible."
 msgstr ""
+"Wanneer de door gebruiker ingestelde wachtwoord is ingeschakeld, en een "
+"andere plug-in wordt gebruikt om uitgaande berichten te wijzigen kan een "
+"willekeurig wachtwoord weergegeven worden in de berichten, ongeacht het feit "
+"dat een gebruiker ingevoerde wachtwoord opgegeven. Deze optie filtert alle "
+"wachtwoord aanvragen en geven de gebruiker ingevoerde wachtwoord indien "
+"mogelijk."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:652
@@ -963,18 +965,19 @@ msgstr "Voorbeeld Registratie Pagina"
 
 #: rpr-admin-menu.php:690
 msgid "New"
-msgstr ""
+msgstr "Nieuw"
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:691
-#, fuzzy
 msgid "New Field"
-msgstr "Tekstveld"
+msgstr "Nieuw veld"
 
 #: rpr-admin-menu.php:710
 msgid ""
 "You must save after adding new fields before all options become available."
 msgstr ""
+"U moet het toevoegen van nieuwe velden eerst opslaan alvorens alle opties "
+"beschikbaar zijn."
 
 # @ register-plus-redux
 #: rpr-admin-menu.php:727
@@ -1169,9 +1172,8 @@ msgstr "Uitnodigings Tracking Code"
 
 # @ register-plus-redux
 #: rpr-dashboard-widget.php:22
-#, fuzzy
 msgid "%s Users Registered."
-msgstr "Nieuwe geregistreerde gebruiker"
+msgstr "%s Gebruikers die zijn geregistreerd."
 
 # @ register-plus-redux
 #: rpr-login.php:63 rpr-signup.php:238
@@ -1292,7 +1294,7 @@ msgstr "Vul extra informatie over uw zelf in."
 
 #: rpr-login.php:355 rpr-signup.php:565
 msgid "Please enter a value for %s."
-msgstr ""
+msgstr "Voer een waarde in voor %s."
 
 # @ register-plus-redux
 #: rpr-login.php:358 rpr-signup.php:568
@@ -1331,6 +1333,8 @@ msgid ""
 "This invitation code is already in use, please enter a unique invitation "
 "code."
 msgstr ""
+"Deze uitnodiging code is al in gebruik,  u dient een unieke uitnodiging code "
+"te gebruiken."
 
 # @ register-plus-redux
 #: rpr-login.php:403 rpr-login.php:408 rpr-login.php:413 rpr-signup.php:618
@@ -1363,37 +1367,40 @@ msgstr "Ongeldige verificatiecode."
 
 #: rpr-signup.php:502
 msgid "Sorry, that username already exists!"
-msgstr ""
+msgstr "Sorry, deze gebruikersnaam bestaat al!"
 
 #: rpr-signup.php:511
 msgid ""
 "That username is currently reserved but may be available in a couple of days."
 msgstr ""
+"Deze gebruikersnaam is momenteel gereserveerd, maar kan in over een paar "
+"dagen weer beschikbaar komen."
 
 #: rpr-signup.php:514
 msgid "username and email used"
-msgstr ""
+msgstr "gebruikersnaam en e-mail adres gebruikt"
 
 # @ register-plus-redux
 #. Plugin Name of the plugin/theme
-#, fuzzy
 msgid "Register Plus Redux"
-msgstr "Register Plus Redux Instellingen"
+msgstr "Register Plus Redux"
 
 #. Plugin URI of the plugin/theme
 msgid "http://radiok.info/blog/category/register-plus-redux/"
-msgstr ""
+msgstr "http://radiok.info/blog/category/register-plus-redux/"
 
 #. Description of the plugin/theme
 msgid ""
 "Enhances the user registration process with complete customization and "
 "additional administration options."
 msgstr ""
+"Verbetert de gebruiker registratie proces met volledige maatwerk en extra "
+"administratie opties."
 
 #. Author of the plugin/theme
 msgid "radiok"
-msgstr ""
+msgstr "radiok"
 
 #. Author URI of the plugin/theme
 msgid "http://radiok.info/"
-msgstr ""
+msgstr "http://radiok.info/"
