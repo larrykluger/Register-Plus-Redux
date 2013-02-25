@@ -173,12 +173,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		public /*.mixed.*/ function rpr_get_option( /*.string.*/ $option ) {
-			if ( empty( $option ) ) return '';
+			if ( empty( $option ) ) return NULL;
 			$this->rpr_load_options( FALSE );
 			if ( array_key_exists( $option, $this->options ) ) {
 				return $this->options[$option];
 			}
-			return '';
+			return NULL;
 		}
 
 		public /*.bool.*/ function rpr_set_option( /*.string.*/ $option, /*.mixed.*/ $value, $save_now = FALSE ) {
