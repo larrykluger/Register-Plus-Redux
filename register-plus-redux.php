@@ -28,8 +28,9 @@ Domain Path: /languages
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
-		private $_options;
-		public function __construct() {
+		private /*.array[string]mixed.*/ $options;
+
+		public /*.void.*/ function __construct() {
 			add_action( 'init', array( $this, 'rpr_i18n_init' ), 10, 1 );
 
 			if ( !is_multisite() ) {
@@ -44,234 +45,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			add_action( 'admin_head-user-edit.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 		}
 
-		public function rpr_i18n_init() {
-			// Place your language file in the languages subfolder and name it "register-plus-redux-{language}.mo" replace {language} with your language value from wp-config.php
-			load_plugin_textdomain( 'register-plus-redux', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-		}
-
-		public function rpr_filter_pre_user_login_swp( $user_login ) {
-			// TODO: Review, this could be overriding some other stuff
-			if ( $this->rpr_get_option( 'username_is_email' ) == TRUE ) {
-				if ( array_key_exists( 'user_email', $_POST ) ) {
-					$user_email = get_magic_quotes_gpc() ? stripslashes( $_POST['user_email'] ) : $_POST['user_email'];
-					$user_email = strtolower( sanitize_user( $user_email ) );
-				}
-				if ( !empty( $user_email ) ) $user_login = $user_email;
-			}
-			return $user_login;
-		}
-
-		public function rpr_show_custom_fields( $profileuser ) {
-			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			if ( $this->rpr_get_option( 'enable_invitation_code' ) == TRUE || !empty( $redux_usermeta ) ) {
-				echo '<h3>', __( 'Additional Information', 'register-plus-redux' ), '</h3>';
-				echo '<table class="form-table">';
-				if ( $this->rpr_get_option( 'enable_invitation_code' ) == TRUE ) {
-					echo "\n", '<tr>';
-					echo "\n", '<th><label for="invitation_code">', __( 'Invitation Code', 'register-plus-redux' ), '</label></th>';
-					echo "\n", '<td><input type="text" name="invitation_code" id="invitation_code" value="', esc_attr( $profileuser->invitation_code ), '" class="regular-text" ';
-					if ( !current_user_can( 'edit_users' ) ) echo 'readonly="readonly" ';
-					echo '/></td>';
-					echo "\n", '</tr>';
-				}
-				foreach ( $redux_usermeta as $index => $meta_field ) {
-					if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
-						$meta_key = esc_attr( $meta_field['meta_key'] );
-						$meta_value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
-						echo "\n", '<tr>';
-						echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
-						if ( empty( $meta_field['show_on_profile'] ) ) echo ' <span class="description">(hidden)</span>';
-						if ( !empty( $meta_field['require_on_registration'] ) ) echo ' <span class="description">(required)</span>';
-						echo '</label></th>';
-						switch ( $meta_field['display'] ) {
-							case 'textbox':
-								echo "\n", '<td><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
-								if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" ';
-								echo 'value="', esc_attr( $meta_value ), '" class="regular-text" /></td>';
-								break;
-							case 'select':
-								echo "\n", '<td>';
-								echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
-								$field_options = explode( ',', $meta_field['options'] );
-								foreach ( $field_options as $field_option ) {
-									// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
-									$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n", '<option value="', esc_attr( $field_option ), '"';
-									if ( $meta_value == esc_attr( $field_option ) || $meta_value == $option_cleaned ) echo ' selected="selected"';
-									echo '>', esc_html( $field_option ), '</option>';
-								}
-								echo "\n", '</select>';
-								echo "\n", '</td>';
-								break;
-							case 'checkbox':
-								echo "\n", '<td>';
-								$field_options = explode( ',', $meta_field['options'] );
-								$meta_values = explode( ',', $meta_value );
-								foreach ( $field_options as $field_option ) {
-									// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
-									$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
-									if ( is_array( $meta_values ) && ( in_array( esc_attr( $field_option ), $meta_values ) || in_array( $option_cleaned, $meta_values ) ) ) echo 'checked="checked" ';
-									if ( !is_array( $meta_values ) && ( $meta_value == esc_attr( $field_option ) || $meta_value == $option_cleaned ) ) echo 'checked="checked" ';
-									echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
-								}
-								echo "\n", '</td>';
-								break;
-							case 'radio':
-								echo "\n", '<td>';
-								$field_options = explode( ',', $meta_field['options'] );
-								foreach ( $field_options as $field_option ) {
-									// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
-									$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
-									echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', esc_attr( $field_option ), '" ';
-									if ( $meta_value == esc_attr( $field_option ) || $meta_value == $option_cleaned ) echo 'checked="checked" ';
-									echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
-								}
-								echo "\n", '</td>';
-								break;
-							case 'textarea':
-								echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea></td>';
-								break;
-							case 'hidden':
-								echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" /></td>';
-								break;
-							case 'text':
-								echo "\n", '<td><span class="description">', esc_html( $meta_field['label'] ), '</span></td>';
-								break;
-						}
-						echo "\n", '</tr>';
-					}
-				}
-				echo '</table>';
-			}
-		}
-
-		public function rpr_save_custom_fields( $user_id ) {
-			// TODO: Error check invitation code?
-			if ( array_key_exists( 'invitation_code', $_POST ) ) {
-				$invitation_code = get_magic_quotes_gpc() ? stripslashes( $_POST['invitation_code'] ) : $_POST['invitation_code'];
-				update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $invitation_code ) );
-			}
-			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			foreach ( $redux_usermeta as $index => $meta_field ) {
-				if ( current_user_can( 'edit_users' ) || !empty( $meta_field['show_on_profile'] ) ) {
-					$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ?  $_POST[$meta_field['meta_key']] : '';
-					$meta_value = get_magic_quotes_gpc() ? stripslashes_deep( $meta_value ) : $meta_value;
-					$this->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
-				}
-			}
-		}
-
-		public function rpr_update_user_meta( $user_id, $meta_field, $meta_value ) {
-			// convert array to string
-			if ( is_array( $meta_value ) && count( $meta_value ) ) $meta_value = implode( ',', $meta_value );
-			// sanitize url
-			if ( $meta_field['escape_url'] == TRUE ) {
-				$meta_value = esc_url_raw( $meta_value );
-				$meta_value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $meta_value ) ? $meta_value : 'http://' . $meta_value;
-			}
-			
-			$valid_value = TRUE;
-			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
-			if ( !empty( $meta_field['require_on_registration'] ) && empty( $meta_value ) ) $valid_value = FALSE;
-			// check text field against regex if specified
-			if ( ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $meta_value ) ) $valid_value = FALSE;
-			if ( $meta_field['display'] != 'textarea' ) $meta_value = sanitize_text_field( $meta_value );
-			if ( $meta_field['display'] = 'textarea' ) $meta_value = wp_filter_kses( $meta_value );
-			
-			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $meta_value );
-		}
-
-		//TODO: Raname or ... something
-		public function DatepickerHead() {
-			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			foreach ( $redux_usermeta as $index => $meta_field ) {
-				if ( !empty( $meta_field['show_on_profile'] ) ) {
-					if ( $meta_field['show_datepicker'] == TRUE ) {
-						$show_custom_date_fields = TRUE;
-						break;
-					}
-				}
-			}
-			if ( !empty( $show_custom_date_fields ) ) {
-				if ( empty( $jquery_loaded ) ) {
-					wp_print_scripts( 'jquery' );
-					$jquery_loaded = TRUE;
-				}
-				wp_print_scripts( 'jquery-ui-core' );
-				?>
-				<link type="text/css" rel="stylesheet" href="<?php echo plugins_url( 'js/theme/jquery.ui.all.css', __FILE__ ); ?>" />
-				<script type="text/javascript" src="<?php echo plugins_url( 'js/jquery.ui.datepicker.min.js', __FILE__ ); ?>"></script>
-				<script type="text/javascript">
-				jQuery(function() {
-					jQuery(".datepicker").datepicker();
-				});
-				</script>
-				<?php
-			}
-		}
-
-		public function rpr_update_options( $options = array() ) {
-			global $_options;
-			if ( empty( $options ) && empty( $_options ) ) return FALSE;
-			if ( !empty( $options ) ) {
-				update_option( 'register_plus_redux_options', $options );
-				$_options = $options;
-			}
-			else {
-				update_option( 'register_plus_redux_options', $_options );
-			}
-			return TRUE;
-		}
-
-		public function rpr_get_option( $option ) {
-			global $_options;
-			if ( empty( $option ) ) return NULL;
-			$this->rpr_get_options( FALSE );
-			if ( array_key_exists( $option, $_options ) )
-				return $_options[$option];
-			return NULL;
-		}
-
-		public function rpr_get_options( $force_refresh = FALSE ) {
-			global $_options;
-			if ( empty( $_options ) || $force_refresh === TRUE ) {
-				$_options = get_option( 'register_plus_redux_options' );
-			}
-			if ( empty( $_options ) ) {
-				$this->rpr_update_options( $this->default_options() );
-			}
-		}
-
-		public function rpr_set_option( $option, $value, $save_now = FALSE ) {
-			global $_options;
-			if ( empty( $option ) ) return FALSE;
-			$this->rpr_get_options( FALSE );
-			$_options[$option] = $value;
-			if ( $save_now === TRUE ) {
-				$this->rpr_update_options();
-			}
-			return TRUE;
-		}
-
-		public function rpr_unset_option( $option, $save_now = FALSE ) {
-			global $_options;
-			if ( empty( $option ) ) return FALSE;
-			$this->rpr_get_options( FALSE );
-			unset( $_options[$option] );
-			if ( $save_now === TRUE ) {
-				$this->rpr_update_options();
-			}
-			return TRUE;
-		}
-
-		public static function default_options( $option = '' )
+		public static /*.mixed.*/ function default_options( $option = '' )
 		{
 			$blogname = stripslashes( wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
-			$default = array(
+			$options = array(
 				'custom_logo_url' => '',
 				'verify_user_email' => is_multisite() ? '1' : '0',
 				'message_verify_user_email' => is_multisite() ? 
@@ -319,7 +96,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				'default_css' => '1',
 				'required_fields_style' => 'border:solid 1px #E6DB55; background-color:#FFFFE0;',
 				'required_fields_asterisk' => '0',
-				'starting_tabindex' => is_multisite() ? 0 : 21,
+				'starting_tabindex' => 0,
 
 				/*
 				'datepicker_firstdayofweek' => 6,
@@ -361,106 +138,229 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				'custom_login_page_css' => '',
 				
 				'registration_redirect_url' => '',
-				'verification_redirect_url' => '',
-				
-				'filter_random_password' => ''
+				'verification_redirect_url' => ''
 			);
-			if ( !empty( $option ) )
-				if ( array_key_exists( $option, $default ) )
-					return $default[$option];
-				else
+			if ( !empty( $option ) ) {
+				if ( array_key_exists( $option, $options ) ) {
+					return $options[$option];
+				}
+				else {
 					return FALSE;
-			else
-				return $default;
+				}
+			}
+			return $options;
+		}
+		
+		public /*.bool.*/ function rpr_update_options( /*.array[string]mixed.*/ $options = array() ) {
+			if ( empty( $options ) && empty( $this->options ) ) return FALSE;
+			if ( !empty( $options ) ) {
+				update_option( 'register_plus_redux_options', $options );
+				$this->options = $options;
+			}
+			else {
+				update_option( 'register_plus_redux_options', $this->options );
+			}
+			return TRUE;
 		}
 
-		public function clean_text( $text ) {
+		private /*.void.*/ function rpr_load_options( $force_refresh = FALSE ) {
+			if ( empty( $this->options ) || $force_refresh === TRUE ) {
+				$this->options = get_option( 'register_plus_redux_options' );
+			}
+			if ( empty( $this->options ) ) {
+				$this->rpr_update_options( Register_Plus_Redux::default_options() );
+			}
+		}
+
+		public /*.mixed.*/ function rpr_get_option( /*.string.*/ $option ) {
+			if ( empty( $option ) ) return '';
+			$this->rpr_load_options( FALSE );
+			if ( array_key_exists( $option, $this->options ) ) {
+				return $this->options[$option];
+			}
+			return '';
+		}
+
+		public /*.bool.*/ function rpr_set_option( /*.string.*/ $option, /*.mixed.*/ $value, $save_now = FALSE ) {
+			if ( empty( $option ) ) return FALSE;
+			$this->rpr_load_options( FALSE );
+			$this->options[$option] = $value;
+			if ( $save_now === TRUE ) {
+				$this->rpr_update_options();
+			}
+			return TRUE;
+		}
+
+		public /*.bool.*/ function rpr_unset_option( /*.string.*/ $option, $save_now = FALSE ) {
+			if ( empty( $option ) ) return FALSE;
+			$this->rpr_load_options( FALSE );
+			unset( $this->options[$option] );
+			if ( $save_now === TRUE ) {
+				$this->rpr_update_options();
+			}
+			return TRUE;
+		}
+
+		public /*.string.*/ function clean_text( /*.mixed.*/ $text ) {
 			$text = str_replace( ' ', '_', $text );
 			$text = str_replace( '"' , '', $text );
 			$text = str_replace( "'" , '', $text );
-			$text = strtolower( $text );
-			return $text;
+			return strtolower( (string) $text );
 		}
 
-		public function rpr_is_network_activated() {
-			if ( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-			return is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' );
-		}
-
-		public function send_verification_mail( $user_id, $verification_code ) {
-			$user_info = get_userdata( $user_id );
-			$subject = $this->default_options( 'verification_message_subject' );
-			$message = $this->default_options( 'verification_message_body' );
-			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
-			if ( $this->rpr_get_option( 'custom_verification_message' ) == TRUE ) {
-				$subject = esc_html( $this->rpr_get_option( 'verification_message_subject' ) );
-				$message = $this->rpr_get_option( 'verification_message_body' );
-				if ( $this->rpr_get_option( 'send_verification_message_in_html' ) == TRUE && $this->rpr_get_option( 'verification_message_newline_as_br' ) == TRUE )
-					$message = nl2br( $message );
-				if ( $this->rpr_get_option( 'verification_message_from_name' ) )
-					add_filter( 'wp_mail_from_name', array( $this, 'rpr_filter_verification_mail_from_name' ), 10, 1 );
-				if ( is_email( $this->rpr_get_option( 'verification_message_from_email' ) ) )
-					add_filter( 'wp_mail_from', array( $this, 'rpr_filter_verification_mail_from' ), 10, 1 );
-				if ( $this->rpr_get_option( 'send_verification_message_in_html' ) == TRUE )
-					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
+		public /*.void.*/ function rpr_update_user_meta( /*.int.*/ $user_id, /*.array[string]mixed.*/ $meta_field, /*.mixed.*/ $meta_value ) {
+			// convert array to string
+			if ( is_array( $meta_value ) ) $meta_value = implode( ',', $meta_value );
+			// sanitize url
+			if ( '1' === $meta_field['escape_url'] ) {
+				$meta_value = esc_url_raw( $meta_value );
+				$meta_value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $meta_value ) > 0 ? $meta_value : 'http://' . $meta_value;
 			}
-			$subject = $this->replace_keywords( $subject, $user_info );
-			$message = $this->replace_keywords( $message, $user_info, '', $verification_code );
-			wp_mail( $user_info->user_email, $subject, $message );
+			
+			$valid_value = TRUE;
+			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
+			if ( '1' === $meta_field['require_on_registration'] && empty( $meta_value ) ) $valid_value = FALSE;
+			// check text field against regex if specified
+			if ( ( 'textbox' === $meta_field['display'] ) && !empty( $meta_field['options'] ) && 1 !== preg_match( (string) $meta_field['options'], $meta_value ) ) $valid_value = FALSE;
+			if ( 'textarea' !== $meta_field['display'] ) $meta_value = sanitize_text_field( $meta_value );
+			if ( 'textarea' === $meta_field['display'] ) $meta_value = wp_filter_kses( $meta_value );
+			
+			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $meta_value );
 		}
 
-		public function send_welcome_user_mail( $user_id, $plaintext_pass ) {
-			$user_info = get_userdata( $user_id );
-			$subject = $this->default_options( 'user_message_subject' );
-			$message = $this->default_options( 'user_message_body' );
-			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
-			if ( $this->rpr_get_option( 'custom_user_message' ) == TRUE ) {
-				$subject = esc_html( $this->rpr_get_option( 'user_message_subject' ) );
-				$message = $this->rpr_get_option( 'user_message_body' );
-				if ( $this->rpr_get_option( 'send_user_message_in_html' ) == TRUE && $this->rpr_get_option( 'user_message_newline_as_br' ) == TRUE )
-					$message = nl2br( $message );
-				if ( $this->rpr_get_option( 'user_message_from_name' ) )
-					add_filter( 'wp_mail_from_name', array( $this, 'rpr_filter_welcome_user_mail_from_name' ), 10, 1 );
-				if ( is_email( $this->rpr_get_option( 'user_message_from_email' ) ) )
-					add_filter( 'wp_mail_from', array( $this, 'rpr_filter_welcome_user_mail_from' ), 10, 1 );
-				if ( $this->rpr_get_option( 'send_user_message_in_html' ) == TRUE )
-					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
+		public /*.void.*/ function rpr_i18n_init() {
+			// Place your language file in the languages subfolder and name it "register-plus-redux-{language}.mo" replace {language} with your language value from wp-config.php
+			load_plugin_textdomain( 'register-plus-redux', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		}
+
+		public /*.string.*/ function rpr_filter_pre_user_login_swp( /*.string.*/ $user_login ) {
+			// TODO: Review, this could be overriding some other stuff
+			if ( '1' === $this->rpr_get_option( 'username_is_email' ) ) {
+				if ( array_key_exists( 'user_email', $_POST ) ) {
+					$user_email = stripslashes( (string) $_POST['user_email'] );
+					$user_email = strtolower( sanitize_user( $user_email ) );
+					return $user_email;
+				}
 			}
-			$subject = $this->replace_keywords( $subject, $user_info );
-			$message = $this->replace_keywords( $message, $user_info, $plaintext_pass );
-			wp_mail( $user_info->user_email, $subject, $message );
+			return $user_login;
 		}
 
-		public function send_admin_mail( $user_id, $plaintext_pass, $verification_code = '' ) {
-			$user_info = get_userdata( $user_id );
-			$subject = $this->default_options( 'admin_message_subject' );
-			$message = $this->default_options( 'admin_message_body' );
-			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
-			if ( $this->rpr_get_option( 'custom_admin_message' ) == TRUE ) {
-				$subject = esc_html( $this->rpr_get_option( 'admin_message_subject' ) );
-				$message = $this->rpr_get_option( 'admin_message_body' );
-				if ( $this->rpr_get_option( 'send_admin_message_in_html' ) == TRUE && $this->rpr_get_option( 'admin_message_newline_as_br' ) == TRUE )
-					$message = nl2br( $message );
-				if ( $this->rpr_get_option( 'admin_message_from_name' ) )
-					add_filter( 'wp_mail_from_name', array( $this, 'rpr_filter_admin_mail_from_name' ), 10, 1 );
-				if ( is_email( $this->rpr_get_option( 'admin_message_from_email' ) ) )
-					add_filter( 'wp_mail_from', array( $this, 'rpr_filter_admin_mail_from' ), 10, 1 );
-				if ( $this->rpr_get_option( 'send_admin_message_in_html' ) == TRUE )
-					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
+		// $profileuser is a WP_User object
+		public /*.void.*/ function rpr_show_custom_fields( $profileuser ) {
+			/*.array[string]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) || is_array( $redux_usermeta ) ) {
+				echo '<h3>', __( 'Additional Information', 'register-plus-redux' ), '</h3>';
+				echo '<table class="form-table">';
+				if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) ) {
+					echo "\n", '<tr>';
+					echo "\n", '<th><label for="invitation_code">', __( 'Invitation Code', 'register-plus-redux' ), '</label></th>';
+					echo "\n", '<td><input type="text" name="invitation_code" id="invitation_code" value="', esc_attr( $profileuser->invitation_code ), '" class="regular-text" ';
+					if ( !current_user_can( 'edit_users' ) ) echo 'readonly="readonly" ';
+					echo '/></td>';
+					echo "\n", '</tr>';
+				}
+				if ( is_array( $redux_usermeta ) ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
+							$meta_key = (string) esc_attr( $meta_field['meta_key'] );
+							$meta_value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
+							echo "\n", '<tr>';
+							echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
+							if ( '1' !== $meta_field['show_on_profile'] ) echo ' <span class="description">(hidden)</span>';
+							if ( '1' ===  $meta_field['require_on_registration'] ) echo ' <span class="description">(required)</span>';
+							echo '</label></th>';
+							switch ( (string) $meta_field['display'] ) {
+								case 'textbox':
+									echo "\n", '<td><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
+									if ( '1' === $meta_field['show_datepicker'] ) echo 'class="datepicker" ';
+									echo 'value="', esc_attr( $meta_value ), '" class="regular-text" /></td>';
+									break;
+								case 'select':
+									echo "\n", '<td>';
+									echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
+									$field_options = explode( ',', (string) $meta_field['options'] );
+									foreach ( $field_options as $field_option ) {
+										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
+										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
+										echo "\n", '<option value="', esc_attr( $field_option ), '"';
+										if ( $meta_value === esc_attr( $field_option ) || $meta_value === $option_cleaned ) echo ' selected="selected"';
+										echo '>', esc_html( $field_option ), '</option>';
+									}
+									echo "\n", '</select>';
+									echo "\n", '</td>';
+									break;
+								case 'checkbox':
+									echo "\n", '<td>';
+									$field_options = explode( ',', (string) $meta_field['options'] );
+									$meta_values = explode( ',', (string) $meta_value );
+									foreach ( $field_options as $field_option ) {
+										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
+										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
+										echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
+										if ( is_array( $meta_values ) && ( in_array( esc_attr( $field_option ), $meta_values ) || in_array( $option_cleaned, $meta_values ) ) ) echo 'checked="checked" ';
+										if ( !is_array( $meta_values ) && ( $meta_value === esc_attr( $field_option ) || $meta_value === $option_cleaned ) ) echo 'checked="checked" ';
+										echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
+									}
+									echo "\n", '</td>';
+									break;
+								case 'radio':
+									echo "\n", '<td>';
+									$field_options = explode( ',', (string) $meta_field['options'] );
+									foreach ( $field_options as $field_option ) {
+										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
+										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
+										echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', esc_attr( $field_option ), '" ';
+										if ( $meta_value === esc_attr( $field_option ) || $meta_value === $option_cleaned ) echo 'checked="checked" ';
+										echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
+									}
+									echo "\n", '</td>';
+									break;
+								case 'textarea':
+									echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea></td>';
+									break;
+								case 'hidden':
+									echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" /></td>';
+									break;
+								case 'text':
+									echo "\n", '<td><span class="description">', esc_html( $meta_field['label'] ), '</span></td>';
+									break;
+								default:
+							}
+							echo "\n", '</tr>';
+						}
+					}
+				}
+				echo '</table>';
 			}
-			$subject = $this->replace_keywords( $subject, $user_info );
-			$message = $this->replace_keywords( $message, $user_info, $plaintext_pass, $verification_code );
-			wp_mail( get_option( 'admin_email' ), $subject, $message );
 		}
 
-		public function replace_keywords( $message = '', $user_info = array(), $plaintext_pass = '', $verification_code = '' ) {
+		public /*.void.*/ function rpr_save_custom_fields( /*.int.*/ $user_id ) {
+			// TODO: Error check invitation code?
+			if ( array_key_exists( 'invitation_code', $_POST ) ) {
+				$invitation_code = stripslashes( (string) $_POST['invitation_code'] );
+				update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $invitation_code ) );
+			}
+			/*.array[string]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
+						$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ? (string) $_POST[ (string) $meta_field['meta_key']] : '';
+						$meta_value = stripslashes_deep( $meta_value );
+						$this->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
+					}
+				}
+			}
+		}
+
+		// $user_info is a WP_User object
+		public /*.string.*/ function replace_keywords( /*.mixed.*/ $message, $user_info, $plaintext_pass = '', $verification_code = '' ) {
 			global $pagenow;
 			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %stored_user_login% %user_password% %verification_code% %verification_url%';
 
-			preg_match_all( '/%=([^%]+)%/', $message, $keys );
+			preg_match_all( '/%=([^%]+)%/', (string) $message, $keys );
 			if ( is_array( $keys ) && is_array( $keys[1] ) ) {
 				foreach( $keys[1] as $key ) {
-					$message = str_replace( "%=$key%", get_user_meta( $user_info->ID, $key, true ), $message );
+					$message = str_replace( "%=$key%", get_user_meta( $user_info->ID, $key, TRUE ), $message );
 				}
 			}
 
@@ -480,7 +380,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$message = str_replace( '%registered_from_host%', isset( $_SERVER['REMOTE_ADDR'] ) ? gethostbyaddr( $_SERVER['REMOTE_ADDR'] ) : '', $message );
 			}
 			if ( !empty( $user_info ) ) {
-				if ( ( $this->rpr_get_option( 'verify_user_email' ) == TRUE ) || ( $this->rpr_get_option( 'verify_user_admin' ) == TRUE ) ) {
+				if ( '1' === $this->rpr_get_option( 'verify_user_email' ) || '1' === $this->rpr_get_option( 'verify_user_admin' ) ) {
 					$user_login = get_user_meta( $user_info->ID, 'stored_user_login', TRUE );
 					if ( empty( $user_login ) ) $user_login = $user_info->user_login;
 					$message = str_replace( '%user_login%', $user_login, $message );
@@ -498,38 +398,142 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$message = str_replace( '%verification_code%', $verification_code, $message );
 				$message = str_replace( '%verification_url%', wp_login_url() . '?action=verifyemail&verification_code=' . $verification_code, $message );
 			}
-			return $message;
+			return (string) $message;
 		}
 
-		public function rpr_filter_verification_mail_from( $from_email ) {
+		//TODO: Raname or ... something
+		public /*.void.*/ function DatepickerHead() {
+			/*.array[string]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			$show_custom_date_fields = FALSE;
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( '1' === $meta_field['show_on_profile'] ) {
+						if ( '1' === $meta_field['show_datepicker'] ) {
+							$show_custom_date_fields = TRUE;
+							break;
+						}
+					}
+				}
+			}
+			if ( TRUE === $show_custom_date_fields ) {
+				wp_print_scripts( 'jquery' );
+				wp_print_scripts( 'jquery-ui-core' );
+				?>
+				<link type="text/css" rel="stylesheet" href="<?php echo plugins_url( 'js/theme/jquery.ui.all.css', __FILE__ ); ?>" />
+				<script type="text/javascript" src="<?php echo plugins_url( 'js/jquery.ui.datepicker.min.js', __FILE__ ); ?>"></script>
+				<script type="text/javascript">
+				jQuery(function() {
+					jQuery(".datepicker").datepicker();
+				});
+				</script>
+				<?php
+			}
+		}
+
+		public /*.bool.*/ function rpr_is_network_activated() {
+			if ( !function_exists( 'is_plugin_active_for_network' ) ) { require_once( ABSPATH . '/wp-admin/includes/plugin.php' ); }
+			return is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' );
+		}
+
+		public /*.void.*/ function send_verification_mail( /*.int.*/ $user_id, /*.string.*/ $verification_code ) {
+			$user_info = get_userdata( $user_id );
+			$subject = Register_Plus_Redux::default_options( 'verification_message_subject' );
+			$message = Register_Plus_Redux::default_options( 'verification_message_body' );
+			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
+			if ( '1' === $this->rpr_get_option( 'custom_verification_message' ) ) {
+				$subject = esc_html( $this->rpr_get_option( 'verification_message_subject' ) );
+				$message = $this->rpr_get_option( 'verification_message_body' );
+				if ( '1' === $this->rpr_get_option( 'send_verification_message_in_html' ) && '1' === $this->rpr_get_option( 'verification_message_newline_as_br' ) ) {
+					$message = nl2br( (string) $message );
+				}
+				$from_name = $this->rpr_get_option( 'verification_message_from_name' );
+				if ( !empty( $from_name ) )
+					add_filter( 'wp_mail_from_name', array( $this, 'rpr_filter_verification_mail_from_name' ), 10, 1 );
+				if ( FALSE !== is_email( $this->rpr_get_option( 'verification_message_from_email' ) ) )
+					add_filter( 'wp_mail_from', array( $this, 'rpr_filter_verification_mail_from' ), 10, 1 );
+				if ( '1' === $this->rpr_get_option( 'send_verification_message_in_html' ) )
+					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
+			}
+			$subject = $this->replace_keywords( $subject, $user_info );
+			$message = $this->replace_keywords( $message, $user_info, '', $verification_code );
+			wp_mail( $user_info->user_email, $subject, $message );
+		}
+
+		public /*.void.*/ function send_welcome_user_mail( /*.int.*/ $user_id, /*.string.*/ $plaintext_pass ) {
+			$user_info = get_userdata( $user_id );
+			$subject = Register_Plus_Redux::default_options( 'user_message_subject' );
+			$message = Register_Plus_Redux::default_options( 'user_message_body' );
+			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
+			if ( '1' === $this->rpr_get_option( 'custom_user_message' ) ) {
+				$subject = esc_html( $this->rpr_get_option( 'user_message_subject' ) );
+				$message = $this->rpr_get_option( 'user_message_body' );
+				if ( '1' === $this->rpr_get_option( 'send_user_message_in_html' ) && '1' === $this->rpr_get_option( 'user_message_newline_as_br' ) )
+					$message = nl2br( (string) $message );
+				$from_name = $this->rpr_get_option( 'user_message_from_name' );
+				if ( !empty( $from_name ) )
+					add_filter( 'wp_mail_from_name', array( $this, 'rpr_filter_welcome_user_mail_from_name' ), 10, 1 );
+				if ( FALSE !== is_email( $this->rpr_get_option( 'user_message_from_email' ) ) )
+					add_filter( 'wp_mail_from', array( $this, 'rpr_filter_welcome_user_mail_from' ), 10, 1 );
+				if ( '1' === $this->rpr_get_option( 'send_user_message_in_html' ) )
+					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
+			}
+			$subject = $this->replace_keywords( $subject, $user_info );
+			$message = $this->replace_keywords( $message, $user_info, $plaintext_pass );
+			wp_mail( $user_info->user_email, $subject, $message );
+		}
+
+		public /*.void.*/ function send_admin_mail( /*.int.*/ $user_id, /*.string.*/ $plaintext_pass, $verification_code = '' ) {
+			$user_info = get_userdata( $user_id );
+			$subject = Register_Plus_Redux::default_options( 'admin_message_subject' );
+			$message = Register_Plus_Redux::default_options( 'admin_message_body' );
+			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
+			if ( '1' === $this->rpr_get_option( 'custom_admin_message' ) ) {
+				$subject = esc_html( $this->rpr_get_option( 'admin_message_subject' ) );
+				$message = $this->rpr_get_option( 'admin_message_body' );
+				if ( '1' === $this->rpr_get_option( 'send_admin_message_in_html' ) && '1' === $this->rpr_get_option( 'admin_message_newline_as_br' ) )
+					$message = nl2br( (string) $message );
+				$from_name = $this->rpr_get_option( 'admin_message_from_name' );
+				if ( !empty( $from_name ) )
+					add_filter( 'wp_mail_from_name', array( $this, 'rpr_filter_admin_mail_from_name' ), 10, 1 );
+				if ( FALSE !== is_email( $this->rpr_get_option( 'admin_message_from_email' ) ) )
+					add_filter( 'wp_mail_from', array( $this, 'rpr_filter_admin_mail_from' ), 10, 1 );
+				if ( '1' === $this->rpr_get_option( 'send_admin_message_in_html' ) )
+					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
+			}
+			$subject = $this->replace_keywords( $subject, $user_info );
+			$message = $this->replace_keywords( $message, $user_info, $plaintext_pass, $verification_code );
+			wp_mail( get_option( 'admin_email' ), $subject, $message );
+		}
+
+		public /*.string.*/ function rpr_filter_verification_mail_from( /*.string.*/ $from_email ) {
 			return is_email( $this->rpr_get_option( 'verification_message_from_email' ) );
 		}
 
-		public function rpr_filter_verification_mail_from_name( $from_name ) {
+		public /*.string.*/ function rpr_filter_verification_mail_from_name( /*.string.*/ $from_name ) {
 			return esc_html( $this->rpr_get_option( 'verification_message_from_name' ) );
 		}
 
-		public function rpr_filter_welcome_user_mail_from( $from_email ) {
+		public /*.string.*/ function rpr_filter_welcome_user_mail_from( /*.string.*/ $from_email ) {
 			return is_email( $this->rpr_get_option( 'user_message_from_email' ) );
 		}
 
-		public function rpr_filter_welcome_user_mail_from_name( $from_name ) {
+		public /*.string.*/ function rpr_filter_welcome_user_mail_from_name( /*.string.*/ $from_name ) {
 			return esc_html( $this->rpr_get_option( 'user_message_from_name' ) );
 		}
 
-		public function rpr_filter_admin_mail_from( $from_email ) {
+		public /*.string.*/ function rpr_filter_admin_mail_from( /*.string.*/ $from_email ) {
 			return is_email( $this->rpr_get_option( 'admin_message_from_email' ) );
 		}
 
-		public function rpr_filter_admin_mail_from_name( $from_name ) {
+		public /*.string.*/ function rpr_filter_admin_mail_from_name( /*.string.*/ $from_name ) {
 			return esc_html( $this->rpr_get_option( 'admin_message_from_name' ) );
 		}
 
-		public function rpr_filter_mail_content_type_text( $content_type ) {
+		public /*.string.*/ function rpr_filter_mail_content_type_text( /*.string.*/ $content_type ) {
 			return 'text/plain';
 		}
 
-		public function rpr_filter_mail_content_type_html( $content_type ) {
+		public /*.string.*/ function rpr_filter_mail_content_type_html( /*.string.*/ $content_type ) {
 			return 'text/html';
 		}
 	}
@@ -547,7 +551,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( is_admin() && file_exists( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu-wip.php' ) ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu-wip.php' );
 
 	$do_include = FALSE;
-	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) == TRUE ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) ) $do_include = TRUE;
 	if ( $do_include && is_admin() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-dashboard-widget.php' );
 
 	//TODO: Determine which features require the following file
@@ -559,24 +563,24 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
 
 	$do_include = FALSE;
-	if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) $do_include = TRUE;
 	if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) $do_include = TRUE;
 	if ( is_array( get_option( 'register_plus_redux_usermeta-rv2' ) ) ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'autologin_user' ) == TRUE ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'autologin_user' ) ) $do_include = TRUE;
 	if ( $do_include && is_multisite() && $register_plus_redux->rpr_is_network_activated() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 
 	//NOTE: Requires rpr-admin.php for rpr_new_user_notification_warning make
 	$do_include = FALSE;
-	if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'custom_user_message' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) == TRUE ) $do_include = TRUE;
-	if ( $register_plus_redux->rpr_get_option( 'custom_admin_message' ) == TRUE ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'custom_user_message' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'custom_admin_message' ) ) $do_include = TRUE;
 	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
 }
 ?>
