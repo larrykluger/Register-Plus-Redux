@@ -151,7 +151,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return $options;
 		}
 		
-		public /*.bool.*/ function rpr_update_options( /*.array[string]mixed.*/ $options = array() ) {
+		public /*.bool.*/ function rpr_update_options( /*.array[string]mixed.*/ $options ) {
 			if ( empty( $options ) && empty( $this->options ) ) return FALSE;
 			if ( !empty( $options ) ) {
 				update_option( 'register_plus_redux_options', $options );
@@ -186,7 +186,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			$this->rpr_load_options( FALSE );
 			$this->options[$option] = $value;
 			if ( $save_now === TRUE ) {
-				$this->rpr_update_options();
+				$this->rpr_update_options( NULL );
 			}
 			return TRUE;
 		}
@@ -196,7 +196,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			$this->rpr_load_options( FALSE );
 			unset( $this->options[$option] );
 			if ( $save_now === TRUE ) {
-				$this->rpr_update_options();
+				$this->rpr_update_options( NULL );
 			}
 			return TRUE;
 		}
@@ -210,11 +210,11 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function rpr_update_user_meta( /*.int.*/ $user_id, /*.array[string]mixed.*/ $meta_field, /*.mixed.*/ $meta_value ) {
 			// convert array to string
-			if ( is_array( $meta_value ) ) $meta_value = implode( ',', $meta_value );
+			if ( is_array( $meta_value ) ) { $meta_value = implode( ',', $meta_value ); }
 			// sanitize url
 			if ( '1' === $meta_field['escape_url'] ) {
-				$meta_value = esc_url_raw( $meta_value );
-				$meta_value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $meta_value ) > 0 ? $meta_value : 'http://' . $meta_value;
+				$meta_value = esc_url_raw( (string) $meta_value );
+				$meta_value = preg_match( '/^(https?|ftps?|mailto|news|irc|gopher|nntp|feed|telnet):/is', $meta_value ) > 0 ? (string) $meta_value : 'http://' . (string) $meta_value;
 			}
 			
 			$valid_value = TRUE;
@@ -247,7 +247,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		// $profileuser is a WP_User object
 		public /*.void.*/ function rpr_show_custom_fields( $profileuser ) {
-			/*.array[string]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) || is_array( $redux_usermeta ) ) {
 				echo '<h3>', __( 'Additional Information', 'register-plus-redux' ), '</h3>';
 				echo '<table class="form-table">';
@@ -340,7 +340,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$invitation_code = stripslashes( (string) $_POST['invitation_code'] );
 				update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $invitation_code ) );
 			}
-			/*.array[string]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( is_array( $redux_usermeta ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
 					if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
@@ -403,7 +403,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		//TODO: Raname or ... something
 		public /*.void.*/ function DatepickerHead() {
-			/*.array[string]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			$show_custom_date_fields = FALSE;
 			if ( is_array( $redux_usermeta ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
