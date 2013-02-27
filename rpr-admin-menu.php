@@ -5,7 +5,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			global $wp_version;
 			if ( $wp_version < 3.2 )
 				add_action( 'admin_notices', array( $this, 'rpr_version_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
-			if ( is_multisite() )
+			if ( is_multisite() && !Register_Plus_Redux::rpr_active_for_network() )
 				add_action( 'admin_notices', array( $this, 'rpr_network_activate_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
 
 			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
@@ -22,10 +22,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		public /*.void.*/ function rpr_network_activate_warning() {
 			global $register_plus_redux;
 			global $pagenow;
-			if ( !$register_plus_redux->rpr_is_network_activated() ) {
-				if ( 'plugins.php' === $pagenow || ( 'options-general.php' === $pagenow && isset( $_GET['page'] ) && 'register-plus-redux' === $_GET['page'] ) ) {
-					echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wordpress-multisite-activation-and-the-illogical-disregard-for-plugins/' ), '</strong></p></div>', "\n";
-				}
+			if ( 'plugins.php' === $pagenow || ( 'options-general.php' === $pagenow && isset( $_GET['page'] ) && 'register-plus-redux' === $_GET['page'] ) ) {
+				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wordpress-multisite-activation-and-the-illogical-disregard-for-plugins/' ), '</strong></p></div>', "\n";
 			}
 		}
 

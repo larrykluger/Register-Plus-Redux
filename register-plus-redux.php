@@ -15,7 +15,7 @@ Domain Path: /languages
 
 // TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
-// TODO: Disable functionality in wp-signup and wp-admin around rpr_is_network_activated
+// TODO: Disable functionality in wp-signup and wp-admin around rpr_active_for_network
 // TODO: Custom messages may not work with Wordpress MS as it uses wpmu_welcome_user_notification not wp_new_user_notification 
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
 
@@ -210,7 +210,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function rpr_update_user_meta( /*.int.*/ $user_id, /*.array[string]mixed.*/ $meta_field, /*.mixed.*/ $meta_value ) {
 			// convert array to string
-			if ( is_array( $meta_value ) ) { $meta_value = implode( ',', $meta_value ); }
+			if ( is_array( $meta_value ) ) { 
+				foreach ( $meta_value as &$value ) {
+					$value = sanitize_text_field( $value );
+				}
+				$meta_value = implode( ',', $meta_value );
+			}
 			// sanitize url
 			if ( '1' === $meta_field['escape_url'] ) {
 				$meta_value = esc_url_raw( (string) $meta_value );
@@ -221,7 +226,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
 			if ( '1' === $meta_field['require_on_registration'] && empty( $meta_value ) ) $valid_value = FALSE;
 			// check text field against regex if specified
-			if ( ( 'textbox' === $meta_field['display'] ) && !empty( $meta_field['options'] ) && 1 !== preg_match( (string) $meta_field['options'], $meta_value ) ) $valid_value = FALSE;
+			if ( 'textbox' === $meta_field['display'] && !empty( $meta_field['options'] ) && 1 !== preg_match( (string) $meta_field['options'], $meta_value ) ) $valid_value = FALSE;
 			if ( 'textarea' !== $meta_field['display'] ) $meta_value = sanitize_text_field( $meta_value );
 			if ( 'textarea' === $meta_field['display'] ) $meta_value = wp_filter_kses( $meta_value );
 			
@@ -278,7 +283,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								case 'select':
 									echo "\n", '<td>';
 									echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
-									$field_options = explode( ',', (string) $meta_field['options'] );
+									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
 									foreach ( $field_options as $field_option ) {
 										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
 										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
@@ -291,21 +296,20 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 									break;
 								case 'checkbox':
 									echo "\n", '<td>';
-									$field_options = explode( ',', (string) $meta_field['options'] );
-									$meta_values = explode( ',', (string) $meta_value );
+									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
+									/*.array[]string.*/ $meta_values = explode( ',', (string) $meta_value );
 									foreach ( $field_options as $field_option ) {
 										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
 										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
 										echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
-										if ( is_array( $meta_values ) && ( in_array( esc_attr( $field_option ), $meta_values ) || in_array( $option_cleaned, $meta_values ) ) ) echo 'checked="checked" ';
-										if ( !is_array( $meta_values ) && ( $meta_value === esc_attr( $field_option ) || $meta_value === $option_cleaned ) ) echo 'checked="checked" ';
+										if ( in_array( esc_attr( $field_option ), $meta_values ) || in_array( $option_cleaned, $meta_values ) ) echo 'checked="checked" ';
 										echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
 									}
 									echo "\n", '</td>';
 									break;
 								case 'radio':
 									echo "\n", '<td>';
-									$field_options = explode( ',', (string) $meta_field['options'] );
+									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
 									foreach ( $field_options as $field_option ) {
 										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
 										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
@@ -430,9 +434,11 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
-		public /*.bool.*/ function rpr_is_network_activated() {
-			if ( !function_exists( 'is_plugin_active_for_network' ) ) { require_once( ABSPATH . '/wp-admin/includes/plugin.php' ); }
-			return is_plugin_active_for_network( 'register-plus-redux/register-plus-redux.php' );
+		public static /*.bool.*/ function rpr_active_for_network() {
+			if ( !is_multisite() ) { return false; }
+			$plugins = get_site_option( 'active_sitewide_plugins');
+			if ( isset( $plugins[ plugin_basename( __FILE__ ) ] ) ) { return true; }
+			return false;
 		}
 
 		public /*.void.*/ function send_verification_mail( /*.int.*/ $user_id, /*.string.*/ $verification_code ) {
@@ -569,7 +575,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) $do_include = TRUE;
 	if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) $do_include = TRUE;
 	if ( '1' === $register_plus_redux->rpr_get_option( 'autologin_user' ) ) $do_include = TRUE;
-	if ( $do_include && is_multisite() && $register_plus_redux->rpr_is_network_activated() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
+	if ( $do_include && is_multisite() && Register_Plus_Redux::rpr_active_for_network() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 
 	//NOTE: Requires rpr-admin.php for rpr_new_user_notification_warning make
 	$do_include = FALSE;
