@@ -1241,7 +1241,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				$options['custom_login_page_css'] = $csstidy->print->plain();
 			}
 			 
-			$usermeta_key = 0;
 			if ( isset( $_POST['label'] ) ) {
 				foreach ( (array) $_POST['label'] as $index => $v ) {
 					$meta_field = array();
@@ -1249,7 +1248,19 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						$meta_field['label'] = isset( $_POST['label'][$index] ) ? sanitize_text_field( (string) $_POST['label'][$index] ) : '';
 						$meta_field['meta_key'] = isset( $_POST['meta_key'][$index] ) ? (string) $_POST['meta_key'][$index] : '';
 						$meta_field['display'] = isset( $_POST['display'][$index] ) ? sanitize_text_field( (string) $_POST['display'][$index] ) : '';
-						$meta_field['options'] = isset( $_POST['options'][$index] ) ? sanitize_text_field( (string) $_POST['options'][$index] ) : '';
+						$meta_field['options'] = '';
+						if ( isset( $_POST['options'][$index] ) ) {
+							if ( in_array( $meta_field['display'], array( 'checkbox', 'radio', 'select' ) ) ) {
+								/*.array[]string.*/ $field_options = explode( ',', (string) $_POST['options'][$index] );
+								foreach ( $field_options as &$field_option ) {
+									$field_option = sanitize_text_field( $field_option );
+								}
+								$meta_field['options'] = implode( ',', $field_options );
+							}
+							else {
+								$meta_field['options'] = sanitize_text_field( (string) $_POST['options'][$index] );
+							}
+						}
 						$meta_field['show_datepicker'] = '0';
 						$meta_field['escape_url'] = '0';
 						$meta_field['show_on_profile'] = isset( $_POST['show_on_profile'][$index] ) ? '1' : '0';
@@ -1262,7 +1273,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						// TODO: Convert clean_text to sanitize_title after key change check exists
 						$meta_field['meta_key'] = sanitize_text_field( $register_plus_redux->clean_text( $meta_field['meta_key'] ) );
 					}
-					$redux_usermeta[$usermeta_key++] = $meta_field;
+					$redux_usermeta[] = $meta_field;
 				}
 			}
 
@@ -1278,7 +1289,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					$meta_field['show_on_profile'] = '0';
 					$meta_field['show_on_registration'] = '0';
 					$meta_field['require_on_registration'] = '0';
-					$redux_usermeta[$usermeta_key++] = $meta_field;
+					$redux_usermeta[] = $meta_field;
 				}
 			}
 
