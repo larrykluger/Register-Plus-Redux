@@ -1,7 +1,7 @@
 <?php
 if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 	class RPR_Admin_Menu {
-		public function __construct() {
+		public /*.void.*/ function __construct() {
 			global $wp_version;
 			if ( $wp_version < 3.2 )
 				add_action( 'admin_notices', array( $this, 'rpr_version_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
@@ -11,63 +11,62 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
 		}
 
-		public function rpr_version_warning() {
+		public /*.void.*/ function rpr_version_warning() {
 			global $wp_version;
 			global $pagenow;
-			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
+			if ( 'plugins.php' === $pagenow || ( 'options-general.php' === $pagenow && isset( $_GET['page'] ) && 'register-plus-redux' === $_GET['page'] ) ) {
 				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux requires WordPress 3.2 or greater. You are currently using WordPress %s, please upgrade WordPress or deactivate Register Plus Redux.', 'register-plus-redux' ), $wp_version ), '</strong></p></div>', "\n";
-		}
-
-		public function rpr_network_activate_warning() {
-			global $register_plus_redux;
-			global $pagenow;
-			if ( !$register_plus_redux->rpr_is_network_activated() ) {
-				if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
-					echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wordpress-multisite-activation-and-the-illogical-disregard-for-plugins/' ), '</strong></p></div>', "\n";
 			}
 		}
 
-		public function rpr_new_user_notification_warning() {
+		public /*.void.*/ function rpr_network_activate_warning() {
+			global $register_plus_redux;
 			global $pagenow;
-			if ( $pagenow == 'plugins.php' || ( $pagenow == 'options-general.php' && isset( $_GET['page'] ) && ( $_GET['page'] == 'register-plus-redux' ) ) )
-				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'There is another active plugin that is conflicting with Register Plus Redux. The conflicting plugin is creating its own wp_new_user_notification function, this function is used to alter the messages sent out following the creation of a new user. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wp_new_user_notification-conflicts/' ), '</strong></p></div>', "\n";
+			if ( !$register_plus_redux->rpr_is_network_activated() ) {
+				if ( 'plugins.php' === $pagenow || ( 'options-general.php' === $pagenow && isset( $_GET['page'] ) && 'register-plus-redux' === $_GET['page'] ) ) {
+					echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'Register Plus Redux must be Network Activated by Super Admin under WordPress Multisite. You will have limited functionality while not Network Activated. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wordpress-multisite-activation-and-the-illogical-disregard-for-plugins/' ), '</strong></p></div>', "\n";
+				}
+			}
 		}
 
-		public function rpr_admin_menu() {
+		public /*.void.*/ function rpr_new_user_notification_warning() {
+			global $pagenow;
+			if ( 'plugins.php' === $pagenow || ( 'options-general.php' === $pagenow && isset( $_GET['page'] ) && 'register-plus-redux' === $_GET['page'] ) ) {
+				echo '<div id="register-plus-redux-warning" class="updated"><p><strong>', sprintf( __( 'There is another active plugin that is conflicting with Register Plus Redux. The conflicting plugin is creating its own wp_new_user_notification function, this function is used to alter the messages sent out following the creation of a new user. Please refer to <a href="%s">radiok.info</a> for help resolving this issue.', 'register-plus-redux' ), 'http://radiok.info/blog/wp_new_user_notification-conflicts/' ), '</strong></p></div>', "\n";
+			}
+		}
+
+		public /*.void.*/ function rpr_admin_menu() {
 			global $register_plus_redux;
 			global $wpdb;
-			$admin_menu_hook = array( $this, 'rpr_options_submenu' );
-			//if ( is_multisite() ) $admin_menu_hook = array( $this, 'rpr_options_submenu_ms' );
-			$hookname = add_options_page( __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_options', 'register-plus-redux', $admin_menu_hook );
+			$hookname = add_options_page( __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_options', 'register-plus-redux', array( $this, 'rpr_options_submenu' ) );
 			// NOTE: $hookname = settings_page_register-plus-redux 
 			add_action( 'admin_print_scripts-' . $hookname, array( $this, 'rpr_options_submenu_scripts' ), 10, 1 );
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
 			add_action( 'admin_footer-' . $hookname, array( $this, 'rpr_options_submenu_footer' ), 10, 1 );
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
-			if ( ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == TRUE ) || ( $register_plus_redux->rpr_get_option( 'verify_user_admin' ) == TRUE) || $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) )
+			//add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
+			add_filter( 'plugin_action_links_' . 'register-plus-redux/register-plus-redux.php', array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
+			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) || '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) || 0 !== (int) $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) )
 				add_submenu_page( 'users.php', __( 'Unverified Users', 'register-plus-redux' ), __( 'Unverified Users', 'register-plus-redux' ), 'promote_users', 'unverified-users', array( $this, 'rpr_users_submenu' ) );
 		}
 
-		public function rpr_filter_plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
-			// before other links
-			array_unshift( $actions, '<a href="options-general.php?page=register-plus-redux">' . __( 'Settings', 'register-plus-redux' ) . '</a>' );
-			// ... or after other links
-			//$links[] = '<a href="options-general.php?page=register-plus-redux">' . __( 'Settings', 'register-plus-redux' ) . '</a>';
+		public /*.array[string]string.*/ function rpr_filter_plugin_action_links( /*.array[string]string.*/ $actions, /*.string.*/ $plugin_file, /*.string.*/ $plugin_data, /*.string.*/ $context ) {
+			$actions['settings'] = '<a href="' . admin_url( 'options-general.php?page=register-plus-redux' ) . '">'. __( 'Settings', 'register-plus-redux' ) . '</a>';
 			return $actions;
 		}
 
-		public function rpr_options_submenu_scripts() {
+		public /*.void.*/ function rpr_options_submenu_scripts() {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			if ( !is_multisite() ) wp_enqueue_script( 'media-upload' );
 			if ( !is_multisite() ) wp_enqueue_script( 'thickbox' );
 		}
 
-		public function rpr_options_submenu_styles() {
+		public /*.void.*/ function rpr_options_submenu_styles() {
 			if ( !is_multisite() ) wp_enqueue_style( 'thickbox' );
 		}
 
-		public function rpr_options_submenu() {
+		public /*.void.*/ function rpr_options_submenu() {
 			global $register_plus_redux;
 			if ( isset( $_POST['update_settings'] ) ) {
 				check_admin_referer( 'register-plus-redux-update-settings' );
@@ -95,6 +94,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							<?php } ?>
 						</td>
 					</tr>
+					<?php } ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Email Verification', 'register-plus-redux' ); ?></th>
 						<td>
@@ -106,7 +106,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							</div>
 						</td>
 					</tr>
-					<?php } ?>
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Admin Verification', 'register-plus-redux' ); ?></th>
 						<td>
@@ -409,20 +408,20 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 	
 							echo "\n", '<table>';
 
-							echo "\n", '<tr class="label"><td><img src="', plugins_url( 'images\arrow-move.png', __FILE__ ), '" alt="', esc_attr__( 'Reorder', 'register-plus-redux' ), '" title="', esc_attr__( 'Drag to Reorder', 'register-plus-redux' ), '" class="sortHandle" style="cursor: move;" />&nbsp;<input type="text" name="label[', $index, ']" id="label[', $index, ']" value="', esc_attr( $meta_field['label'] ), '" />&nbsp;<span class="enableDisableFieldSettings" style="color:#0000FF; cursor: pointer;">Show Settings</span></td></tr>';
+							echo "\n", '<tr class="label"><td><img src="', plugins_url( 'images\arrow-move.png', __FILE__ ), '" alt="', esc_attr__( 'Reorder', 'register-plus-redux' ), '" title="', esc_attr__( 'Drag to Reorder', 'register-plus-redux' ), '" class="sortHandle" style="cursor: move;" />&nbsp;<input type="text" name="label[', $index, ']" id="label[', $index, ']" value="', esc_attr( $meta_field['label'] ), '" />&nbsp;<span class="enableDisableFieldSettings" style="color:#0000FF; cursor: pointer;">', __( 'Show Settings', 'register-plus-redux' ), '</span></td></tr>';
 							echo "\n", '<tr class="settings" style="display: none;"><td>';
 	
 							echo "\n", '<table>';
 
 							echo "\n", '<tr><td>', __( 'Display', 'register-plus-redux' ), '</td>';
 							echo "\n", '<td><select name="display[', $index, ']" id="display[', $index, ']" class="enableDisableOptions" style="width: 100%;">';
-							echo "\n", '<option value="textbox"', selected( $meta_field['display'], 'textbox', false ), '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="select"', selected( $meta_field['display'], 'select', false ), '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="checkbox"', selected( $meta_field['display'], 'checkbox', false ), '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="radio"', selected( $meta_field['display'], 'radio', false ), '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="textarea"', selected( $meta_field['display'], 'textarea', false ), '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="hidden"', selected( $meta_field['display'], 'hidden', false ), '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
-							echo "\n", '<option value="text"', selected( $meta_field['display'], 'text', false ), '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="textbox"', selected( $meta_field['display'], 'textbox', FALSE ), '>', __( 'Textbox Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="select"', selected( $meta_field['display'], 'select', FALSE ), '>', __( 'Select Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="checkbox"', selected( $meta_field['display'], 'checkbox', FALSE ), '>', __( 'Checkbox Fields', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="radio"', selected( $meta_field['display'], 'radio', FALSE ), '>', __( 'Radio Fields', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="textarea"', selected( $meta_field['display'], 'textarea', FALSE ), '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="hidden"', selected( $meta_field['display'], 'hidden', FALSE ), '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
+							echo "\n", '<option value="text"', selected( $meta_field['display'], 'text', FALSE ), '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
 							echo "\n", '</select></td></tr>';
 	
 							echo "\n", '<tr><td>', __( 'Options', 'register-plus-redux' ), '</td>';
@@ -528,7 +527,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 										<td colspan="2" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;">
 											<label for="user_message_body"><?php _e( 'User Message', 'register-plus-redux' ); ?></label><br />
 											<textarea name="user_message_body" id="user_message_body" style="width: 95%; height: 160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'user_message_body' ) ); ?></textarea><img src="<?php echo plugins_url( 'images\arrow-return-180.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" title="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" class="default" style="cursor: pointer;" /><br />
-											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords(); ?><br />
+											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords( NULL, NULL ); ?><br />
 											<label><input type="checkbox" name="send_user_message_in_html" id="send_user_message_in_html" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'send_user_message_in_html' ), 1 ); ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
 											<label><input type="checkbox" name="user_message_newline_as_br" id="user_message_newline_as_br" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'user_message_newline_as_br' ), 1 ); ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
 										</td>
@@ -559,7 +558,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 										<td colspan="2" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;">
 											<label for="verification_message_body"><?php _e( 'User Message', 'register-plus-redux' ); ?></label><br />
 											<textarea name="verification_message_body" id="verification_message_body" style="width: 95%; height: 160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'verification_message_body' ) ); ?></textarea><img src="<?php echo plugins_url( 'images\arrow-return-180.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" title="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" class="default" style="cursor: pointer;" /><br />
-											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords(); ?><br />
+											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords( NULL, NULL ); ?><br />
 											<label><input type="checkbox" name="send_verification_message_in_html" id="send_verification_message_in_html" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'send_verification_message_in_html' ), 1 ); ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
 											<label><input type="checkbox" name="verification_message_newline_as_br" id="verification_message_newline_as_br" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'verification_message_newline_as_br' ), 1 ); ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
 										</td>
@@ -607,7 +606,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 										<td colspan="2" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;">
 											<label for="admin_message_body"><?php _e( 'Admin Message', 'register-plus-redux' ); ?></label><br />
 											<textarea name="admin_message_body" id="admin_message_body" style="width: 95%; height: 160px;"><?php echo esc_textarea( $register_plus_redux->rpr_get_option( 'admin_message_body' ) ); ?></textarea><img src="<?php echo plugins_url( 'images\arrow-return-180.png', __FILE__ ); ?>" alt="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" title="<?php esc_attr_e( 'Restore Default', 'register-plus-redux' ); ?>" class="default" style="cursor: pointer;" /><br />
-											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords(); ?><br />
+											<strong><?php _e( 'Replacement Keywords', 'register-plus-redux' ); ?>:</strong> <?php echo $register_plus_redux->replace_keywords( NULL, NULL ); ?><br />
 											<label><input type="checkbox" name="send_admin_message_in_html" id="send_admin_message_in_html" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'send_admin_message_in_html' ), 1 ); ?> />&nbsp;<?php _e( 'Send as HTML', 'register-plus-redux' ); ?></label><br />
 											<label><input type="checkbox" name="admin_message_newline_as_br" id="admin_message_newline_as_br" value="1" <?php checked( $register_plus_redux->rpr_get_option( 'admin_message_newline_as_br' ), 1 ); ?> />&nbsp;<?php _e( 'Convert new lines to &lt;br /&gt; tags (HTML only)', 'register-plus-redux' ); ?></label>
 										</td>
@@ -638,14 +637,18 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				</table>
 				<p class="submit">
 					<input type="submit" class="button-primary" value="<?php esc_attr_e( 'Save Changes', 'register-plus-redux' ); ?>" name="update_settings" id="update_settings" />
-					<input type="button" class="button" value="<?php esc_attr_e( 'Preview Registration Page', 'register-plus-redux' ); ?>" name="preview" id="preview" onclick="window.open('<?php echo wp_login_url(), '?action=register'; ?>');" />
+					<?php if ( !is_multisite() ) { ?>
+						<a href="<?php echo site_url('wp-login.php?action=register'); ?>" target="_blank" class="button"><?php esc_attr_e( 'Preview Registration Page', 'register-plus-redux' ); ?></a>
+					<?php } else { ?>
+						<a href="<?php echo network_site_url('wp-signup.php'); ?>" target="_blank" class="button"><?php esc_attr_e( 'Preview Signup Page', 'register-plus-redux' ); ?></a>
+					<?php } ?>
 				</p>
 			</form>
 			</div>
 			<?php
 		}
 
-		public function rpr_options_submenu_footer() {
+		public /*.void.*/ function rpr_options_submenu_footer() {
 			?>
 			<script type="text/javascript">
 			function addInvitationCode() {
@@ -813,7 +816,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			jQuery(document).ready(function() {
 				jQuery(document).on("click", "#upload_custom_logo_button", function() {
 					formfield = jQuery("#custom_logo_url").prop("name");
-					tb_show("Upload a logo", "<?php echo admin_url('media-upload.php') ?>?post_id=0&type=image&context=custom-logo&TB_iframe=1");
+					tb_show("<?php _e( 'Upload/Select Logo', 'register-plus-redux' ); ?>", "<?php echo admin_url('media-upload.php') ?>?post_id=0&type=image&context=custom-logo&TB_iframe=1");
 				});
 				 
 				window.send_to_editor = function(html) {
@@ -868,12 +871,12 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				});
 
 				jQuery(document).on("click", ".enableDisableFieldSettings", function() {
-					if (jQuery(this).text() == "Show Settings") {
-						jQuery(this).text("Hide Settings");
+					if (jQuery(this).text() == "<?php _e( 'Show Settings', 'register-plus-redux' ); ?>") {
+						jQuery(this).text("<?php _e( 'Hide Settings', 'register-plus-redux' ); ?>");
 						jQuery(this).parent().parent().parent().find(".settings").show();
 					}
 					else {
-						jQuery(this).text("Show Settings");
+						jQuery(this).text("<?php _e( 'Show Settings', 'register-plus-redux' ); ?>");
 						jQuery(this).parent().parent().parent().find(".settings").hide();
 					}
 						
@@ -929,65 +932,65 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			<?php
 		}
 
-		public function rpr_users_submenu() {
+		public /*.void.*/ function rpr_users_submenu() {
 			global $register_plus_redux;
 			global $wpdb;
-			if ( ( isset( $_REQUEST['action'] ) && ( $_REQUEST['action'] == 'verify_users' ) ) || isset( $_REQUEST['verify_users'] ) ) {
+			if ( ( isset( $_REQUEST['action'] ) && 'verify_users' === $_REQUEST['action'] ) || isset( $_REQUEST['verify_users'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
-					$update = 'verify_users';
 					foreach ( (array) $_REQUEST['users'] as $id ) {
 						$user_id = (int) $id;
-						$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
-						$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
-						$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
-						if ( empty( $plaintext_pass ) ) {
-							$plaintext_pass = wp_generate_password();
-							update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
-							wp_set_password( $plaintext_pass, $user_id );
+						if ( current_user_can( 'promote_user', $user_id ) ) {
+							$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
+							$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
+							$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
+							if ( empty( $plaintext_pass ) ) {
+								$plaintext_pass = wp_generate_password();
+								update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
+								wp_set_password( $plaintext_pass, $user_id );
+							}
+							do_action( 'rpr_signup_complete', $user_id );
+							if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
+								$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
+							if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
+								$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass );
+							delete_user_meta( $user_id, 'email_verification_code' );
+							delete_user_meta( $user_id, 'email_verification_sent' );
+							delete_user_meta( $user_id, 'email_verified' );
+							delete_user_meta( $user_id, 'stored_user_login' );
+							delete_user_meta( $user_id, 'stored_user_password' );
 						}
-						do_action( 'rpr_signup_complete', $user_id );
-						if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
-							$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
-						if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
-							$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass );
-						delete_user_meta( $user_id, 'email_verification_code' );
-						delete_user_meta( $user_id, 'email_verification_sent' );
-						delete_user_meta( $user_id, 'email_verified' );
-						delete_user_meta( $user_id, 'stored_user_login' );
-						delete_user_meta( $user_id, 'stored_user_password' );
 					}
 				}
 			}
-			if ( ( isset( $_REQUEST['action'] ) && ( $_REQUEST['action'] == 'send_verification_email' ) ) || isset( $_REQUEST['send_verification_email'] ) ) {
+			if ( ( isset( $_REQUEST['action'] ) && 'send_verification_email' === $_REQUEST['action'] ) || isset( $_REQUEST['send_verification_email'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
-					$update = 'send_verification_email';
 					foreach ( (array) $_REQUEST['users'] as $id ) {
 						$user_id = (int) $id;
-						if ( !current_user_can( 'promote_user', $user_id ) )
-							wp_die( __( 'You cannot edit that user.', 'register-plus-redux' ) );
-						$verification_code = wp_generate_password( 20, FALSE );
-						update_user_meta( $user_id, 'email_verification_code', $verification_code );
-						update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
-						$register_plus_redux->send_verification_mail( $user_id, $verification_code );
+						if ( current_user_can( 'promote_user', $user_id ) ) {
+							$verification_code = wp_generate_password( 20, FALSE );
+							update_user_meta( $user_id, 'email_verification_code', $verification_code );
+							update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
+							$register_plus_redux->send_verification_mail( $user_id, $verification_code );
+						}
 					}
 				}
 			}
-			if ( ( isset( $_REQUEST['action'] ) && ( $_REQUEST['action'] == 'delete_users' ) ) || isset( $_REQUEST['delete_users'] ) ) {
+			if ( ( isset( $_REQUEST['action'] ) && 'delete_users' === $_REQUEST['action'] ) || isset( $_REQUEST['delete_users'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
 				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
-					$update = 'delete_users';
 					//necessary for wp_delete_user to function
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
 					foreach ( (array) $_REQUEST['users'] as $id ) {
-						$id = (int) $id;
-						if ( current_user_can( 'delete_user', $id ) ) wp_delete_user( $id );
+						$user_id = (int) $id;
+						if ( current_user_can( 'delete_user', $user_id ) ) { wp_delete_user( $user_id ); }
 					}
+					// TODO: Odd bug, if unverified users exist, page exists, if from page all unverified users are deleted, on the post back page won't have any reason to exist anymore, need a redirect in that case
 				}
 			}
-			if ( !empty( $update ) ) {
-				switch( $update ) {
+			if ( !empty( $_REQUEST['action'] ) ) {
+				switch( $_REQUEST['action'] ) {
 					case 'verify_users':
 						echo '<div id="message" class="updated"><p>', __( 'Users approved.', 'register-plus-redux' ), '</p></div>';
 						break;
@@ -997,6 +1000,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					case 'delete_users':
 						echo '<div id="message" class="updated"><p>', __( 'Users deleted.', 'register-plus-redux' ), '</p></div>';
 						break;
+					default:
 				}
 			}
 			?>
@@ -1073,73 +1077,73 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			<?php
 		}
 
-		public function update_settings() {
+		public /*.void.*/ function update_settings() {
 			global $register_plus_redux;
 			$options = array();
 			$redux_usermeta = array();
 
-			if ( get_magic_quotes_gpc() ) $_POST = stripslashes_deep( $_POST );
+			$_POST = stripslashes_deep( (array) $_POST );
 
-			$options['custom_logo_url'] = isset( $_POST['custom_logo_url'] ) ? esc_url_raw( $_POST['custom_logo_url'] ) : '';
+			$options['custom_logo_url'] = isset( $_POST['custom_logo_url'] ) ? esc_url_raw( (string) $_POST['custom_logo_url'] ) : '';
 			if ( isset( $_POST['remove_logo'] ) ) $options['custom_logo_url'] = '';
 			$options['verify_user_email'] = isset( $_POST['verify_user_email'] ) ? '1' : '0';
-			$options['message_verify_user_email'] = isset( $_POST['message_verify_user_email'] ) ? wp_kses_data( $_POST['message_verify_user_email'] ) : '';
+			$options['message_verify_user_email'] = isset( $_POST['message_verify_user_email'] ) ? wp_kses_post( (string) $_POST['message_verify_user_email'] ) : '';
 			$options['verify_user_admin'] = isset( $_POST['verify_user_admin'] ) ? '1' : '0';
-			$options['message_verify_user_admin'] = isset( $_POST['message_verify_user_admin'] ) ? wp_kses_data( $_POST['message_verify_user_admin'] ) : '';
-			$options['delete_unverified_users_after'] = isset( $_POST['delete_unverified_users_after'] ) ? absint( $_POST['delete_unverified_users_after'] ) : '0';
-			$options['registration_redirect_url'] = isset( $_POST['registration_redirect_url'] ) ? esc_url_raw( $_POST['registration_redirect_url'] ) : '';
-			$options['verification_redirect_url'] = isset( $_POST['verification_redirect_url'] ) ? esc_url_raw( $_POST['verification_redirect_url'] ) : '';
+			$options['message_verify_user_admin'] = isset( $_POST['message_verify_user_admin'] ) ? wp_kses_post( (string) $_POST['message_verify_user_admin'] ) : '';
+			$options['delete_unverified_users_after'] = isset( $_POST['delete_unverified_users_after'] ) ? absint( (string) $_POST['delete_unverified_users_after'] ) : '0';
+			$options['registration_redirect_url'] = isset( $_POST['registration_redirect_url'] ) ? esc_url_raw( (string) $_POST['registration_redirect_url'] ) : '';
+			$options['verification_redirect_url'] = isset( $_POST['verification_redirect_url'] ) ? esc_url_raw( (string) $_POST['verification_redirect_url'] ) : '';
 			$options['autologin_user'] = isset( $_POST['autologin_user'] ) ? '1' : '0';
 
 			$options['username_is_email'] = isset( $_POST['username_is_email'] ) ? '1' : '0';
 			$options['double_check_email'] = isset( $_POST['double_check_email'] ) ? '1' : '0';
-			$options['show_fields'] = ( isset( $_POST['show_fields'] ) && is_array( $_POST['show_fields'] ) ) ? $_POST['show_fields'] : array();
-			$options['required_fields'] = ( isset( $_POST['required_fields'] ) && is_array( $_POST['required_fields'] ) ) ? $_POST['required_fields'] : array();
+			$options['show_fields'] = ( isset( $_POST['show_fields'] ) && is_array( $_POST['show_fields'] ) ) ? (array) $_POST['show_fields'] : array();
+			$options['required_fields'] = ( isset( $_POST['required_fields'] ) && is_array( $_POST['required_fields'] ) ) ? (array) $_POST['required_fields'] : array();
 			$options['user_set_password'] = isset( $_POST['user_set_password'] ) ? '1' : '0';
-			$options['min_password_length'] = isset( $_POST['min_password_length'] ) ? absint( $_POST['min_password_length'] ) : '0';
+			$options['min_password_length'] = isset( $_POST['min_password_length'] ) ? absint( $_POST['min_password_length'] ) : 0;
 			$options['disable_password_confirmation'] = isset( $_POST['disable_password_confirmation'] ) ? '1' : '0';
 			$options['show_password_meter'] = isset( $_POST['show_password_meter'] ) ? '1' : '0';
-			$options['message_empty_password'] = isset( $_POST['message_empty_password'] ) ? wp_kses_data( $_POST['message_empty_password'] ) : '';
-			$options['message_short_password'] = isset( $_POST['message_short_password'] ) ? wp_kses_data( $_POST['message_short_password'] ) : '';
-			$options['message_bad_password'] = isset( $_POST['message_bad_password'] ) ? wp_kses_data( $_POST['message_bad_password'] ) : '';
-			$options['message_good_password'] = isset( $_POST['message_good_password'] ) ? wp_kses_data( $_POST['message_good_password'] ) : '';
-			$options['message_strong_password'] = isset( $_POST['message_strong_password'] ) ? wp_kses_data( $_POST['message_strong_password'] ) : '';
-			$options['message_mismatch_password'] = isset( $_POST['message_mismatch_password'] ) ? wp_kses_data( $_POST['message_mismatch_password'] ) : '';
+			$options['message_empty_password'] = isset( $_POST['message_empty_password'] ) ? wp_kses_data( (string) $_POST['message_empty_password'] ) : '';
+			$options['message_short_password'] = isset( $_POST['message_short_password'] ) ? wp_kses_data( (string) $_POST['message_short_password'] ) : '';
+			$options['message_bad_password'] = isset( $_POST['message_bad_password'] ) ? wp_kses_data( (string) $_POST['message_bad_password'] ) : '';
+			$options['message_good_password'] = isset( $_POST['message_good_password'] ) ? wp_kses_data( (string) $_POST['message_good_password'] ) : '';
+			$options['message_strong_password'] = isset( $_POST['message_strong_password'] ) ? wp_kses_data( (string) $_POST['message_strong_password'] ) : '';
+			$options['message_mismatch_password'] = isset( $_POST['message_mismatch_password'] ) ? wp_kses_data( (string) $_POST['message_mismatch_password'] ) : '';
 			$options['enable_invitation_code'] = isset( $_POST['enable_invitation_code'] ) ? '1' : '0';
-			$invitation_code_bank = ( isset( $_POST['invitation_code_bank'] ) && is_array( $_POST['invitation_code_bank'] ) ) ? $_POST['invitation_code_bank'] : array();
+			$invitation_code_bank = ( isset( $_POST['invitation_code_bank'] ) && is_array( $_POST['invitation_code_bank'] ) ) ? (array) $_POST['invitation_code_bank'] : array();
 			$options['require_invitation_code'] = isset( $_POST['require_invitation_code'] ) ? '1' : '0';
 			$options['invitation_code_case_sensitive'] = isset( $_POST['invitation_code_case_sensitive'] ) ? '1' : '0';
 			$options['invitation_code_unique'] = isset( $_POST['invitation_code_unique'] ) ? '1' : '0';
 			$options['enable_invitation_tracking_widget'] = isset( $_POST['enable_invitation_tracking_widget'] ) ? '1' : '0';
 			$options['show_disclaimer'] = isset( $_POST['show_disclaimer'] ) ? '1' : '0';
-			$options['message_disclaimer_title'] = isset( $_POST['message_disclaimer_title'] ) ? sanitize_text_field( $_POST['message_disclaimer_title'] ) : '';
-			$options['message_disclaimer'] = isset( $_POST['message_disclaimer'] ) ? wp_kses_data( $_POST['message_disclaimer'] ) : '';
+			$options['message_disclaimer_title'] = isset( $_POST['message_disclaimer_title'] ) ? sanitize_text_field( (string) $_POST['message_disclaimer_title'] ) : '';
+			$options['message_disclaimer'] = isset( $_POST['message_disclaimer'] ) ? wp_kses_post( (string) $_POST['message_disclaimer'] ) : '';
 			$options['require_disclaimer_agree'] = isset( $_POST['require_disclaimer_agree'] ) ? '1' : '0';
-			$options['message_disclaimer_agree'] = isset( $_POST['message_disclaimer_agree'] ) ? sanitize_text_field( $_POST['message_disclaimer_agree'] ) : '';
+			$options['message_disclaimer_agree'] = isset( $_POST['message_disclaimer_agree'] ) ? sanitize_text_field( (string) $_POST['message_disclaimer_agree'] ) : '';
 			$options['show_license'] = isset( $_POST['show_license'] ) ? '1' : '0';
-			$options['message_license_title'] = isset( $_POST['message_license_title'] ) ? sanitize_text_field( $_POST['message_license_title'] ) : '';
-			$options['message_license'] = isset( $_POST['message_license'] ) ? wp_kses_data( $_POST['message_license'] ) : '';
+			$options['message_license_title'] = isset( $_POST['message_license_title'] ) ? sanitize_text_field( (string) $_POST['message_license_title'] ) : '';
+			$options['message_license'] = isset( $_POST['message_license'] ) ? wp_kses_post( (string) $_POST['message_license'] ) : '';
 			$options['require_license_agree'] = isset( $_POST['require_license_agree'] ) ? '1' : '0';
-			$options['message_license_agree'] = isset( $_POST['message_license_agree'] ) ? sanitize_text_field( $_POST['message_license_agree'] ) : '';
+			$options['message_license_agree'] = isset( $_POST['message_license_agree'] ) ? sanitize_text_field( (string) $_POST['message_license_agree'] ) : '';
 			$options['show_privacy_policy'] = isset( $_POST['show_privacy_policy'] ) ? '1' : '0';
-			$options['message_privacy_policy_title'] = isset( $_POST['message_privacy_policy_title'] ) ? sanitize_text_field( $_POST['message_privacy_policy_title'] ) : '';
-			$options['message_privacy_policy'] = isset( $_POST['message_privacy_policy'] ) ? wp_kses_data( $_POST['message_privacy_policy'] ) : '';
+			$options['message_privacy_policy_title'] = isset( $_POST['message_privacy_policy_title'] ) ? sanitize_text_field( (string) $_POST['message_privacy_policy_title'] ) : '';
+			$options['message_privacy_policy'] = isset( $_POST['message_privacy_policy'] ) ? wp_kses_post( (string) $_POST['message_privacy_policy'] ) : '';
 			$options['require_privacy_policy_agree'] = isset( $_POST['require_privacy_policy_agree'] ) ? '1' : '0';
-			$options['message_privacy_policy_agree'] = isset( $_POST['message_privacy_policy_agree'] ) ? sanitize_text_field( $_POST['message_privacy_policy_agree'] ) : '';
+			$options['message_privacy_policy_agree'] = isset( $_POST['message_privacy_policy_agree'] ) ? sanitize_text_field( (string) $_POST['message_privacy_policy_agree'] ) : '';
 			$options['default_css'] = isset( $_POST['default_css'] ) ? '1' : '0';
 			$options['required_fields_style'] = '';
 			if ( isset( $_POST['required_fields_style'] ) ) {
 				// Stolen from Jetpack 2.0.4 custom-css.php Jetpack_Custom_CSS::filter_attr()
 				require_once( 'csstidy/class.csstidy.php' );
 				$csstidy = new csstidy();
-				$csstidy->set_cfg( 'remove_bslash', false );
-				$csstidy->set_cfg( 'compress_colors', false );
-				$csstidy->set_cfg( 'compress_font-weight', false );
-				$csstidy->set_cfg( 'discard_invalid_properties', true );
-				$csstidy->set_cfg( 'merge_selectors', false );
-				$csstidy->set_cfg( 'remove_last_;', false );
+				$csstidy->set_cfg( 'remove_bslash', FALSE );
+				$csstidy->set_cfg( 'compress_colors', FALSE );
+				$csstidy->set_cfg( 'compress_font-weight', FALSE );
+				$csstidy->set_cfg( 'discard_invalid_properties', TRUE );
+				$csstidy->set_cfg( 'merge_selectors', FALSE );
+				$csstidy->set_cfg( 'remove_last_;', FALSE );
 				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
-				$required_fields_style = 'div {' . $_POST['required_fields_style'] . '}';
+				$required_fields_style = 'div {' . (string) $_POST['required_fields_style'] . '}';
 				$required_fields_style = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $required_fields_style );
 				$required_fields_style = wp_kses_split( $required_fields_style, array(), array() );
 				$csstidy->parse( $required_fields_style );
@@ -1149,30 +1153,30 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				if ( !empty( $matches[1] ) ) $options['required_fields_style'] = $matches[1];
 			}
 			$options['required_fields_asterisk'] = isset( $_POST['required_fields_asterisk'] ) ? '1' : '0';
-			$options['starting_tabindex'] = isset( $_POST['starting_tabindex'] ) ? absint( $_POST['starting_tabindex'] ) : '0';
+			$options['starting_tabindex'] = isset( $_POST['starting_tabindex'] ) ? absint( $_POST['starting_tabindex'] ) : 0;
 
 			/*
 			if ( isset( $_POST['datepicker_firstdayofweek'] ) ) $options['datepicker_firstdayofweek'] = absint( $_POST['datepicker_firstdayofweek'] );
-			if ( isset( $_POST['datepicker_dateformat'] ) ) $options['datepicker_dateformat'] = sanitize_text_field( $_POST['datepicker_dateformat'] );
-			if ( isset( $_POST['datepicker_startdate'] ) ) $options['datepicker_startdate'] = sanitize_text_field( $_POST['datepicker_startdate'] );
-			if ( isset( $_POST['datepicker_calyear'] ) ) $options['datepicker_calyear'] = sanitize_text_field( $_POST['datepicker_calyear'] );
-			if ( isset( $_POST['datepicker_calmonth'] ) ) $options['datepicker_calmonth'] = sanitize_text_field( $_POST['datepicker_calmonth'] );
+			if ( isset( $_POST['datepicker_dateformat'] ) ) $options['datepicker_dateformat'] = sanitize_text_field( (string) $_POST['datepicker_dateformat'] );
+			if ( isset( $_POST['datepicker_startdate'] ) ) $options['datepicker_startdate'] = sanitize_text_field( (string) $_POST['datepicker_startdate'] );
+			if ( isset( $_POST['datepicker_calyear'] ) ) $options['datepicker_calyear'] = sanitize_text_field( (string) $_POST['datepicker_calyear'] );
+			if ( isset( $_POST['datepicker_calmonth'] ) ) $options['datepicker_calmonth'] = sanitize_text_field( (string) $_POST['datepicker_calmonth'] );
 			*/
 
 			$options['disable_user_message_registered'] = isset( $_POST['disable_user_message_registered'] ) ? '1' : '0';
 			$options['disable_user_message_created'] = isset( $_POST['disable_user_message_created'] ) ? '1' : '0';
 			$options['custom_user_message'] = isset( $_POST['custom_user_message'] ) ? '1' : '0';
-			$options['user_message_from_email'] = isset( $_POST['user_message_from_email'] ) ? sanitize_text_field( $_POST['user_message_from_email'] ) : '';
-			$options['user_message_from_name'] = isset( $_POST['user_message_from_name'] ) ? sanitize_text_field( $_POST['user_message_from_name'] ) : '';
-			$options['user_message_subject'] = isset( $_POST['user_message_subject'] ) ? sanitize_text_field( $_POST['user_message_subject'] ) : '';
-			$options['user_message_body'] = isset( $_POST['user_message_body'] ) ? wp_kses_data( $_POST['user_message_body'] ) : '';
+			$options['user_message_from_email'] = isset( $_POST['user_message_from_email'] ) ? sanitize_text_field( (string) $_POST['user_message_from_email'] ) : '';
+			$options['user_message_from_name'] = isset( $_POST['user_message_from_name'] ) ? sanitize_text_field( (string) $_POST['user_message_from_name'] ) : '';
+			$options['user_message_subject'] = isset( $_POST['user_message_subject'] ) ? sanitize_text_field( (string) $_POST['user_message_subject'] ) : '';
+			$options['user_message_body'] = isset( $_POST['user_message_body'] ) ? wp_kses_post( (string) $_POST['user_message_body'] ) : '';
 			$options['send_user_message_in_html'] = isset( $_POST['send_user_message_in_html'] ) ? '1' : '0';
 			$options['user_message_newline_as_br'] = isset( $_POST['user_message_newline_as_br'] ) ? '1' : '0';
 			$options['custom_verification_message'] = isset( $_POST['custom_verification_message'] ) ? '1' : '0';
-			$options['verification_message_from_email'] = isset( $_POST['verification_message_from_email'] ) ? sanitize_text_field( $_POST['verification_message_from_email'] ) : '';
-			$options['verification_message_from_name'] = isset( $_POST['verification_message_from_name'] ) ? sanitize_text_field( $_POST['verification_message_from_name'] ) : '';
-			$options['verification_message_subject'] = isset( $_POST['verification_message_subject'] ) ? sanitize_text_field( $_POST['verification_message_subject'] ) : '';
-			$options['verification_message_body'] = isset( $_POST['verification_message_body'] ) ? wp_kses_data( $_POST['verification_message_body'] ) : '';
+			$options['verification_message_from_email'] = isset( $_POST['verification_message_from_email'] ) ? sanitize_text_field( (string) $_POST['verification_message_from_email'] ) : '';
+			$options['verification_message_from_name'] = isset( $_POST['verification_message_from_name'] ) ? sanitize_text_field( (string) $_POST['verification_message_from_name'] ) : '';
+			$options['verification_message_subject'] = isset( $_POST['verification_message_subject'] ) ? sanitize_text_field( (string) $_POST['verification_message_subject'] ) : '';
+			$options['verification_message_body'] = isset( $_POST['verification_message_body'] ) ? wp_kses_post( (string) $_POST['verification_message_body'] ) : '';
 			$options['send_verification_message_in_html'] = isset( $_POST['send_verification_message_in_html'] ) ? '1' : '0';
 			$options['verification_message_newline_as_br'] = isset( $_POST['verification_message_newline_as_br'] ) ? '1' : '0';
 
@@ -1180,10 +1184,10 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			$options['disable_admin_message_created'] = isset( $_POST['disable_admin_message_created'] ) ? '1' : '0';
 			$options['admin_message_when_verified'] = isset( $_POST['admin_message_when_verified'] ) ? '1' : '0';
 			$options['custom_admin_message'] = isset( $_POST['custom_admin_message'] ) ? '1' : '0';
-			$options['admin_message_from_email'] = isset( $_POST['admin_message_from_email'] ) ? sanitize_text_field( $_POST['admin_message_from_email'] ) : '';
-			$options['admin_message_from_name'] = isset( $_POST['admin_message_from_name'] ) ? sanitize_text_field( $_POST['admin_message_from_name'] ) : '';
-			$options['admin_message_subject'] = isset( $_POST['admin_message_subject'] ) ? sanitize_text_field( $_POST['admin_message_subject'] ) : '';
-			$options['admin_message_body'] = isset( $_POST['admin_message_body'] ) ? wp_kses_data( $_POST['admin_message_body'] ) : '';
+			$options['admin_message_from_email'] = isset( $_POST['admin_message_from_email'] ) ? sanitize_text_field( (string) $_POST['admin_message_from_email'] ) : '';
+			$options['admin_message_from_name'] = isset( $_POST['admin_message_from_name'] ) ? sanitize_text_field( (string) $_POST['admin_message_from_name'] ) : '';
+			$options['admin_message_subject'] = isset( $_POST['admin_message_subject'] ) ? sanitize_text_field( (string) $_POST['admin_message_subject'] ) : '';
+			$options['admin_message_body'] = isset( $_POST['admin_message_body'] ) ? wp_kses_post( (string) $_POST['admin_message_body'] ) : '';
 			$options['send_admin_message_in_html'] = isset( $_POST['send_admin_message_in_html'] ) ? '1' : '0';
 			$options['admin_message_newline_as_br'] = isset( $_POST['admin_message_newline_as_br'] ) ? '1' : '0';
 
@@ -1192,17 +1196,17 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				// Stolen from Jetpack 2.0.4 custom-css.php Jetpack_Custom_CSS::init()
 				require_once( 'csstidy/class.csstidy.php' );
 				$csstidy = new csstidy();
-				$csstidy->set_cfg( 'remove_bslash', false );
-				$csstidy->set_cfg( 'compress_colors', false );
-				$csstidy->set_cfg( 'compress_font-weight', false );
+				$csstidy->set_cfg( 'remove_bslash', FALSE );
+				$csstidy->set_cfg( 'compress_colors', FALSE );
+				$csstidy->set_cfg( 'compress_font-weight', FALSE );
 				$csstidy->set_cfg( 'optimise_shorthands', 0 );
-				$csstidy->set_cfg( 'remove_last_;', false );
-				$csstidy->set_cfg( 'case_properties', false );
-				$csstidy->set_cfg( 'discard_invalid_properties', true );
+				$csstidy->set_cfg( 'remove_last_;', FALSE );
+				$csstidy->set_cfg( 'case_properties', FALSE );
+				$csstidy->set_cfg( 'discard_invalid_properties', TRUE );
 				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
-				$csstidy->set_cfg( 'preserve_css', true );
+				$csstidy->set_cfg( 'preserve_css', TRUE );
 				$csstidy->set_cfg( 'template', dirname( __FILE__ ) . '/csstidy/wordpress-standard.tpl' );
-				$custom_registration_page_css = $_POST['custom_registration_page_css'];
+				$custom_registration_page_css = (string) $_POST['custom_registration_page_css'];
 				$custom_registration_page_css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $custom_registration_page_css );
 				$custom_registration_page_css = str_replace( '<=', '&lt;=', $custom_registration_page_css );
 				$custom_registration_page_css = wp_kses_split( $custom_registration_page_css, array(), array() );
@@ -1217,17 +1221,17 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				// Stolen from Jetpack 2.0.4 custom-css.php Jetpack_Custom_CSS::init()
 				require_once( 'csstidy/class.csstidy.php' );
 				$csstidy = new csstidy();
-				$csstidy->set_cfg( 'remove_bslash', false );
-				$csstidy->set_cfg( 'compress_colors', false );
-				$csstidy->set_cfg( 'compress_font-weight', false );
+				$csstidy->set_cfg( 'remove_bslash', FALSE );
+				$csstidy->set_cfg( 'compress_colors', FALSE );
+				$csstidy->set_cfg( 'compress_font-weight', FALSE );
 				$csstidy->set_cfg( 'optimise_shorthands', 0 );
-				$csstidy->set_cfg( 'remove_last_;', false );
-				$csstidy->set_cfg( 'case_properties', false );
-				$csstidy->set_cfg( 'discard_invalid_properties', true );
+				$csstidy->set_cfg( 'remove_last_;', FALSE );
+				$csstidy->set_cfg( 'case_properties', FALSE );
+				$csstidy->set_cfg( 'discard_invalid_properties', TRUE );
 				$csstidy->set_cfg( 'css_level', 'CSS3.0' );
-				$csstidy->set_cfg( 'preserve_css', true );
+				$csstidy->set_cfg( 'preserve_css', TRUE );
 				$csstidy->set_cfg( 'template', dirname( __FILE__ ) . '/csstidy/wordpress-standard.tpl' );
-				$custom_login_page_css = $_POST['custom_login_page_css'];
+				$custom_login_page_css = (string) $_POST['custom_login_page_css'];
 				$custom_login_page_css = preg_replace( '/\\\\([0-9a-fA-F]{4})/', '\\\\\\\\$1', $custom_login_page_css );
 				$custom_login_page_css = str_replace( '<=', '&lt;=', $custom_login_page_css );
 				$custom_login_page_css = wp_kses_split( $custom_login_page_css, array(), array() );
@@ -1239,13 +1243,13 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			 
 			$usermeta_key = 0;
 			if ( isset( $_POST['label'] ) ) {
-				foreach ( $_POST['label'] as $index => $v ) {
+				foreach ( (array) $_POST['label'] as $index => $v ) {
 					$meta_field = array();
 					if ( !empty( $_POST['label'][$index] ) ) {
-						$meta_field['label'] = isset( $_POST['label'][$index] ) ? sanitize_text_field( $_POST['label'][$index] ) : '';
-						$meta_field['meta_key'] = isset( $_POST['meta_key'][$index] ) ? $_POST['meta_key'][$index] : '';
-						$meta_field['display'] = isset( $_POST['display'][$index] ) ? sanitize_text_field( $_POST['display'][$index] ) : '';
-						$meta_field['options'] = isset( $_POST['options'][$index] ) ? sanitize_text_field( $_POST['options'][$index] ) : '';
+						$meta_field['label'] = isset( $_POST['label'][$index] ) ? sanitize_text_field( (string) $_POST['label'][$index] ) : '';
+						$meta_field['meta_key'] = isset( $_POST['meta_key'][$index] ) ? (string) $_POST['meta_key'][$index] : '';
+						$meta_field['display'] = isset( $_POST['display'][$index] ) ? sanitize_text_field( (string) $_POST['display'][$index] ) : '';
+						$meta_field['options'] = isset( $_POST['options'][$index] ) ? sanitize_text_field( (string) $_POST['options'][$index] ) : '';
 						$meta_field['show_datepicker'] = '0';
 						$meta_field['escape_url'] = '0';
 						$meta_field['show_on_profile'] = isset( $_POST['show_on_profile'][$index] ) ? '1' : '0';
@@ -1263,7 +1267,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			}
 
 			if ( isset( $_POST['newMetaFields'] ) ) {
-				foreach ( $_POST['newMetaFields'] as $label ) {
+				foreach ( (array) $_POST['newMetaFields'] as $label ) {
 					$meta_field = array();
 					$meta_field['label'] = sanitize_text_field( $label );
 					$meta_field['meta_key'] = 'rpr_' . sanitize_title( $meta_field['label'] );

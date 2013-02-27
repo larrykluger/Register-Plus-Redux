@@ -1,28 +1,28 @@
 <?php
 if ( !class_exists( 'RPR_Activate' ) ) {
 	class RPR_Activate {
-		public function __construct() {
+		public /*.void.*/ function __construct() {
 			add_filter( 'random_password', array( $this, 'rpr_activate_filter_random_password' ), 10, 1 ); // Replace random password with user set password
 			add_filter( 'wpmu_welcome_user_notification', array( $this, 'rpr_filter_wpmu_welcome_user_notification' ), 10, 3 );
+			add_filter( 'wpmu_welcome_notification', array( $this, 'rpr_filter_wpmu_welcome_notification' ), 10, 5 );
 			add_action( 'wpmu_activate_user', array( $this, 'rpr_wpmu_activate_user' ), 10, 3 ); // Restore metadata to activated user's profile
-			//add_action( 'wpmu_activate_blog', array( $this, 'rpr_wpmu_activate_blog' ), 10, 5 );
+			add_action( 'wpmu_activate_blog', array( $this, 'rpr_wpmu_activate_blog' ), 10, 5 );
 		}
 
-		public function rpr_activate_filter_random_password( $password ) {
+		public /*.string.*/ function rpr_activate_filter_random_password( /*.string.*/ $password ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( 'wp-activate.php' === $pagenow && '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
-				$key = isset( $_REQUEST['key'] ) ? $_REQUEST['key'] : '';
+				$key = isset( $_REQUEST['key'] ) ? (string) $_REQUEST['key'] : '';
 				if ( !empty( $key ) ) {
 					global $wpdb;
-					$signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE activation_key = %s;", $key ) );
+					/*.object.*/ $signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE activation_key = %s;", $key ) );
 					if ( !empty( $signup ) ) {
-						$meta = maybe_unserialize( $signup->meta );
+						/*.array[string]string.*/ $meta = maybe_unserialize( $signup->meta );
 						if ( is_array( $meta ) && array_key_exists( 'password', $meta ) && !empty( $meta['password'] ) ) {
 							$password = $meta['password'];
 							unset( $meta['password'] );
-							$meta = serialize( $meta );
-							$wpdb->update( $wpdb->signups, array( 'meta' => $meta ), array( 'activation_key' => $key ) );
+							$wpdb->update( $wpdb->signups, array( 'meta' => serialize( $meta ) ), array( 'activation_key' => $key ) );
 						}
 					}
 				}
@@ -30,13 +30,19 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			return $password;
 		}
 
-		public function rpr_filter_wpmu_welcome_user_notification( $user_id, $password, $meta ) {
+		public /*.bool.*/ function rpr_filter_wpmu_welcome_user_notification( /*.int.*/ $user_id, /*.string.*/ $password, /*.array[]mixed.*/ $meta ) {
 			global $register_plus_redux;
 			if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) return FALSE;
 			return TRUE;
 		}
 
-		public function rpr_wpmu_activate_user( $user_id, $password, $meta ) {
+		public /*.bool.*/ function rpr_filter_wpmu_welcome_notification( /*.int.*/ $blog_id, /*.int.*/ $user_id, /*.string.*/ $password, /*.string.*/ $title, /*.array[]mixed.*/ $meta ) {
+			global $register_plus_redux;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) return FALSE;
+			return TRUE;
+		}
+
+		public /*.void.*/ function rpr_wpmu_activate_user( /*.int.*/ $user_id, /*.string.*/ $password, /*.array[]mixed.*/ $meta ) {
 			global $register_plus_redux;
 
 			//TODO: Not the most elegant solution, it would be better to interupt the activation and keep the data in the signups table with a flag to alert admin to complete activation			
@@ -65,7 +71,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
 			foreach ( $redux_usermeta as $meta_field ) {
 				if ( '1' === $meta_field['show_on_registration'] ) {
-					if ( !empty( $meta[$meta_field['meta_key']] ) ) $register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta[$meta_field['meta_key']] );
+					if ( !empty( $meta[$meta_field['meta_key']] ) ) $register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta[ (string) $meta_field['meta_key']] );
 				}
 			}
 
@@ -105,7 +111,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			}
 		}
 
-		public function rpr_wpmu_activate_blog( $blog_id, $user_id, $password, $signup, $meta ) {
+		public /*.void.*/ function rpr_wpmu_activate_blog( /*.int.*/ $blog_id, /*.int.*/ $user_id, /*.string.*/ $password, /*.string.*/ $title, /*.array[]mixed.*/ $meta ) {
 			$this->rpr_wpmu_activate_user( $user_id, $password, $meta );
 		}
 	}
