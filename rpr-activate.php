@@ -37,9 +37,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 		}
 
 		public /*.bool.*/ function rpr_filter_wpmu_welcome_notification( /*.int.*/ $blog_id, /*.int.*/ $user_id, /*.string.*/ $password, /*.string.*/ $title, /*.array[]mixed.*/ $meta ) {
-			global $register_plus_redux;
-			if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) return FALSE;
-			return TRUE;
+			return $this->rpr_filter_wpmu_welcome_user_notification( $user_id, $password, $meta );
 		}
 
 		public /*.void.*/ function rpr_wpmu_activate_user( /*.int.*/ $user_id, /*.string.*/ $password, /*.array[]mixed.*/ $meta ) {
