@@ -1,77 +1,93 @@
 <?php
 if ( !class_exists( 'RPR_Signup' ) ) {
 	class RPR_Signup {
-		public function __construct() {
+		public /*.void.*/ function __construct() {
+			add_action( 'wp_enqueue_scripts', array( $this, 'rpr_enqueue_scripts' ), 10, 0 );
 			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 0 );
 			add_action( 'signup_extra_fields', array( $this, 'rpr_signup_extra_fields' ), 9, 1 ); // Higher priority to avoid getting bumped by other plugins
 			add_action( 'after_signup_form', array( $this, 'rpr_after_signup_form' ), 10, 0 ); // Closest thing to signup_footer
 			add_filter( 'wpmu_validate_user_signup', array( $this, 'rpr_filter_wpmu_validate_user_signup' ), 10, 1 );
 			add_filter( 'add_signup_meta', array( $this, 'filter_add_signup_meta' ), 10, 1 ); // Store metadata until user is activated
+			add_filter( 'wpmu_signup_user_notification', array( $this, 'filter_wpmu_signup_user_notification' ), 10, 4 ); // Store metadata until user is activated
+			add_filter( 'wpmu_signup_blog_notification', array( $this, 'filter_wpmu_signup_blog_notification' ), 10, 7 ); // Store metadata until user is activated
 			add_action( 'signup_finished', array( $this, 'rpr_signup_finished' ), 10, 0 );
+			add_filter( 'random_password', array( $this, 'rpr_signup_filter_random_password' ), 10, 1 ); // Replace random password with user set password
+			add_action( 'preprocess_signup_form', array( $this, 'rpr_preprocess_signup_form' ), 10, 0 );
 		}
 
-		public function rpr_signup_header() {
+		public /*.void.*/ function rpr_enqueue_scripts() {
+			global $register_plus_redux;
+			$do_enqueue = FALSE;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) { $do_enqueue = TRUE; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) { $do_enqueue = TRUE; }
+			if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) { $do_enqueue = TRUE; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) { $do_enqueue = TRUE; }
+			if ( $do_enqueue ) wp_enqueue_script('jquery');
+		}
+
+		public /*.void.*/ function rpr_signup_header() {
 			global $register_plus_redux;
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			foreach ( $redux_usermeta as $index => $meta_field ) {
-				if ( !empty( $meta_field['show_on_registration'] ) ) {
-					$meta_key = esc_attr( $meta_field['meta_key'] );
-					if ( $meta_field['display'] == 'textbox' ) {
-						if ( empty( $show_custom_text_fields ) )
-							$show_custom_text_fields = '.mu_register #' . $meta_key;
-						else
-							$show_custom_text_fields .= ', .mu_register #' . $meta_key;
-					}
-					if ( $meta_field['display'] == 'select' ) {
-						if ( empty( $show_custom_select_fields ) )
-							$show_custom_select_fields = '.mu_register #' . $meta_key;
-						else
-							$show_custom_select_fields .= ', .mu_register #' . $meta_key;
-					}
-					if ( $meta_field['display'] == 'checkbox' ) {
-						$field_options = explode( ',', $meta_field['options'] );
-						foreach ( $field_options as $field_option ) {
-							if ( empty( $show_custom_checkbox_fields ) ) {
-								$show_custom_checkbox_fields = '.mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
-							}
-							else {
-								$show_custom_checkbox_fields .= ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $index => $meta_field ) {
+					if ( !empty( $meta_field['show_on_registration'] ) ) {
+						$meta_key = esc_attr( $meta_field['meta_key'] );
+						if ( 'textbox' === $meta_field['display'] ) {
+							if ( empty( $show_custom_text_fields ) )
+								$show_custom_text_fields = '.mu_register #' . $meta_key;
+							else
+								$show_custom_text_fields .= ', .mu_register #' . $meta_key;
+						}
+						if ( 'select' === $meta_field['display'] ) {
+							if ( empty( $show_custom_select_fields ) )
+								$show_custom_select_fields = '.mu_register #' . $meta_key;
+							else
+								$show_custom_select_fields .= ', .mu_register #' . $meta_key;
+						}
+						if ( 'checkbox' === $meta_field['display'] ) {
+							/*.array[]string.*/ $field_options = explode( ',', $meta_field['options'] );
+							foreach ( $field_options as $field_option ) {
+								if ( empty( $show_custom_checkbox_fields ) ) {
+									$show_custom_checkbox_fields = '.mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+								}
+								else {
+									$show_custom_checkbox_fields .= ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+								}
 							}
 						}
-					}
-					if ( $meta_field['display'] == 'radio' ) {
-						$field_options = explode( ',', $meta_field['options'] );
-						foreach ( $field_options as $field_option ) {
-							if ( empty( $show_custom_radio_fields ) ) {
-								$show_custom_radio_fields = '.mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
-							}
-							else {
-								$show_custom_radio_fields .= ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+						if ( 'radio' === $meta_field['display'] ) {
+							/*.array[]string.*/ $field_options = explode( ',', $meta_field['options'] );
+							foreach ( $field_options as $field_option ) {
+								if ( empty( $show_custom_radio_fields ) ) {
+									$show_custom_radio_fields = '.mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+								}
+								else {
+									$show_custom_radio_fields .= ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . ', .mu_register #' . $meta_key . '-' . sanitize_title( $field_option ) . '-label';
+								}
 							}
 						}
-					}
-					if ( $meta_field['display'] == 'textarea' ) {
-						if ( empty( $show_custom_textarea_fields ) )
-							$show_custom_textarea_fields = '.mu_register #' . $meta_key . '-label';
-						else
-							$show_custom_textarea_fields .= ', .mu_register #' . $meta_key . '-label';
-					}
-					if ( !empty( $meta_field['require_on_registration'] ) ) {
-						if ( empty( $required_meta_fields ) )
-							$required_meta_fields = '.mu_register #' . $meta_key;
-						else
-							$required_meta_fields .= ', .mu_register #' . $meta_key;
+						if ( 'textarea' === $meta_field['display'] ) {
+							if ( empty( $show_custom_textarea_fields ) )
+								$show_custom_textarea_fields = '.mu_register #' . $meta_key . '-label';
+							else
+								$show_custom_textarea_fields .= ', .mu_register #' . $meta_key . '-label';
+						}
+						if ( !empty( $meta_field['require_on_registration'] ) ) {
+							if ( empty( $required_meta_fields ) )
+								$required_meta_fields = '.mu_register #' . $meta_key;
+							else
+								$required_meta_fields .= ', .mu_register #' . $meta_key;
+						}
 					}
 				}
 			}
 
-			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && count( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) $show_fields = '.mu_register #' . implode( ', .mu_register #', $register_plus_redux->rpr_get_option( 'show_fields' ) );
-			if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && count( $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) $required_fields = '.mu_register #' . implode( ', .mu_register #', $register_plus_redux->rpr_get_option( 'required_fields' ) );
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) $show_fields = '.mu_register #' . implode( ', .mu_register #', $register_plus_redux->rpr_get_option( 'show_fields' ) );
+			if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) $required_fields = '.mu_register #' . implode( ', .mu_register #', $register_plus_redux->rpr_get_option( 'required_fields' ) );
 
 			echo "\n", '<style type="text/css">';
-			if ( $register_plus_redux->rpr_get_option( 'default_css' ) == TRUE ) {
-				if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n", '.mu_register #user_email2 { width:100%; font-size: 24px; margin:5px 0; }';
+			if ( '1' === $register_plus_redux->rpr_get_option( 'default_css' ) ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'double_check_email' ) ) echo "\n", '.mu_register #user_email2 { width:100%; font-size: 24px; margin:5px 0; }';
 				if ( !empty( $show_fields ) ) echo "\n", $show_fields, ' { width:100%; font-size: 24px; margin:5px 0; }';
 				if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo "\n", '.mu_register #description { width:100%; font-size:24px; height: 60px; margin:5px 0; }';
 				if ( !empty( $show_custom_text_fields ) ) echo "\n", $show_custom_text_fields, ' { width:100%; font-size: 24px; margin:5px 0; }';
@@ -79,15 +95,15 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				if ( !empty( $show_custom_checkbox_fields ) ) echo "\n", $show_custom_checkbox_fields, ' { font-size:18px; margin:5px 0; display: inline; }';
 				if ( !empty( $show_custom_radio_fields ) ) echo "\n", $show_custom_radio_fields, ' { font-size:18px; margin:5px 0; display: inline; }';
 				if ( !empty( $show_custom_textarea_fields ) ) echo "\n", $show_custom_textarea_fields, ' { width:100%; font-size:24px; height: 60px; margin:5px 0; }';
-				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n", '.mu_register #pass1, .mu_register #pass2 { width:100%; font-size: 24px; margin:5px 0; }';
-				if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) echo "\n", '.mu_register #invitation_code { width:100%; font-size: 24px; margin:5px 0; }';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) echo "\n", '.mu_register #pass1, .mu_register #pass2 { width:100%; font-size: 24px; margin:5px 0; }';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) echo "\n", '.mu_register #invitation_code { width:100%; font-size: 24px; margin:5px 0; }';
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) { echo "\n", '.mu_register #disclaimer { width: 100%; font-size:12px; margin:5px 0; display: block; '; if ( strlen( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-			if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) { echo "\n", '.mu_register #license { width: 100%; font-size:12px; margin:5px 0; display: block; '; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-			if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) { echo "\n", '.mu_register #privacy_policy { width: 100%; font-size:12px; margin:5px 0; display: block; '; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
-			if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE || $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) echo "\n", '.mu_register .accept_check { display:block; margin:5px 0; }';
-			if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
-				if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_disclaimer' ) ) { echo "\n", '.mu_register #disclaimer { width: 100%; font-size:12px; margin:5px 0; display: block; '; if ( strlen( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_license' ) ) { echo "\n", '.mu_register #license { width: 100%; font-size:12px; margin:5px 0; display: block; '; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) ) { echo "\n", '.mu_register #privacy_policy { width: 100%; font-size:12px; margin:5px 0; display: block; '; if ( strlen( $register_plus_redux->rpr_get_option( 'message_license' ) ) > 525) echo 'height: 160px; overflow:scroll;'; echo ' }'; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_disclaimer' ) || '1' === $register_plus_redux->rpr_get_option( 'show_license' ) || '1' === $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) ) echo "\n", '.mu_register .accept_check { display:block; margin:5px 0; }';
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
 					echo "\n", '.mu_register #pass-strength-result { width: 100%; margin: 10px 0; border: 1px solid; padding: 6px; text-align: center; font-weight: bold; display: block; }';
 					echo "\n", '.mu_register #pass-strength-result { background-color: #eee; border-color: #ddd !important; }';
 					echo "\n", '.mu_register #pass-strength-result.bad { background-color: #ffb78c; border-color: #ff853c !important; }';
@@ -98,36 +114,16 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 			if ( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ) {
 				echo "\n", '.mu_register #user_login, .mu_register #user_email { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), '} ';
-				if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) echo "\n", '.mu_register #user_email2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'double_check_email' ) ) echo "\n", '.mu_register #user_email2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
 				if ( !empty( $required_fields ) ) echo "\n", $required_fields, ' { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ) , ' }';
 				if ( !empty( $required_meta_fields ) ) echo "\n", $required_meta_fields, ' { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ) , ' }';
-				if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) echo "\n", '.mu_register #pass1, .mu_register #pass2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
-				if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) echo "\n", '.mu_register #invitation_code { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) echo "\n", '.mu_register #pass1, .mu_register #pass2 { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'require_invitation_code' ) ) echo "\n", '.mu_register #invitation_code { ', esc_html( $register_plus_redux->rpr_get_option( 'required_fields_style' ) ), ' }';
 			}
 			if ( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) ) echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) );
 			echo "\n", '</style>';
 
-			if ( !empty( $show_custom_date_fields ) ) {
-				if ( empty( $jquery_loaded ) ) {
-					wp_print_scripts( 'jquery' );
-					$jquery_loaded = TRUE;
-				}
-				wp_print_scripts( 'jquery-ui-core' );
-				?>
-				<link type="text/css" rel="stylesheet" href="<?php echo plugins_url( 'js/theme/jquery.ui.all.css', __FILE__ ); ?>" />
-				<script type="text/javascript" src="<?php echo plugins_url( 'js/jquery.ui.datepicker.min.js', __FILE__ ); ?>"></script>
-				<script type="text/javascript">
-				jQuery(function() {
-					jQuery(".datepicker").datepicker();
-				});
-				</script>
-				<?php
-			}
-			if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE ) {
-				if ( empty( $jquery_loaded ) ) {
-					wp_print_scripts( 'jquery' );
-					$jquery_loaded = TRUE;
-				}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) {
 				?>
 				<script type="text/javascript">
 				jQuery(document).ready(function() {
@@ -137,11 +133,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				</script>
 				<?php
 			}
-			if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE && $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
-				if ( empty( $jquery_loaded ) ) {
-					wp_print_scripts( 'jquery' );
-					$jquery_loaded = TRUE;
-				}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
 				// TODO: Messages could be compromised, needs to be escaped, look into methods used by comments to display
 				?>
 				<script type="text/javascript">
@@ -157,7 +149,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					/* ]]> */
 					function check_pass_strength() {
 						// HACK support username_is_email in function
-						var user = jQuery("<?php if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) echo '#user_email'; else echo '#user_login'; ?>").val();
+						var user = jQuery("<?php if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) echo '#user_email'; else echo '#user_login'; ?>").val();
 						var pass1 = jQuery("#pass1").val();
 						var pass2 = jQuery("#pass2").val();
 						var strength;
@@ -228,266 +220,252 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 		}
 
-		public function rpr_signup_extra_fields( $errors ) {
+		public /*.void.*/ function rpr_signup_extra_fields( /*.object.*/ $errors ) {
 			global $register_plus_redux;
-			if ( get_magic_quotes_gpc() ) $_POST = stripslashes_deep( $_POST );
-			if ( get_magic_quotes_gpc() ) $_GET = stripslashes_deep( $_GET );
-			if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) {
-				$user_email2 = isset( $_POST['user_email2'] ) ? $_POST['user_email2'] : '';
-				if ( isset( $_GET['user_email2'] ) ) $user_email2 = $_GET['user_email2'];
+			if ( '1' === $register_plus_redux->rpr_get_option( 'double_check_email' ) ) {
+				$user_email2 = isset( $_REQUEST['user_email2'] ) ? (string) $_REQUEST['user_email2'] : '';
 				echo "\n", '<label id="user_email2-label" for="user_email2">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) echo '*';
 				echo __( 'Confirm E-mail', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('user_email2') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" autocomplete="off" name="user_email2" id="user_email2" value="', esc_attr( $user_email2 ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$first_name = isset( $_POST['first_name'] ) ? $_POST['first_name'] : '';
-				if ( isset( $_GET['first_name'] ) ) $first_name = $_GET['first_name'];
+				$first_name = isset( $_REQUEST['first_name'] ) ? (string) $_REQUEST['first_name'] : '';
 				echo "\n", '<label id="first_name-label" for="first_name">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'First Name', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('first_name') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="first_name" id="first_name" value="', esc_attr( $first_name ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'last_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$last_name = isset( $_POST['last_name'] ) ? $_POST['last_name'] : '';
-				if ( isset( $_GET['last_name'] ) ) $last_name = $_GET['last_name'];
+				$last_name = isset( $_REQUEST['last_name'] ) ? (string) $_REQUEST['last_name'] : '';
 				echo "\n", '<label id="last_name-label" for="last_name">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'last_name', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'last_name', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'Last Name', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('last_name') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="last_name" id="last_name" value="', esc_attr( $last_name ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'user_url', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$user_url = isset( $_POST['user_url'] ) ? $_POST['user_url'] : '';
-				if ( isset( $_GET['user_url'] ) ) $user_url = $_GET['user_url'];
+				$user_url = isset( $_REQUEST['user_url'] ) ? (string) $_REQUEST['user_url'] : '';
 				echo "\n", '<label id="user_url-label" for="user_url">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'user_url', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'user_url', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'Website', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('user_url') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="user_url" id="user_url" value="', esc_attr( $user_url ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'aim', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$aim = isset( $_POST['aim'] ) ? $_POST['aim'] : '';
-				if ( isset( $_GET['aim'] ) ) $aim = $_GET['aim'];
+				$aim = isset( $_REQUEST['aim'] ) ? (string) $_REQUEST['aim'] : '';
 				echo "\n", '<label id="aim-label" for="aim">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'aim', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'aim', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'AIM', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('aim') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="aim" id="aim" value="', esc_attr( $aim ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'yahoo', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$yahoo = isset( $_POST['yahoo'] ) ? $_POST['yahoo'] : '';
-				if ( isset( $_GET['yahoo'] ) ) $yahoo = $_GET['yahoo'];
+				$yahoo = isset( $_REQUEST['yahoo'] ) ? (string) $_REQUEST['yahoo'] : '';
 				echo "\n", '<label id="yahoo-label" for="yahoo">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'yahoo', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'yahoo', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'Yahoo IM', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('yahoo') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="yahoo" id="yahoo" value="', esc_attr( $yahoo ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'jabber', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$jabber = isset( $_POST['jabber'] ) ? $_POST['jabber'] : '';
-				if ( isset( $_GET['jabber'] ) ) $jabber = $_GET['jabber'];
+				$jabber = isset( $_REQUEST['jabber'] ) ? (string) $_REQUEST['jabber'] : '';
 				echo "\n", '<label id="jabber-label" for="jabber">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'jabber', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'jabber', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'Jabber / Google Talk', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('jabber') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="jabber" id="jabber" value="', esc_attr( $jabber ), '" />';
 			}
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-				$description = isset( $_POST['description'] ) ? $_POST['description'] : '';
-				if ( isset( $_GET['description'] ) ) $description = $_GET['description'];
+				$description = isset( $_REQUEST['description'] ) ? (string) $_REQUEST['description'] : '';
 				echo "\n", '<label id="description-label" for="description">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo '*';
 				echo __( 'About Yourself', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('description') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<textarea name="description" id="description" cols="25" rows="5">', esc_textarea( $description ), '</textarea>';
 				echo '<br />', __( 'Share a little biographical information to fill out your profile. This may be shown publicly.', 'register-plus-redux' );
 			}
+
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			foreach ( $redux_usermeta as $index => $meta_field ) {
-				if ( !empty( $meta_field['show_on_registration'] ) ) {
-					$meta_key = esc_attr( $meta_field['meta_key'] );
-					$meta_value = isset( $_POST[$meta_key] ) ? $_POST[$meta_key] : '';
-					if ( isset( $_GET[$meta_key] ) ) $meta_value = $_GET[$meta_key];
-					if ( ( $meta_field['display'] != 'hidden' ) && ( $meta_field['display'] != 'text' ) ) {
-						echo "\n", '<label id="', $meta_key, '-label" for="', $meta_key, '">';
-						if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && !empty( $meta_field['require_on_registration'] ) ) echo '*';
-						echo esc_html( $meta_field['label'] ), ':</label>';
-						if ( $errmsg = $errors->get_error_message($meta_key) ) {
-							echo '<p class="error">'.$errmsg.'</p>';
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $index => $meta_field ) {
+					if ( !empty( $meta_field['show_on_registration'] ) ) {
+						$meta_key = esc_attr( $meta_field['meta_key'] );
+						$meta_value = isset( $_REQUEST[$meta_key] ) ? (string) $_REQUEST[$meta_key] : '';
+						if ( ( $meta_field['display'] != 'hidden' ) && ( $meta_field['display'] != 'text' ) ) {
+							echo "\n", '<label id="', $meta_key, '-label" for="', $meta_key, '">';
+							if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && !empty( $meta_field['require_on_registration'] ) ) echo '*';
+							echo esc_html( $meta_field['label'] ), ':</label>';
+							if ( $errmsg = $errors->get_error_message($meta_key) ) {
+								echo '<p class="error">', $errmsg, '</p>';
+							}
 						}
-					}
-					switch ( $meta_field['display'] ) {
-						case 'textbox':
-							echo "\n", '<input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
-							if ( $meta_field['show_datepicker'] == TRUE ) echo 'class="datepicker" ';
-							echo 'value="', esc_attr( $meta_value ), '" />';
-							break;
-						case 'select':
-							echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '">';
-							$field_options = explode( ',', $meta_field['options'] );
-							foreach ( $field_options as $field_option ) {
-								echo "\n", '<option id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '"';
-								if ( $meta_value == esc_attr( $field_option ) ) echo ' selected="selected"';
-								echo '>', esc_html( $field_option ), '</option>';
-							}
-							echo "n</select>";
-							break;
-						case 'checkbox':
-							$field_options = explode( ',', $meta_field['options'] );
-							foreach ( $field_options as $field_option ) {
-								echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
-								if ( is_array( $meta_value ) && in_array( esc_attr( $field_option ), $meta_value ) ) echo 'checked="checked" ';
-								if ( !is_array( $meta_value ) && ( $meta_value == esc_attr( $field_option ) ) ) echo 'checked="checked" ';
-								echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
-							}
-							break;
-						case 'radio':
-							$field_options = explode( ',', $meta_field['options'] );
-							foreach ( $field_options as $field_option ) {
-								echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
-								if ( $meta_value == esc_attr( $field_option ) ) echo 'checked="checked" ';
-								echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
-							}
-							break;
-						case 'textarea':
-							echo "\n", '<textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea>';
-							break;
-						case 'hidden':
-							echo "\n", '<input type="hidden" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" />';
-							break;
-						case 'text':
-							echo "\n", esc_html( $meta_field['label'] );
-							break;
+						switch ( $meta_field['display'] ) {
+							case 'textbox':
+								echo "\n", '<input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
+								if ( '1' === $meta_field['show_datepicker'] ) echo 'class="datepicker" ';
+								echo 'value="', esc_attr( $meta_value ), '" />';
+								break;
+							case 'select':
+								echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '">';
+								/*.array[]string.*/ $field_options = explode( ',', $meta_field['options'] );
+								foreach ( $field_options as $field_option ) {
+									echo "\n", '<option id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '"';
+									if ( $meta_value === esc_attr( $field_option ) ) echo ' selected="selected"';
+									echo '>', esc_html( $field_option ), '</option>';
+								}
+								echo "n</select>";
+								break;
+							case 'checkbox':
+								/*.array[]string.*/ $field_options = explode( ',', $meta_field['options'] );
+								foreach ( $field_options as $field_option ) {
+									echo "\n", '<input type="checkbox" name="', $meta_key, '[]" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
+									if ( is_array( $meta_value ) && in_array( esc_attr( $field_option ), $meta_value ) ) echo 'checked="checked" ';
+									if ( !is_array( $meta_value ) && ( $meta_value === esc_attr( $field_option ) ) ) echo 'checked="checked" ';
+									echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
+								}
+								break;
+							case 'radio':
+								/*.array[]string.*/ $field_options = explode( ',', $meta_field['options'] );
+								foreach ( $field_options as $field_option ) {
+									echo "\n", '<input type="radio" name="', $meta_key, '" id="', $meta_key, '-', sanitize_title( $field_option ), '" value="', esc_attr( $field_option ), '" ';
+									if ( $meta_value === esc_attr( $field_option ) ) echo 'checked="checked" ';
+									echo '><label id="', $meta_key, '-', sanitize_title( $field_option ), '-label" class="', $meta_key, '" for="', $meta_key, '-', sanitize_title( $field_option ), '">&nbsp;', esc_html( $field_option ), '</label><br />';
+								}
+								break;
+							case 'textarea':
+								echo "\n", '<textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea>';
+								break;
+							case 'hidden':
+								echo "\n", '<input type="hidden" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" />';
+								break;
+							case 'text':
+								echo "\n", esc_html( $meta_field['label'] );
+								break;
+						}
 					}
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
-				$password = isset( $_POST['password'] ) ? $_POST['password'] : '';
-				if ( isset( $_GET['password'] ) ) $password = $_GET['password'];
+
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
+				$password = isset( $_REQUEST['pass1'] ) ? (string) $_REQUEST['pass1'] : '';
 				echo "\n", '<label id="pass1-label" for="pass1-label">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) echo '*';
 				echo __( 'Password', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('pass1') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="password" autocomplete="off" name="pass1" id="pass1" value="', esc_attr( $password ), '" />';
-				if ( $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) == FALSE ) {
+				if ( '1' !== $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) ) {
 					echo "\n", '<label id="pass2-label" for="pass2-label">';
-					if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE ) echo '*';
+					if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) echo '*';
 					echo __( 'Confirm Password', 'register-plus-redux' ), ':</label>';
 					if ( $errmsg = $errors->get_error_message('pass2') ) {
-						echo '<p class="error">'.$errmsg.'</p>';
+						echo '<p class="error">', $errmsg, '</p>';
 					}
 					echo "\n", '<input type="password" autocomplete="off" name="pass2" id="pass2" value="', esc_attr( $password ), '" />';
 				}
-				if ( $register_plus_redux->rpr_get_option( 'show_password_meter' ) == TRUE ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
 					echo "\n", '<div id="pass-strength-result">', $register_plus_redux->rpr_get_option( 'message_empty_password' ), '</div>';
 					echo "\n", '<p id="pass_strength_msg" style="display: inline;">', sprintf(__( 'Your password must be at least %d characters long. To make your password stronger, use upper and lower case letters, numbers, and the following symbols !@#$%%^&amp;*()', 'register-plus-redux' ), absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ) ), '</p>';
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) {
-				$invitation_code = isset( $_POST['invitation_code'] ) ? $_POST['invitation_code'] : '';
-				if ( isset( $_GET['invitation_code'] ) ) $invitation_code = $_GET['invitation_code'];
+			if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) {
+				$invitation_code = isset( $_REQUEST['invitation_code'] ) ? (string) $_REQUEST['invitation_code'] : '';
 				echo "\n", '<label id="invitation_code-label" for="invitation_code">';
-				if ( $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) == TRUE && $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) echo '*';
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && '1' === $register_plus_redux->rpr_get_option( 'require_invitation_code' ) ) echo '*';
 				echo __( 'Invitation Code', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('invitation_code') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 				echo "\n", '<input type="text" name="invitation_code" id="invitation_code" value="', esc_attr( $invitation_code ), '" />';
-				if ( $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE )
+				if ( '1' === $register_plus_redux->rpr_get_option( 'require_invitation_code' ) )
 					echo "\n", '<p id="invitation_code_msg" style="display: inline;">', __( 'This website is currently closed to public registrations. You will need an invitation code to register.', 'register-plus-redux' ), '</p>';
 				else
 					echo "\n", '<p id="invitation_code_msg" style="display: inline;">', __( 'Have an invitation code? Enter it here. (This is not required)', 'register-plus-redux' ), '</p>';
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE ) {
-				$accept_disclaimer = isset( $_POST['accept_disclaimer'] ) ? '1' : '0';
-				if ( isset( $_GET['accept_disclaimer'] ) ) $accept_disclaimer = '1';
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_disclaimer' ) ) {
+				$accept_disclaimer = isset( $_REQUEST['accept_disclaimer'] ) ? '1' : '0';
 				echo "\n", '<label id="disclaimer-label" for="disclaimer">', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), ':</label>';
 				echo "\n", '<div name="disclaimer" id="disclaimer" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
-				if ( $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == TRUE ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) ) {
 					echo "\n", '<label id="accept_disclaimer-label"><input type="checkbox" name="accept_disclaimer" id="accept_disclaimer" value="1"'; if ( $accept_disclaimer ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('disclaimer') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE ) {
-				$accept_license = isset( $_POST['accept_license'] ) ? '1' : '0';
-				if ( isset( $_GET['accept_license'] ) ) $accept_license = '1';
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_license' ) ) {
+				$accept_license = isset( $_REQUEST['accept_license'] ) ? '1' : '0';
 				echo "\n", '<label id="license-label" for="license">', esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), ':</label>';
 				echo "\n", '<div name="license" id="license" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
-				if ( $register_plus_redux->rpr_get_option( 'require_license_agree' ) == TRUE ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'require_license_agree' ) ) {
 					echo "\n", '<label id="accept_license-label"><input type="checkbox" name="accept_license" id="accept_license" value="1"'; if ( $accept_license ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_license_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('license') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE ) {
-				$accept_privacy_policy = isset( $_POST['accept_privacy_policy'] ) ? '1' : '0';
-				if ( isset( $_GET['accept_privacy_policy'] ) ) $accept_privacy_policy = '1';
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) ) {
+				$accept_privacy_policy = isset( $_REQUEST['accept_privacy_policy'] ) ? '1' : '0';
 				echo "\n", '<label id="privacy_policy-label" for="privacy_policy">', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), ':</label>';
 				echo "\n", '<div name="privacy_policy" id="privacy_policy" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
-				if ( $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == TRUE ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) ) {
 					echo "\n", '<label id="accept_privacy_policy-label"><input type="checkbox" name="accept_privacy_policy" id="accept_privacy_policy" value="1"'; if ( $accept_privacy_policy ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('privacy_policy') ) {
-					echo '<p class="error">'.$errmsg.'</p>';
+					echo '<p class="error">', $errmsg, '</p>';
 				}
 			}
 		}
 
-		public function rpr_after_signup_form() {
+		public /*.void.*/ function rpr_after_signup_form() {
 			global $register_plus_redux;
-			if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) {
+			if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) {
 				?>
-				<!--[if (lte IE 8)]>
 				<script type="text/javascript">
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[5]);
-				document.getElementById("setupform").childNodes[5].style.display = "none";
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
+				jQuery(document).ready(function() {
+					jQuery("input[name='stage']").val("user-signup");
+				});
 				</script>
-				<![endif]-->
-				<!--[if (gt IE 8)|!(IE)]><!-->
+				<?php
+			}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
+				?>
 				<script type="text/javascript">
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[6]);
-				document.getElementById("setupform").childNodes[6].style.display = "none";
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[7]);
-				document.getElementById("setupform").removeChild(document.getElementById("setupform").childNodes[7]);
+				document.getElementById("setupform").removeChild(document.getElementById("user_name").previousSibling);
+				document.getElementById("setupform").removeChild(document.getElementById("user_name").nextSibling);
+				document.getElementById("setupform").removeChild(document.getElementById("user_name").nextSibling);
+				document.getElementById("user_name").style.display = "none";
 				</script>
-				<!--<![endif]-->
 				<?php
 			}
 		}
 
-		public function rpr_filter_wpmu_validate_user_signup( $result ) {
+		public /*.array[string]mixed.*/ function rpr_filter_wpmu_validate_user_signup( /*.array[string]mixed.*/ $result ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( $pagenow != 'wp-signup.php' ) return $result;
 			//trigger_error( sprintf( __( 'Register Plus Redux DEBUG: filter_wpmu_validate_user_signup($result=%s) from %s', 'register-plus-redux' ), $result, $pagenow ) ); 
-			if ( $register_plus_redux->rpr_get_option( 'username_is_email' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
 				global $wpdb;
 
 				if ( is_array( $result['errors']->errors ) && array_key_exists( 'user_name', $result['errors']->errors ) ) unset( $result['errors']->errors['user_name'] );
@@ -501,23 +479,23 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					$result['errors']->add('user_email', __('Sorry, that username already exists!'));
 
 				// Has someone already signed up for this username?
-				$signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE user_login = %s", $result['user_name'] ) );
+				/*.object.*/ $signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE user_login = %s", $result['user_name'] ) );
 				if ( !empty( $signup ) ) {
 					// If registered more than two days ago, cancel registration and let this signup go through.
-					if ( ( current_time( 'timestamp', true ) - mysql2date('U', $signup->registered) ) > 2 * DAY_IN_SECONDS )
+					if ( ( current_time( 'timestamp', TRUE ) - mysql2date('U', $signup->registered) ) > 2 * DAY_IN_SECONDS )
 						$wpdb->delete( $wpdb->signups, array( 'user_login' => $result['user_name'] ) );
 					else
 						$result['errors']->add('user_email', __('That username is currently reserved but may be available in a couple of days.'));
 
-					if ( $signup->active == 0 && $signup->user_email == $result['user_email'] )
+					if ( $signup->active === 0 && $signup->user_email === $result['user_email'] )
 						$result['errors']->add('user_email_used', __('username and email used'));
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'double_check_email' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'double_check_email' ) ) {
 				if ( empty( $_POST['user_email2'] ) ) {
 					$result['errors']->add( 'user_email2', __( 'Please confirm your e-mail address.', 'register-plus-redux' ) );
 				}
-				elseif ( $_POST['user_email'] != $_POST['user_email2'] ) {
+				elseif ( $_POST['user_email'] !== $_POST['user_email2'] ) {
 					$result['errors']->add( 'user_email2', __( 'Your e-mail address does not match.', 'register-plus-redux' ) );
 				}
 			}
@@ -557,72 +535,72 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				}
 			}
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			foreach ( $redux_usermeta as $index => $meta_field ) {
-				$meta_key = $meta_field['meta_key'];
-				if ( !empty( $meta_field['show_on_registration'] ) && !empty( $meta_field['require_on_registration'] ) && empty( $_POST[$meta_key] ) ) {
-					$result['errors']->add( $meta_key, sprintf( __( 'Please enter a value for %s.', 'register-plus-redux' ), $meta_field['label'] ) );
-				}
-				if ( !empty( $meta_field['show_on_registration'] ) && ( $meta_field['display'] == 'textbox' ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $_POST[$meta_key] ) ) {
-					$result['errors']->add( $meta_key, sprintf( __( 'Please enter new value for %s, value specified is not in the correct format.', 'register-plus-redux' ), $meta_field['label'] ) );
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $index => $meta_field ) {
+					$meta_key = $meta_field['meta_key'];
+					if ( !empty( $meta_field['show_on_registration'] ) && !empty( $meta_field['require_on_registration'] ) && empty( $_POST[$meta_key] ) ) {
+						$result['errors']->add( $meta_key, sprintf( __( 'Please enter a value for %s.', 'register-plus-redux' ), $meta_field['label'] ) );
+					}
+					if ( !empty( $meta_field['show_on_registration'] ) && ( 'textbox' === $meta_field['display'] ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $_POST[$meta_key] ) ) {
+						$result['errors']->add( $meta_key, sprintf( __( 'Please enter new value for %s, value specified is not in the correct format.', 'register-plus-redux' ), $meta_field['label'] ) );
+					}
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'user_set_password' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
 				if ( empty( $_POST['pass1'] ) ) {
 					$result['errors']->add( 'pass1', __( 'Please enter a password.', 'register-plus-redux' ) );
 				}
 				elseif ( strlen( $_POST['pass1'] ) < absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ) ) {
 					$result['errors']->add( 'pass1', sprintf( __( 'Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ) ) );
 				}
-				elseif ( $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) == FALSE && ( $_POST['pass1'] != $_POST['pass2'] ) ) {
+				elseif ( '1' !== $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) && $_POST['pass1'] !== $_POST['pass2'] ) {
 					$result['errors']->add( 'pass1', __( 'Your password does not match.', 'register-plus-redux' ) );
 				}
 				else {
-					$_POST['password'] = $_POST['pass1'];
-					unset( $_POST['pass1'] );
 					if (array_key_exists( 'pass2', $_POST ) ) unset( $_POST['pass2'] );
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) == TRUE ) {
-				if ( empty( $_POST['invitation_code'] ) && $register_plus_redux->rpr_get_option( 'require_invitation_code' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) {
+				if ( empty( $_POST['invitation_code'] ) && '1' === $register_plus_redux->rpr_get_option( 'require_invitation_code' ) ) {
 					$result['errors']->add( 'invitation_code', __( 'Please enter an invitation code.', 'register-plus-redux' ) );
 				}
 				elseif ( !empty( $_POST['invitation_code'] ) ) {
 					$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
-					if ( !is_array( $invitation_code_bank ) ) $invitation_code_bank = array();
-					if ( $register_plus_redux->rpr_get_option( 'invitation_code_case_sensitive' ) == FALSE ) {
-						$_POST['invitation_code'] = strtolower( $_POST['invitation_code'] );
-						foreach ( $invitation_code_bank as $index => $invitation_code )
-							$invitation_code_bank[$index] = strtolower( $invitation_code );
-					}
-					if ( is_array( $invitation_code_bank ) && !in_array( $_POST['invitation_code'], $invitation_code_bank ) ) {
-						$result['errors']->add( 'invitation_code', __( 'That invitation code is invalid.', 'register-plus-redux' ) );
-					}
-					else {
-						// reverts lowercase key to stored case
-						$key = array_search( $_POST['invitation_code'], $invitation_code_bank );
-						$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
-						$_POST['invitation_code'] = $invitation_code_bank[$key];
-						if ( $register_plus_redux->rpr_get_option( 'invitation_code_unique' ) == TRUE ) {
-							global $wpdb;
-							if ( $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'invitation_code' AND meta_value = %s;", $_POST['invitation_code'] ) ) ) {
-								$result['errors']->add( 'invitation_code', __( 'This invitation code is already in use, please enter a unique invitation code.', 'register-plus-redux' ) );
+					if ( is_array( $invitation_code_bank ) ) {
+						if ( '1' !== $register_plus_redux->rpr_get_option( 'invitation_code_case_sensitive' ) ) {
+							$_POST['invitation_code'] = strtolower( (string) $_POST['invitation_code'] );
+							foreach ( $invitation_code_bank as $index => $invitation_code )
+								$invitation_code_bank[$index] = strtolower( $invitation_code );
+						}
+						if ( is_array( $invitation_code_bank ) && !in_array( $_POST['invitation_code'], $invitation_code_bank ) ) {
+							$result['errors']->add( 'invitation_code', __( 'That invitation code is invalid.', 'register-plus-redux' ) );
+						}
+						else {
+							// reverts lowercase key to stored case
+							$key = array_search( $_POST['invitation_code'], $invitation_code_bank );
+							$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
+							$_POST['invitation_code'] = $invitation_code_bank[$key];
+							if ( '1' === $register_plus_redux->rpr_get_option( 'invitation_code_unique' ) ) {
+								global $wpdb;
+								if ( $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'invitation_code' AND meta_value = %s;", (string) $_POST['invitation_code'] ) ) ) {
+									$result['errors']->add( 'invitation_code', __( 'This invitation code is already in use, please enter a unique invitation code.', 'register-plus-redux' ) );
+								}
 							}
 						}
 					}
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_disclaimer' ) == TRUE && $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_disclaimer' ) && '1' === $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) ) {
 				if ( empty( $_POST['accept_disclaimer'] ) ) {
 					$result['errors']->add( 'disclaimer', sprintf( __( 'Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ) ) . '.' );
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_license' ) == TRUE && $register_plus_redux->rpr_get_option( 'require_license_agree' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_license' ) && '1' === $register_plus_redux->rpr_get_option( 'require_license_agree' ) ) {
 				if ( empty( $_POST['accept_license'] ) ) {
 					$result['errors']->add( 'license', sprintf( __( 'Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ) ) . '.' );
 				}
 			}
-			if ( $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) == TRUE && $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) == TRUE ) {
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) && '1' === $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) ) {
 				if ( empty( $_POST['accept_privacy_policy'] ) ) {
 					$result['errors']->add( 'privacy_policy', sprintf( __( 'Please accept the %s', 'register-plus-redux' ), esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ) ) . '.' );
 				}
@@ -630,24 +608,148 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			return $result;
 		}
 
-		public function filter_add_signup_meta( $meta ) {
-			foreach ( $_POST as $key => $value )
+		public /*.array[string]string.*/ function filter_add_signup_meta( /*.array[string]string.*/ $meta ) {
+			foreach ( $_POST as $key => $value ) {
 				$meta[$key] = $value;
+			}
 			$meta['signup_http_referer'] = $_SERVER['HTTP_REFERER'];
 			$meta['signup_registered_from_ip'] = $_SERVER['REMOTE_ADDR'];
 			$meta['signup_registered_from_host'] = gethostbyaddr( $_SERVER['REMOTE_ADDR'] );
 			return $meta;
 		}
 
-		public function rpr_signup_finished() {
+		//TODO: Custom email verification messages here
+		public /*.bool.*/ function filter_wpmu_signup_user_notification( /*.string.*/ $user, /*.string.*/ $user_email, /*.string.*/ $key, /*.array[string]string.*/ $meta ) {
 			global $register_plus_redux;
-			if ( $register_plus_redux->rpr_get_option( 'verify_user_email' ) == FALSE && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) {
+			if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) {
+				$_REQUEST['key'] = $key;
+			}
+			return TRUE;
+
+			$admin_email = get_site_option( 'admin_email' );
+			if ( $admin_email == '' )
+				$admin_email = 'support@' . $_SERVER['SERVER_NAME'];
+			$from_name = get_site_option( 'site_name' ) == '' ? 'WordPress' : esc_html( get_site_option( 'site_name' ) );
+			$message_headers = "From: \"{$from_name}\" <{$admin_email}>\n" . "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\n";
+			$message = sprintf( __( "To activate your user, please click the following link:\n\n%verification_url%\n\nAfter you activate, you will receive *another email* with your login." ), site_url( "wp-activate.php?key=$key" ) );
+			$subject = sprintf( __( '[%from_name%] Activate %user_login%' ), $from_name, $user );
+			wp_mail($user_email, $subject, $message, $message_headers);
+			return TRUE;
+		}
+
+		public /*.bool.*/ function filter_wpmu_signup_blog_notification( /*.string.*/ $domain, /*.string.*/ $path, /*.string.*/ $title, /*.string.*/ $user, /*.string.*/ $user_email, /*.string.*/ $key, /*.array[string]string.*/ $meta ) {
+			return $this->filter_wpmu_signup_user_notification( $user, $user_email, $key, $meta );
+		}
+
+		public /*.void.*/ function rpr_signup_finished() {
+			global $register_plus_redux;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) {
 				?>
 				<script type="text/javascript">
-				document.getElementById("content").innerHTML = "<?php $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ?>";
+				jQuery(document).ready(function() {
+					jQuery("#content").html("<?php echo $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ?>");
+				});
 				</script>
 				<?php
 			}
+		}
+
+		public /*.string.*/ function rpr_signup_filter_random_password( /*.string.*/ $password ) {
+			global $register_plus_redux;
+			global $pagenow;
+			if ( 'wp-signup.php' === $pagenow && '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
+				if ( array_key_exists( 'pass1', $_POST ) ) {
+					$password = sanitize_text_field( (string) $_POST['pass1'] );
+					//unset( $_POST['pass1'] );
+				}
+			}
+			return $password;
+		}
+
+		public /*.void.*/ function rpr_preprocess_signup_form() {
+			global $active_signup, $stage;
+			if ( 'user-signup' !== $stage ) return;
+			if ( $active_signup == 'all' || $_POST[ 'signup_for' ] == 'blog' && $active_signup == 'blog' || $_POST[ 'signup_for' ] == 'user' && $active_signup == 'user' ) {
+				/* begin validate_user_signup stage */
+				// validate signup form, do wpmu_validate_user_signup action
+				$result = wpmu_validate_user_signup($_POST['user_name'], $_POST['user_email']);
+				extract($result);
+				if ( $errors->get_error_code() ) {
+					echo "signup_user";
+					signup_user($user_name, $user_email, $errors);
+					return FALSE;
+				}
+				if ( 'blog' === $_POST['signup_for'] ) {
+					echo "signup_blog";
+					signup_blog($user_name, $user_email);
+					return FALSE;
+				}
+				// collect meta, commit user to database, send email
+				wpmu_signup_user($user_name, $user_email, apply_filters( 'add_signup_meta', array() ) );
+				// previously, displayed confirm_user_signup message before signup_finished action
+				do_action( 'signup_finished' );
+				/* end validate_user_signup stage */
+			}
+			else {
+				_e( 'User registration has been disabled.' );
+				?>
+				</div>
+				</div>
+				<?php do_action( 'after_signup_form' ); ?>
+				<?php get_footer(); ?>
+				<?php
+				exit();
+			}
+			/* begin wp-activate page */
+			$key = (string) $_REQUEST['key'];
+			// wpmu_create_user, wpmu_welcome_user_notification, add_new_user_to_blog, do wpmu_activate_user action
+			$result = wpmu_activate_signup($key);
+			if ( is_wp_error($result) ) {
+				if ( 'already_active' == $result->get_error_code() || 'blog_taken' == $result->get_error_code() ) {
+				    $signup = $result->get_error_data();
+					?>
+					<h2><?php _e('Your account is now active!'); ?></h2>
+					<?php
+					echo '<p class="lead-in">';
+					if ( $signup->domain . $signup->path == '' ) {
+						printf( __('Your account has been activated. You may now <a href="%1$s">log in</a> to the site using your chosen username of &#8220;%2$s&#8221;. Please check your email inbox at %3$s for your password and login instructions. If you do not receive an email, please check your junk or spam folder. If you still do not receive an email within an hour, you can <a href="%4$s">reset your password</a>.'), network_site_url( 'wp-login.php', 'login' ), $signup->user_login, $signup->user_email, wp_lostpassword_url() );
+					} else {
+						printf( __('Your site at <a href="%1$s">%2$s</a> is active. You may now log in to your site using your chosen username of &#8220;%3$s&#8221;. Please check your email inbox at %4$s for your password and login instructions. If you do not receive an email, please check your junk or spam folder. If you still do not receive an email within an hour, you can <a href="%5$s">reset your password</a>.'), 'http://' . $signup->domain, $signup->domain, $signup->user_login, $signup->user_email, wp_lostpassword_url() );
+					}
+					echo '</p>';
+				} else {
+					?>
+					<h2><?php _e('An error occurred during the activation'); ?></h2>
+					<?php
+				    echo '<p>'.$result->get_error_message().'</p>';
+				}
+			} else {
+				extract($result);
+				$url = get_blogaddress_by_id( (int) $blog_id);
+				$user = get_userdata( (int) $user_id);
+				?>
+				<h2><?php _e('Your account is now active!'); ?></h2>
+	
+				<div id="signup-welcome">
+					<p><span class="h3"><?php _e('Username:'); ?></span> <?php echo $user->user_login ?></p>
+					<p><span class="h3"><?php _e('Password:'); ?></span> <?php echo $password; ?></p>
+				</div>
+	
+				<?php if ( $url != network_home_url('', 'http') ) : ?>
+					<p class="view"><?php printf( __('Your account is now activated. <a href="%1$s">View your site</a> or <a href="%2$s">Log in</a>'), $url, $url . 'wp-login.php' ); ?></p>
+				<?php else: ?>
+					<p class="view"><?php printf( __('Your account is now activated. <a href="%1$s">Log in</a> or go back to the <a href="%2$s">homepage</a>.' ), network_site_url('wp-login.php', 'login'), network_home_url() ); ?></p>
+				<?php endif;
+			}
+			?>
+		</div>
+		<script type="text/javascript">
+			var key_input = document.getElementById('key');
+			key_input && key_input.focus();
+		</script>
+		<?php get_footer(); ?>
+		<?php
+		exit();
 		}
 	}
 }
