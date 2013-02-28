@@ -49,7 +49,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		{
 			$blogname = stripslashes( wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
 			$options = array(
-				'custom_logo_url' => '',
 				'verify_user_email' => is_multisite() ? '1' : '0',
 				'message_verify_user_email' => is_multisite() ? 
 					__( "<h2>%user_login% is your new username</h2>\n<p>But, before you can start using your new username, <strong>you must activate it</strong></p>\n<p>Check your inbox at <strong>%user_email%</strong> and click the link given.</p>\n<p>If you do not activate your username within two days, you will have to sign up again.</p>", 'register-plus-redux' ) :
@@ -61,8 +60,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 				'username_is_email' => '0',
 				'double_check_email' => '0',
-				'show_fields' => array(),
-				'required_fields' => array(),
 				'user_set_password' => '0',
 				'min_password_length' => 6,
 				'disable_password_confirmation' => '0',
@@ -80,17 +77,14 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				'enable_invitation_tracking_widget' => '0',
 				'show_disclaimer' => '0',
 				'message_disclaimer_title' => 'Disclaimer',
-				'message_disclaimer' => '',
 				'require_disclaimer_agree' => '1',
 				'message_disclaimer_agree' => 'Accept the Disclaimer',
 				'show_license' => '0',
 				'message_license_title' => 'License Agreement',
-				'message_license' => '',
 				'require_license_agree' => '1',
 				'message_license_agree' => 'Accept the License Agreement',
 				'show_privacy_policy' => '0',
 				'message_privacy_policy_title' => 'Privacy Policy',
-				'message_privacy_policy' => '',
 				'require_privacy_policy_agree' => '1',
 				'message_privacy_policy_agree' => 'Accept the Privacy Policy',
 				'default_css' => '1',
@@ -132,13 +126,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				'admin_message_subject' => '[' . $blogname . '] ' . __( 'New User Registered', 'register-plus-redux' ),
 				'admin_message_body' => "New user registered on your site %blogname%\n\nUsername: %user_login%\nE-mail: %user_email%\n",
 				'send_admin_message_in_html' => '0',
-				'admin_message_newline_as_br' => '0',
-
-				'custom_registration_page_css' => '',
-				'custom_login_page_css' => '',
-				
-				'registration_redirect_url' => '',
-				'verification_redirect_url' => ''
+				'admin_message_newline_as_br' => '0'
 			);
 			if ( !empty( $option ) ) {
 				if ( array_key_exists( $option, $options ) ) {
