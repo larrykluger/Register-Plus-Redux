@@ -68,10 +68,11 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['description'] ) ) update_user_meta( $user_id, 'description', wp_filter_kses( $meta['description'] ) );
 
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( !is_array( $redux_usermeta ) ) $redux_usermeta = array();
-			foreach ( $redux_usermeta as $meta_field ) {
-				if ( '1' === $meta_field['show_on_registration'] ) {
-					if ( !empty( $meta[$meta_field['meta_key']] ) ) $register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta[ (string) $meta_field['meta_key']] );
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( '1' === $meta_field['show_on_registration'] ) {
+						if ( !empty( $meta[$meta_field['meta_key']] ) ) $register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta[ (string) $meta_field['meta_key']] );
+					}
 				}
 			}
 
