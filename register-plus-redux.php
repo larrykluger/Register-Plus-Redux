@@ -11,7 +11,7 @@ Domain Path: /languages
 */
 
 // NOTE: Debug, no more echoing
-// trigger_error( sprintf( __( 'Register Plus Redux DEBUG: function($parameter=%s) from %s', 'register-plus-redux' ), $value, $pagenow ) ); 
+// trigger_error( sprintf( 'Register Plus Redux DEBUG: function($parameter=%s) from %s', $value, $pagenow ) ); 
 
 // TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
