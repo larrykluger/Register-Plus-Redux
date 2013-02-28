@@ -203,7 +203,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 									<tr valign="center">
 										<td style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;"><?php _e( 'About Yourself', 'register-plus-redux' ); ?></td>
 										<td align="center" style="padding-top: 0px; padding-bottom: 0px;"><input type="checkbox" name="show_fields[]" id="show_fields[]" value="about" <?php if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo 'checked="checked"'; ?> class="modifyNextCellCheckbox" /></td>
-										<td align="center" style="padding-top: 0px; padding-bottom: 0px;"><input type="checkbox" name="required_fields[]" id="required_fields[]" alue="about" <?php if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo 'checked="checked"'; ?> <?php if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo 'disabled="disabled"'; ?> /></td>
+										<td align="center" style="padding-top: 0px; padding-bottom: 0px;"><input type="checkbox" name="required_fields[]" id="required_fields[]" value="about" <?php if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) echo 'checked="checked"'; ?> <?php if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) echo 'disabled="disabled"'; ?> /></td>
 									</tr>
 								</tbody>
 							</table>
