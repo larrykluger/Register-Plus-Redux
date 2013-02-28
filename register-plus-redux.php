@@ -557,7 +557,7 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( is_admin() && file_exists( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu-wip.php' ) ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-admin-menu-wip.php' );
 
 	$do_include = FALSE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_tracking_widget' ) ) { $do_include = TRUE; }
 	if ( $do_include && is_admin() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-dashboard-widget.php' );
 
 	//TODO: Determine which features require the following file
@@ -569,24 +569,24 @@ if ( class_exists( 'Register_Plus_Redux' ) ) {
 	if ( $do_include & is_multisite() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-signup.php' );
 
 	$do_include = FALSE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) $do_include = TRUE;
-	if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) $do_include = TRUE;
-	if ( is_array( get_option( 'register_plus_redux_usermeta-rv2' ) ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'autologin_user' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) { $do_include = TRUE; }
+	if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) { $do_include = TRUE; }
+	if ( is_array( get_option( 'register_plus_redux_usermeta-rv2' ) ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'autologin_user' ) ) { $do_include = TRUE; }
 	if ( $do_include && is_multisite() && Register_Plus_Redux::rpr_active_for_network() ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-activate.php' );
 
 	//NOTE: Requires rpr-admin.php for rpr_new_user_notification_warning make
 	$do_include = FALSE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'custom_user_message' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) ) $do_include = TRUE;
-	if ( '1' === $register_plus_redux->rpr_get_option( 'custom_admin_message' ) ) $do_include = TRUE;
+	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'custom_user_message' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) ) { $do_include = TRUE; }
+	if ( '1' === $register_plus_redux->rpr_get_option( 'custom_admin_message' ) ) { $do_include = TRUE; }
 	if ( $do_include ) require_once( plugin_dir_path( __FILE__ ) . 'rpr-new-user-notification.php' );
 }
 ?>
