@@ -860,7 +860,7 @@ msgstr "Şifreyi Tekrar Giriniz"
 #: ../register-plus-redux.php:1698
 #, php-format
 msgid "Your password must be at least %d characters long. To make your password stronger, use upper and lower case letters, numbers, and the following symbols !@#$%%^&amp;*()"
-msgstr "Şifrenizi en az% d karakter uzunluğunda olmalı. Şifrenizi daha güçlü yapmak için aşağıdaki gibi , üst ve küçük harfler, sayılar ve semboller kullanın !@#$%%^&*()"
+msgstr "Şifrenizi en az %d karakter uzunluğunda olmalı. Şifrenizi daha güçlü yapmak için aşağıdaki gibi , üst ve küçük harfler, sayılar ve semboller kullanın !@#$%%^&*()"
 
 #: ../register-plus-redux.php:1710
 msgid "This website is currently closed to public registrations. You will need an invitation code to register."
