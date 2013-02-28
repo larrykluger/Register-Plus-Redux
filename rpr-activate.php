@@ -19,9 +19,9 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 					/*.object.*/ $signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE activation_key = %s;", $key ) );
 					if ( !empty( $signup ) ) {
 						/*.array[string]string.*/ $meta = maybe_unserialize( $signup->meta );
-						if ( is_array( $meta ) && array_key_exists( 'password', $meta ) && !empty( $meta['password'] ) ) {
-							$password = $meta['password'];
-							unset( $meta['password'] );
+						if ( is_array( $meta ) && array_key_exists( 'pass1', $meta ) && !empty( $meta['pass1'] ) ) {
+							$password = $meta['pass1'];
+							unset( $meta['pass1'] );
 							$wpdb->update( $wpdb->signups, array( 'meta' => serialize( $meta ) ), array( 'activation_key' => $key ) );
 						}
 					}
@@ -77,8 +77,8 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) && !empty( $meta['invitation_code'] ) ) update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $meta['invitation_code'] ) );
 
 			/* filter_random_password replaces the random password with the password stored in meta
-			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && !empty( $meta['password'] ) ) {
-				$password = sanitize_text_field( $meta['password'] );
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && !empty( $meta['pass1'] ) ) {
+				$password = sanitize_text_field( $meta['pass1'] );
 				update_user_option( $user_id, 'default_password_nag', FALSE, TRUE );
 				wp_set_password( $password, $user_id );
 			}
