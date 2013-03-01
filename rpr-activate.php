@@ -19,7 +19,7 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 					/*.object.*/ $signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->signups WHERE activation_key = %s;", $key ) );
 					if ( !empty( $signup ) ) {
 						/*.array[string]string.*/ $meta = maybe_unserialize( $signup->meta );
-						if ( is_array( $meta ) && array_key_exists( 'pass1', $meta ) && !empty( $meta['pass1'] ) ) {
+						if ( is_array( $meta ) && isset( $meta['pass1'] ) && !empty( $meta['pass1'] ) ) {
 							$password = $meta['pass1'];
 							unset( $meta['pass1'] );
 							$wpdb->update( $wpdb->signups, array( 'meta' => serialize( $meta ) ), array( 'activation_key' => $key ) );

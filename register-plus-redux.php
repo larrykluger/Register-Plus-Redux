@@ -196,7 +196,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		public /*.void.*/ function rpr_update_user_meta( /*.int.*/ $user_id, /*.array[string]mixed.*/ $meta_field, /*.mixed.*/ $meta_value ) {
-			trigger_error( sprintf( 'Register Plus Redux DEBUG: rpr_update_user_meta($meta_value=%s)', print_r( $meta_value, TRUE) ) );
 			// convert array to string
 			if ( is_array( $meta_value ) ) { 
 				foreach ( $meta_value as &$value ) {
@@ -229,7 +228,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		public /*.string.*/ function rpr_filter_pre_user_login_swp( /*.string.*/ $user_login ) {
 			// TODO: Review, this could be overriding some other stuff
 			if ( '1' === $this->rpr_get_option( 'username_is_email' ) ) {
-				if ( array_key_exists( 'user_email', $_POST ) ) {
+				if ( isset( $_POST['user_email'] ) ) {
 					$user_email = stripslashes( (string) $_POST['user_email'] );
 					$user_email = strtolower( sanitize_user( $user_email ) );
 					return $user_email;
@@ -322,7 +321,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function rpr_save_custom_fields( /*.int.*/ $user_id ) {
 			// TODO: Error check invitation code?
-			if ( array_key_exists( 'invitation_code', $_POST ) ) {
+			if ( isset( $_POST['invitation_code'] ) ) {
 				$invitation_code = stripslashes( (string) $_POST['invitation_code'] );
 				update_user_meta( $user_id, 'invitation_code', sanitize_text_field( $invitation_code ) );
 			}
@@ -331,12 +330,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
 					if ( 'text' !== $meta_field['display'] ) {
 						if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
-							if ( 'radio' === $meta_field['display'] ) {
-								$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ? (array) $_POST[ (string) $meta_field['meta_key']] : '';
+							if ( 'checkbox' === $meta_field['display'] ) {
+								$meta_value = isset( $_POST[ (string) $meta_field['meta_key']] ) ? (array) $_POST[ (string) $meta_field['meta_key']] : '';
 								$meta_value = stripslashes_deep( $meta_value );
 							}
 							else {
-								$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ? (string) $_POST[ (string) $meta_field['meta_key']] : '';
+								$meta_value = isset( $_POST[ (string) $meta_field['meta_key']] ) ? (string) $_POST[ (string) $meta_field['meta_key']] : '';
 								$meta_value = stripslashes( $meta_value );
 							}
 							$this->rpr_update_user_meta( $user_id, $meta_field, $meta_value );

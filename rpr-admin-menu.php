@@ -991,7 +991,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				}
 			}
 			if ( !empty( $_REQUEST['action'] ) ) {
-				switch( $_REQUEST['action'] ) {
+				switch( (string) $_REQUEST['action'] ) {
 					case 'verify_users':
 						echo '<div id="message" class="updated"><p>', __( 'Users approved.', 'register-plus-redux' ), '</p></div>';
 						break;

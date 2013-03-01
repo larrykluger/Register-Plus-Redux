@@ -309,7 +309,12 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				foreach ( $redux_usermeta as $index => $meta_field ) {
 					if ( !empty( $meta_field['show_on_registration'] ) ) {
 						$meta_key = esc_attr( $meta_field['meta_key'] );
-						$meta_value = isset( $_REQUEST[$meta_key] ) ? (string) $_REQUEST[$meta_key] : '';
+						if ( 'checkbox' === $meta_field['display'] ) {
+							$meta_value = isset( $_REQUEST[$meta_key] ) ? (array) $_REQUEST[$meta_key] : '';
+						}
+						else {
+							$meta_value = isset( $_REQUEST[$meta_key] ) ? (string) $_REQUEST[$meta_key] : '';
+						}
 						if ( ( $meta_field['display'] != 'hidden' ) && ( $meta_field['display'] != 'text' ) ) {
 							echo "\n", '<label id="', $meta_key, '-label" for="', $meta_key, '">';
 							if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) && !empty( $meta_field['require_on_registration'] ) ) echo '*';
@@ -468,8 +473,8 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
 				global $wpdb;
 
-				if ( is_array( $result['errors']->errors ) && array_key_exists( 'user_name', $result['errors']->errors ) ) unset( $result['errors']->errors['user_name'] );
-				if ( is_array( $result['errors']->error_data ) && array_key_exists( 'user_name', $result['errors']->error_data ) ) unset( $result['errors']->error_data['user_name'] );
+				if ( is_array( $result['errors']->errors ) && isset( $result['errors']->errors['user_name'] ) ) unset( $result['errors']->errors['user_name'] );
+				if ( is_array( $result['errors']->error_data ) && isset( $result['errors']->error_data['user_name'] ) ) unset( $result['errors']->error_data['user_name'] );
 
 				$result['user_name'] = $result['user_email'];
 				$result['orig_username'] = $result['user_email'];
@@ -541,7 +546,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					if ( !empty( $meta_field['show_on_registration'] ) && !empty( $meta_field['require_on_registration'] ) && empty( $_POST[$meta_key] ) ) {
 						$result['errors']->add( $meta_key, sprintf( __( 'Please enter a value for %s.', 'register-plus-redux' ), $meta_field['label'] ) );
 					}
-					if ( !empty( $meta_field['show_on_registration'] ) && ( 'textbox' === $meta_field['display'] ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], $_POST[$meta_key] ) ) {
+					if ( !empty( $meta_field['show_on_registration'] ) && ( 'textbox' === $meta_field['display'] ) && !empty( $meta_field['options'] ) && !preg_match( $meta_field['options'], (string) $_POST[$meta_key] ) ) {
 						$result['errors']->add( $meta_key, sprintf( __( 'Please enter new value for %s, value specified is not in the correct format.', 'register-plus-redux' ), $meta_field['label'] ) );
 					}
 				}
@@ -550,14 +555,14 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				if ( empty( $_POST['pass1'] ) ) {
 					$result['errors']->add( 'pass1', __( 'Please enter a password.', 'register-plus-redux' ) );
 				}
-				elseif ( strlen( $_POST['pass1'] ) < absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ) ) {
+				elseif ( strlen( (string) $_POST['pass1'] ) < absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ) ) {
 					$result['errors']->add( 'pass1', sprintf( __( 'Your password must be at least %d characters in length.', 'register-plus-redux' ), absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ) ) );
 				}
 				elseif ( '1' !== $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) && $_POST['pass1'] !== $_POST['pass2'] ) {
 					$result['errors']->add( 'pass1', __( 'Your password does not match.', 'register-plus-redux' ) );
 				}
 				else {
-					if (array_key_exists( 'pass2', $_POST ) ) unset( $_POST['pass2'] );
+					if ( isset( $_POST['pass2'] ) ) unset( $_POST['pass2'] );
 				}
 			}
 			if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) {
@@ -572,12 +577,12 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 							foreach ( $invitation_code_bank as $index => $invitation_code )
 								$invitation_code_bank[$index] = strtolower( $invitation_code );
 						}
-						if ( is_array( $invitation_code_bank ) && !in_array( $_POST['invitation_code'], $invitation_code_bank ) ) {
+						if ( is_array( $invitation_code_bank ) && !in_array( (string) $_POST['invitation_code'], $invitation_code_bank ) ) {
 							$result['errors']->add( 'invitation_code', __( 'That invitation code is invalid.', 'register-plus-redux' ) );
 						}
 						else {
 							// reverts lowercase key to stored case
-							$key = array_search( $_POST['invitation_code'], $invitation_code_bank );
+							$key = array_search( (string) $_POST['invitation_code'], $invitation_code_bank );
 							$invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
 							$_POST['invitation_code'] = $invitation_code_bank[$key];
 							if ( '1' === $register_plus_redux->rpr_get_option( 'invitation_code_unique' ) ) {
@@ -658,7 +663,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( 'wp-signup.php' === $pagenow && '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
-				if ( array_key_exists( 'pass1', $_POST ) ) {
+				if ( isset( $_POST['pass1'] ) ) {
 					$password = sanitize_text_field( (string) $_POST['pass1'] );
 					//unset( $_POST['pass1'] );
 				}
@@ -672,7 +677,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( $active_signup == 'all' || $_POST[ 'signup_for' ] == 'blog' && $active_signup == 'blog' || $_POST[ 'signup_for' ] == 'user' && $active_signup == 'user' ) {
 				/* begin validate_user_signup stage */
 				// validate signup form, do wpmu_validate_user_signup action
-				$result = wpmu_validate_user_signup($_POST['user_name'], $_POST['user_email']);
+				$result = wpmu_validate_user_signup( (string) $_POST['user_name'], (string) $_POST['user_email'] );
 				extract($result);
 				if ( $errors->get_error_code() ) {
 					echo "signup_user";
