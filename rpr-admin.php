@@ -87,7 +87,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 					foreach ( $custom_fields as $custom_field ) {
 						$meta_field = array();
 						$meta_field['label'] = $custom_field['custom_field_name'];
-						$meta_field['meta_key'] = 'rpr_' . sanitize_title( $custom_field['custom_field_name'] );
+						$meta_field['meta_key'] = 'rpr_' . Register_Plus_Redux::sanitize_text( $custom_field['custom_field_name'] );
 						$meta_field['display'] = $custom_field['custom_field_type'];
 						$meta_field['options'] = $custom_field['custom_field_options'];
 						$meta_field['show_datepicker'] = '0';

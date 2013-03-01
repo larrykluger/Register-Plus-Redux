@@ -1318,7 +1318,7 @@ public function rpr_sanitize_options( $input, $option ) {
 					$meta_field = array();
 					if ( !empty( $_POST['label'][$index] ) ) {
 						$meta_field['label'] = isset( $_POST['label'][$index] ) ? sanitize_text_field( $_POST['label'][$index] ) : '';
-						$meta_field['meta_key'] = isset( $_POST['meta_key'][$index] ) ? $_POST['meta_key'][$index] : '';
+						$meta_field['meta_key'] = isset( $_POST['meta_key'][$index] ) ? sanitize_text_field( $_POST['meta_key'][$index] ) : '';
 						$meta_field['display'] = isset( $_POST['display'][$index] ) ? sanitize_text_field( $_POST['display'][$index] ) : '';
 						$meta_field['options'] = isset( $_POST['options'][$index] ) ? sanitize_text_field( $_POST['options'][$index] ) : '';
 						$meta_field['show_datepicker'] = '0';
@@ -1327,11 +1327,8 @@ public function rpr_sanitize_options( $input, $option ) {
 						$meta_field['show_on_registration'] = isset( $_POST['show_on_registration'][$index] ) ? '1' : '0';
 						$meta_field['require_on_registration'] = isset( $_POST['require_on_registration'][$index] ) ? '1' : '0';
 						if ( empty( $meta_field['meta_key'] ) ) {
-							if ( $meta_field['display'] )
-							$meta_field['meta_key'] = 'rpr_' . $meta_field['label'];
+							$meta_field['meta_key'] = 'rpr_' . Register_Plus_Redux::sanitize_text( $meta_field['label'] );
 						}
-						// TODO: Convert clean_text to sanitize_title after key change check exists
-						$meta_field['meta_key'] = sanitize_text_field( $register_plus_redux->clean_text( $meta_field['meta_key'] ) );
 					}
 					$redux_usermeta[$usermeta_key++] = $meta_field;
 				}
@@ -1341,7 +1338,7 @@ public function rpr_sanitize_options( $input, $option ) {
 				foreach ( $_POST['newMetaFields'] as $label ) {
 					$meta_field = array();
 					$meta_field['label'] = sanitize_text_field( $label );
-					$meta_field['meta_key'] = 'rpr_' . sanitize_title( $meta_field['label'] );
+					$meta_field['meta_key'] = 'rpr_' . Register_Plus_Redux::sanitize_text( $meta_field['label'] );
 					$meta_field['display'] = '';
 					$meta_field['options'] = '';
 					$meta_field['show_datepicker'] = '0';

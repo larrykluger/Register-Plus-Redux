@@ -189,11 +189,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return TRUE;
 		}
 
-		public /*.string.*/ function clean_text( /*.mixed.*/ $text ) {
+		public static /*.string.*/ function sanitize_text( /*.string.*/ $text ) {
 			$text = str_replace( ' ', '_', $text );
-			$text = str_replace( '"' , '', $text );
-			$text = str_replace( "'" , '', $text );
-			return strtolower( (string) $text );
+			$text = strtolower( (string) $text );
+			return sanitize_html_class( $text );
 		}
 
 		public /*.void.*/ function rpr_update_user_meta( /*.int.*/ $user_id, /*.array[string]mixed.*/ $meta_field, /*.mixed.*/ $meta_value ) {
@@ -274,10 +273,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 									echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
 									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
 									foreach ( $field_options as $field_option ) {
-										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
-										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
 										echo "\n", '<option value="', esc_attr( $field_option ), '"';
-										if ( $meta_value === esc_attr( $field_option ) || $meta_value === $option_cleaned ) echo ' selected="selected"';
+										if ( $meta_value === esc_attr( $field_option ) ) echo ' selected="selected"';
 										echo '>', esc_html( $field_option ), '</option>';
 									}
 									echo "\n", '</select>';
@@ -288,10 +285,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
 									/*.array[]string.*/ $meta_values = explode( ',', (string) $meta_value );
 									foreach ( $field_options as $field_option ) {
-										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
-										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
 										echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
-										if ( in_array( esc_attr( $field_option ), $meta_values ) || in_array( $option_cleaned, $meta_values ) ) echo 'checked="checked" ';
+										if ( in_array( esc_attr( $field_option ), $meta_values ) ) echo 'checked="checked" ';
 										echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
 									}
 									echo "\n", '</td>';
@@ -300,10 +295,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 									echo "\n", '<td>';
 									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
 									foreach ( $field_options as $field_option ) {
-										// Introduced $option_cleaned in 3.9, elminiated in 3.9.2, stupid behavior that needs to be accepted until no one is using 3.9, 3.9.1
-										$option_cleaned = esc_attr( $this->clean_text( $field_option ) );
 										echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', esc_attr( $field_option ), '" ';
-										if ( $meta_value === esc_attr( $field_option ) || $meta_value === $option_cleaned ) echo 'checked="checked" ';
+										if ( $meta_value === esc_attr( $field_option ) ) echo 'checked="checked" ';
 										echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
 									}
 									echo "\n", '</td>';
