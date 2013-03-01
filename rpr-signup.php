@@ -371,14 +371,13 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 
 			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
-				$password = isset( $_REQUEST['pass1'] ) ? (string) $_REQUEST['pass1'] : '';
 				echo "\n", '<label id="pass1-label" for="pass1-label">';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) echo '*';
 				echo __( 'Password', 'register-plus-redux' ), ':</label>';
 				if ( $errmsg = $errors->get_error_message('pass1') ) {
 					echo '<p class="error">', $errmsg, '</p>';
 				}
-				echo "\n", '<input type="password" autocomplete="off" name="pass1" id="pass1" value="', esc_attr( $password ), '" />';
+				echo "\n", '<input type="password" autocomplete="off" name="pass1" id="pass1" />';
 				if ( '1' !== $register_plus_redux->rpr_get_option( 'disable_password_confirmation' ) ) {
 					echo "\n", '<label id="pass2-label" for="pass2-label">';
 					if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) echo '*';
@@ -386,7 +385,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					if ( $errmsg = $errors->get_error_message('pass2') ) {
 						echo '<p class="error">', $errmsg, '</p>';
 					}
-					echo "\n", '<input type="password" autocomplete="off" name="pass2" id="pass2" value="', esc_attr( $password ), '" />';
+					echo "\n", '<input type="password" autocomplete="off" name="pass2" id="pass2" />';
 				}
 				if ( '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
 					echo "\n", '<div id="pass-strength-result">', $register_plus_redux->rpr_get_option( 'message_empty_password' ), '</div>';
