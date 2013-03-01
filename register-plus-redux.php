@@ -197,6 +197,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		public /*.void.*/ function rpr_update_user_meta( /*.int.*/ $user_id, /*.array[string]mixed.*/ $meta_field, /*.mixed.*/ $meta_value ) {
+			trigger_error( sprintf( 'Register Plus Redux DEBUG: rpr_update_user_meta($meta_value=%s)', print_r( $meta_value, TRUE) ) );
 			// convert array to string
 			if ( is_array( $meta_value ) ) { 
 				foreach ( $meta_value as &$value ) {
@@ -335,10 +336,18 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( is_array( $redux_usermeta ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
-					if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
-						$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ? (string) $_POST[ (string) $meta_field['meta_key']] : '';
-						$meta_value = stripslashes_deep( $meta_value );
-						$this->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
+					if ( 'text' !== $meta_field['display'] ) {
+						if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
+							if ( 'radio' === $meta_field['display'] ) {
+								$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ? (array) $_POST[ (string) $meta_field['meta_key']] : '';
+								$meta_value = stripslashes_deep( $meta_value );
+							}
+							else {
+								$meta_value = array_key_exists( $meta_field['meta_key'], $_POST ) ? (string) $_POST[ (string) $meta_field['meta_key']] : '';
+								$meta_value = stripslashes( $meta_value );
+							}
+							$this->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
+						}
 					}
 				}
 			}
