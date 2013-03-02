@@ -60,7 +60,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		 		}
 			}
 			add_role( 'rpr_unverified', 'Unverified' );
-			$this->rpr_set_option( 'last_activated', self::activation_required, TRUE );
+			$this->rpr_set_option( 'last_activated', RPR_ACTIVATION_REQUIRED, TRUE );
 		}
 
 		public static /*.void.*/ function rpr_uninstall() {
