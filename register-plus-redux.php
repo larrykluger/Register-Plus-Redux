@@ -54,7 +54,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			global $wp_roles;
 		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
 		 		if ( 'rpr_unverified' !== $role_name ) {
-			 		$wp_roles->add_cap( $role_name, 'rpr_login' );
+			 		$wp_roles->add_cap( $role_name, 'rpr_can_login' );
 		 		}
 			}
 			add_role( 'rpr_unverified', 'Unverified' );
@@ -64,7 +64,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			global $wp_roles;
 			remove_role( 'rpr_unverified' );
 		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
-		 		$wp_roles->remove_cap( $role_name, 'rpr_login' );
+		 		$wp_roles->remove_cap( $role_name, 'rpr_can_login' );
 			}
 		}
 

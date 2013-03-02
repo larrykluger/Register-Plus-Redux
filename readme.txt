@@ -117,8 +117,14 @@ HTML attributes should go in the following order name -> id -> class
 = 3.9.6 =
 March 2, 2013 by radiok
 
+* Added ability to disable user email verification on WordPress Multisite
 * Significant re-factor of code base, specifically involving explicit conversions
 * Improved Unverified Users page with consistent behavior and added functionality
+* Added new 'rpr_unverified' (Unverified) user role
+* Added new 'rpr_can_login' capability
+* Convert stored_user_login to Unverified user role
+* Added activation/deactivation/uninstall functions, specifically for new role purposes
+* Removed filter_login_message hack, use action to determine behavior following registration
 
 = 3.9.5 =
 February 19, 2013 by radiok
@@ -569,3 +575,6 @@ New feature, meta keywords for custom messages, %=keyword% will search user_meta
 
 = 3.9.5 =
 WordPress Multisite users please update, signup pages were not validating, any information entered was accepted, also Email as Username was not functioning, same root cause
+
+= 3.9.6 =
+Added new role, Unverified, and new capability, rpr_can_login, unverified users now take advantage of these, change may be jarring for long time users
