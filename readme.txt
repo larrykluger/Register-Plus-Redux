@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.5
+Stable tag: 3.9.6
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -125,6 +125,7 @@ March 2, 2013 by radiok
 * Convert stored_user_login to Unverified user role
 * Added activation/deactivation/uninstall functions, specifically for new role purposes
 * Removed filter_login_message hack, use action to determine behavior following registration
+* Use Default CSS now adds ID's to username and e-mail's label and paragraph element on registration form
 
 = 3.9.5 =
 February 19, 2013 by radiok
