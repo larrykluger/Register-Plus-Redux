@@ -1,172 +1,128 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: register plus redux-wp-fa.com-amin3d@gmail.com\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-29 20:36+0330\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/register-plus-redux\n"
+"POT-Creation-Date: 2013-01-21 09:10:25+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Will Hinds <radiok@radiok.info>\n"
 "Language-Team: S. Esen <srht.esen@gmail.com>\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: _e;__;esc_attr_e\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;_ex;_nx;esc_attr__;esc_attr_e;esc_attr_x;"
+"esc_html__;esc_html_e;esc_html_x\n"
 "X-Poedit-Basepath: ..\n"
-"Language: tr_TR\n"
 "X-Generator: Poedit 1.5.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Poedit-SearchPath-0: ..\n"
 
-#: ../dash_widget.php:11
-msgid "Invitation Code Tracking"
-msgstr "Davetiye İzleme Kodu"
+#: register-plus-redux.php:68
+msgid "Additional Information"
+msgstr "Ek Bilgiler"
 
-#: ../register-plus-redux.php:144 ../register-plus-redux.php:145
-#: ../register-plus-redux.php:609
-msgid "Remove Code"
-msgstr "Kodu Sil"
+#: register-plus-redux.php:72 rpr-admin-menu.php:256 rpr-login.php:238
+#: rpr-signup.php:414
+msgid "Invitation Code"
+msgstr "Davet Kodu"
 
-#: ../register-plus-redux.php:171 ../register-plus-redux.php:753
-#: ../register-plus-redux.php:779
-msgid "Text Field"
-msgstr "Metin Alanı"
-
-#: ../register-plus-redux.php:172 ../register-plus-redux.php:754
-#: ../register-plus-redux.php:780
-msgid "Select Field"
-msgstr "Alanı Seç"
-
-#: ../register-plus-redux.php:173 ../register-plus-redux.php:755
-#: ../register-plus-redux.php:781
-msgid "Checkbox Fields"
-msgstr "İşaretleme Alanları"
-
-#: ../register-plus-redux.php:174 ../register-plus-redux.php:756
-#: ../register-plus-redux.php:782
-msgid "Radio Fields"
-msgstr "Çoklu Seçenek Alanı"
-
-#: ../register-plus-redux.php:175 ../register-plus-redux.php:757
-#: ../register-plus-redux.php:783
-msgid "Text Area"
-msgstr "Metin Alanı"
-
-#: ../register-plus-redux.php:176 ../register-plus-redux.php:758
-#: ../register-plus-redux.php:784
-msgid "Date Field"
-msgstr "Tarih Alanı"
-
-#: ../register-plus-redux.php:177 ../register-plus-redux.php:759
-#: ../register-plus-redux.php:785
-msgid "URL Field"
-msgstr "URL Alanı"
-
-#: ../register-plus-redux.php:178 ../register-plus-redux.php:760
-#: ../register-plus-redux.php:786
-msgid "Hidden Field"
-msgstr "Gizli Alan"
-
-#: ../register-plus-redux.php:224 ../register-plus-redux.php:225
-#: ../register-plus-redux.php:768 ../register-plus-redux.php:794
-msgid "Remove Field"
-msgstr "Alanı Sil"
-
-#: ../register-plus-redux.php:232 ../register-plus-redux.php:233
-#: ../register-plus-redux.php:769 ../register-plus-redux.php:795
-msgid "Move this Field Up"
-msgstr "Bu alanı yukarı taşı"
-
-#: ../register-plus-redux.php:240 ../register-plus-redux.php:241
-#: ../register-plus-redux.php:770 ../register-plus-redux.php:796
-msgid "Move this Field Down"
-msgstr "Bu alanı aşağı taşı"
-
-#: ../register-plus-redux.php:260
-msgid "The following message will be sent when a user is registered:"
-msgstr "Aşağıdaki ileti kullancı kayıt olduğunda gönderilir"
-
-#: ../register-plus-redux.php:283
+#: register-plus-redux.php:288
 msgid ""
-"No message will be sent to user whether they are registered or created by an "
-"administrator."
+"<h2>%user_login% is your new username</h2>\n"
+"<p>But, before you can start using your new username, <strong>you must "
+"activate it</strong></p>\n"
+"<p>Check your inbox at <strong>%user_email%</strong> and click the link "
+"given.</p>\n"
+"<p>If you do not activate your username within two days, you will have to "
+"sign up again.</p>"
 msgstr ""
-"Bir kullanıcı kayıt olduğunda yada yönetici tarafından kayıt açıldığında "
-"hiçbir mesaj gönderilmeyecek"
 
-#: ../register-plus-redux.php:286 ../register-plus-redux.php:328
-msgid "The following message will be sent when a user is "
-msgstr "Aşağıdaki ilet bir kullanıcı oduğunda gönderilir"
-
-#: ../register-plus-redux.php:287 ../register-plus-redux.php:329
-msgid "registered"
-msgstr "Kayıtlı"
-
-#: ../register-plus-redux.php:288 ../register-plus-redux.php:330
-msgid " or "
-msgstr " veya"
-
-#: ../register-plus-redux.php:289 ../register-plus-redux.php:331
-msgid "created"
-msgstr "oluşturuldu"
-
-#: ../register-plus-redux.php:290
-msgid " after "
-msgstr " sonra"
-
-#: ../register-plus-redux.php:293
-msgid " and/or "
-msgstr " ve/veya"
-
-#: ../register-plus-redux.php:295
-msgid "an administrator has approved the new user"
-msgstr "yönetici yeni bir kullanıcı onayladı"
-
-#: ../register-plus-redux.php:309 ../register-plus-redux.php:345
-msgid "To: "
-msgstr "Kime:"
-
-#: ../register-plus-redux.php:310 ../register-plus-redux.php:346
-msgid "From: "
-msgstr "Kimden:"
-
-#: ../register-plus-redux.php:311 ../register-plus-redux.php:347
-msgid "Subject: "
-msgstr "Konu:"
-
-#: ../register-plus-redux.php:312 ../register-plus-redux.php:348
-msgid "Content-Type: "
-msgstr "İçerik:"
-
-# Register Plus Redux eklentisi.
-# wp-fa.com tarafından geliştirilmiştir
-# Türkçe çeviri Serhat ESEN - testcalismasi@gmail.com
-#: ../register-plus-redux.php:325
+#: register-plus-redux.php:289
 msgid ""
-"No message will be sent to administrator whether a user is registered or "
-"created."
-msgstr "Bir kullanıcı kaydı gerçekleştiğinde yönetici mesaj gönderme."
+"Please verify your account using the verification link sent to your email "
+"address."
+msgstr ""
+"Lütfen e-posta adresinize gönderilen doğrulama bağlantısı ile hesabınızı "
+"doğrulayınız."
 
-#: ../register-plus-redux.php:445
-msgid "Settings Saved"
-msgstr "Ayarlar Kaydedildi"
+#: register-plus-redux.php:291 rpr-login.php:451
+msgid ""
+"Your account will be reviewed by an administrator and you will be notified "
+"when it is activated."
+msgstr ""
+"Hesabınız yönetici tarafından incelenecek ve onaylandığında bildirilecek."
 
-#: ../register-plus-redux.php:449
+#: register-plus-redux.php:347
+msgid "Your Login Information"
+msgstr "Giriş Bilgileriniz"
+
+#: register-plus-redux.php:354
+msgid "Verify Your Account"
+msgstr "Hesabınızı Doğrulayınız"
+
+#: register-plus-redux.php:365
+msgid "New User Registered"
+msgstr "Yeni Kayıtlı Kullanıcı"
+
+#: rpr-admin-menu.php:19
+#, fuzzy
+msgid ""
+"Register Plus Redux requires WordPress 3.2 or greater. You are currently "
+"using WordPress %s, please upgrade WordPress or deactivate Register Plus "
+"Redux."
+msgstr ""
+"Register Plus Redux WordPress 3.0 ya da daha yüksek gerektirir. Şu anda "
+"WordPress %s kullanıyorsanız, Kayıt Artı Redux yükseltme veya devre dışı "
+"bırakın."
+
+#: rpr-admin-menu.php:26
+msgid ""
+"Register Plus Redux must be Network Activated by Super Admin under WordPress "
+"Multisite. You will have limited functionality while not Network Activated. "
+"Please refer to <a href=\"%s\">radiok.info</a> for help resolving this issue."
+msgstr ""
+
+#: rpr-admin-menu.php:32
+#, fuzzy
+msgid ""
+"There is another active plugin that is conflicting with Register Plus Redux. "
+"The conflicting plugin is creating its own wp_new_user_notification "
+"function, this function is used to alter the messages sent out following the "
+"creation of a new user. Please refer to <a href=\"%s\">radiok.info</a> for "
+"help resolving this issue."
+msgstr ""
+"Register Plus Redux eklentisi ile çakışan başka bir aktif eklenti var. Bu "
+"çakışan eklenti kendi wp_new_user_notification fonsiyonunu yaratıyor. Sorunu "
+"çözmek için ; <a href='http://radiok.info/blog/wp_new_user_notification-"
+"conflicts/'>Buraya Tıklayınız/</a> "
+
+#: rpr-admin-menu.php:40 rpr-admin-menu.php:78
 msgid "Register Plus Redux Settings"
 msgstr "Register Plus Redux Ayarları"
 
-#: ../register-plus-redux.php:455
+#: rpr-admin-menu.php:47 rpr-admin-menu.php:1008
+msgid "Unverified Users"
+msgstr "Onaylanmamış Kullanıcılar"
+
+#: rpr-admin-menu.php:52
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: rpr-admin-menu.php:74
+msgid "Settings Saved"
+msgstr "Ayarlar Kaydedildi"
+
+#: rpr-admin-menu.php:84
 msgid "Custom Logo URL"
 msgstr "Logonun adresi"
 
-#: ../register-plus-redux.php:458
-msgid "Upload a new logo:"
+#: rpr-admin-menu.php:86
+#, fuzzy
+msgid "Upload Image"
 msgstr "Yeni logo yükle:"
 
-#: ../register-plus-redux.php:459
-msgid "You must Save Changes to upload logo."
-msgstr ""
-"Logoyu seçtikten sonra sayfa altından \"Değişiklikleri Kaydet\" tıklamayı "
-"unutmayın!"
-
-#: ../register-plus-redux.php:460
+#: rpr-admin-menu.php:87
 msgid ""
 "Custom Logo will be shown on Registration and Login Forms in place of the "
 "default Wordpress logo. For the best results custom logo should not exceed "
@@ -176,25 +132,25 @@ msgstr ""
 "gösterilecek. En iyi görünümü sağlamak için yüklediğiniz logo genişliğinin "
 "350px olmasına dikkat ediniz"
 
-#: ../register-plus-redux.php:465
+#: rpr-admin-menu.php:92
 msgid "Remove Logo"
 msgstr "Logoyu Sil"
 
-#: ../register-plus-redux.php:466
+#: rpr-admin-menu.php:93
 msgid "You must Save Changes to remove logo."
 msgstr ""
 "Logoyu silmek için kutuyu işaretleyin ve \"Değişiklikleri Kaydet\" butonuna "
 "basınız"
 
-#: ../register-plus-redux.php:471
+#: rpr-admin-menu.php:98
 msgid "Email Verification"
 msgstr "E-posta Doğrulama"
 
-#: ../register-plus-redux.php:473
+#: rpr-admin-menu.php:100
 msgid "Verify all new users email address..."
 msgstr "Bütün yeni kullanıcıların eposta adreslerini doğrula..."
 
-#: ../register-plus-redux.php:474
+#: rpr-admin-menu.php:101
 msgid ""
 "A verification code will be sent to any new users email address, new users "
 "will not be able to login or reset their password until they have completed "
@@ -205,7 +161,7 @@ msgstr ""
 "doğrulamayı tamamlayana kadar giriş yapamayacaklar. Yöneticiler Onaylanmamış "
 "Kullanıcılar sayfasından manuel olarak onaylama yapabilirler."
 
-#: ../register-plus-redux.php:476
+#: rpr-admin-menu.php:103
 msgid ""
 "The following message will be shown to users after registering. You may "
 "include HTML in this message."
@@ -213,15 +169,15 @@ msgstr ""
 "Aşağıdaki mesaj üyelere kayıt tamamlandıktan sonra gösterilecek. "
 "Biçimlendirmede HTML kullanabilirsin."
 
-#: ../register-plus-redux.php:482
+#: rpr-admin-menu.php:110
 msgid "Admin Verification"
 msgstr "Yönetici Onayı"
 
-#: ../register-plus-redux.php:484
+#: rpr-admin-menu.php:112
 msgid "Moderate all new user registrations..."
 msgstr "Tüm yeni kullanıcı kayıtlarını yönet"
 
-#: ../register-plus-redux.php:485
+#: rpr-admin-menu.php:113
 msgid ""
 "New users will not be able to login or reset their password until they have "
 "been authorized by an administrator from the Unverified Users Page. If both "
@@ -233,7 +189,7 @@ msgstr ""
 "yapamazlar. Her iki doğrulama seçeneğide  aktif edilirse yeni kullanıcılar "
 "Yönetici onayı almadan giriş dahil herhangi bir işlem yapamazlar."
 
-#: ../register-plus-redux.php:487
+#: rpr-admin-menu.php:115
 msgid ""
 "The following message will be shown to users after registering (or verifying "
 "their email if both verification options are enabled). You may include HTML "
@@ -242,15 +198,15 @@ msgstr ""
 "Aşağıdaki ileti (doğrulama seçenekleri etkinse) yeni bir üye kaydını "
 "yaptırdıktan sonra kullanıcılara gösterilecek. Bu mesajda HTML içerebilir."
 
-#: ../register-plus-redux.php:493
+#: rpr-admin-menu.php:121
 msgid "Grace Period"
 msgstr "Doğrulama Süresi"
 
-#: ../register-plus-redux.php:495
+#: rpr-admin-menu.php:123
 msgid "days"
 msgstr "gün"
 
-#: ../register-plus-redux.php:496
+#: rpr-admin-menu.php:124
 msgid ""
 "All unverified users will automatically be deleted after the Grace Period "
 "specified, to disable this process enter 0 to never automatically delete "
@@ -259,225 +215,317 @@ msgstr ""
 "Onaylı olmayan kullanıcılar Doğrulama Süresi sonunda otomatik olarak "
 "silinir. Otomatik silmeyi devre dışı bırakmak için 0 (sıfır) giriniz."
 
-#: ../register-plus-redux.php:500
-msgid "Registration Page"
+#: rpr-admin-menu.php:128
+#, fuzzy
+msgid "Registration Redirect"
 msgstr "Kayıt Sayfası"
 
-#: ../register-plus-redux.php:501
+#: rpr-admin-menu.php:131
 msgid ""
-"Select which fields to show on the Registration Page. Users will not be able "
+"By default, after registering, users will be sent to %s/wp-login.php?"
+"checkemail=registered, leave this value empty if you do not wish to change "
+"this behavior. You may enter another address here, however, if that address "
+"is not on the same domain, Wordpress will ignore the redirect."
+msgstr ""
+
+#: rpr-admin-menu.php:135
+#, fuzzy
+msgid "Verification Redirect"
+msgstr "Doğrulama Gönderildi"
+
+#: rpr-admin-menu.php:138
+msgid ""
+"By default, after verifying, users will be sent to %s/wp-login.php, leave "
+"this value empty if you do not wish to change this behavior. You may enter "
+"another address here, however, if that addresses is not on the same domain, "
+"Wordpress will ignore the redirect."
+msgstr ""
+
+#: rpr-admin-menu.php:143
+msgid "Autologin user"
+msgstr ""
+
+#: rpr-admin-menu.php:145
+#, fuzzy
+msgid "Autologin user after registration."
+msgstr "Kullanızı kayıt olduktan sonra Giriş sayfasına yönlendir."
+
+#: rpr-admin-menu.php:146
+msgid ""
+"Works if Email Verification and Admin Verification are turned off. By "
+"default users will be sent to %s, to change this behavior, set up "
+"Registration Redirect field above."
+msgstr ""
+
+#: rpr-admin-menu.php:152
+#, fuzzy
+msgid "Registration Form"
+msgstr "Kayıt"
+
+#: rpr-admin-menu.php:153
+#, fuzzy
+msgid ""
+"Select which fields to show on the Registration Form. Users will not be able "
 "to register without completing any fields marked required."
 msgstr ""
 "Kayıt Sayfası'nda göstermek istediğiniz alanları seçiniz. Zorunlu  olarak "
 "işaretlenmiş alanlar doldurulmadan kayıt yaptırmaları mümkün olmayacaktır."
 
-#: ../register-plus-redux.php:504
+#: rpr-admin-menu.php:155
+msgid "Signup Form"
+msgstr ""
+
+#: rpr-admin-menu.php:156
+#, fuzzy
+msgid ""
+"Select which fields to show on the Signup Form. Users will not be able to "
+"signup without completing any fields marked required."
+msgstr ""
+"Kayıt Sayfası'nda göstermek istediğiniz alanları seçiniz. Zorunlu  olarak "
+"işaretlenmiş alanlar doldurulmadan kayıt yaptırmaları mümkün olmayacaktır."
+
+#: rpr-admin-menu.php:160
+#, fuzzy
+msgid "Use Email as Username"
+msgstr "Temp Username"
+
+#: rpr-admin-menu.php:161
+msgid ""
+"New users will not be asked to enter a username, instead their email address "
+"will be used as their username."
+msgstr ""
+
+#: rpr-admin-menu.php:164
 msgid "Confirm Email"
 msgstr "E-posta Onay"
 
-#: ../register-plus-redux.php:505
+#: rpr-admin-menu.php:165
 msgid "Require new users to enter e-mail address twice during registration."
 msgstr "Kayıt esnasında yeni kullanıcılar E-posta adresini iki defa girsin"
 
-#: ../register-plus-redux.php:508
+#: rpr-admin-menu.php:168
 msgid "Profile Fields"
 msgstr "Profil ALanı"
 
-#: ../register-plus-redux.php:520 ../register-plus-redux.php:1523
+#: rpr-admin-menu.php:173
+msgid "Show"
+msgstr ""
+
+#: rpr-admin-menu.php:174
+msgid "Require"
+msgstr "Zorunlu"
+
+#: rpr-admin-menu.php:178 rpr-login.php:72 rpr-signup.php:249
 msgid "First Name"
 msgstr "Adınız"
 
-#: ../register-plus-redux.php:525 ../register-plus-redux.php:1532
+#: rpr-admin-menu.php:183 rpr-login.php:81 rpr-signup.php:260
 msgid "Last Name"
 msgstr "Soyadınız"
 
-#: ../register-plus-redux.php:530 ../register-plus-redux.php:1541
+#: rpr-admin-menu.php:188 rpr-login.php:90 rpr-signup.php:271
 msgid "Website"
 msgstr "Websayfanız"
 
-#: ../register-plus-redux.php:535 ../register-plus-redux.php:1550
+#: rpr-admin-menu.php:193 rpr-login.php:99 rpr-signup.php:282
 msgid "AIM"
 msgstr "AIM Adınız"
 
-#: ../register-plus-redux.php:540 ../register-plus-redux.php:1559
+#: rpr-admin-menu.php:198 rpr-login.php:108 rpr-signup.php:293
 msgid "Yahoo IM"
 msgstr "Yahoo IM Adınız"
 
-#: ../register-plus-redux.php:545 ../register-plus-redux.php:1568
+#: rpr-admin-menu.php:203 rpr-login.php:117 rpr-signup.php:304
 msgid "Jabber / Google Talk"
 msgstr "Jabber / Google Talk"
 
-#: ../register-plus-redux.php:550 ../register-plus-redux.php:1577
+#: rpr-admin-menu.php:208 rpr-login.php:126 rpr-signup.php:315
 msgid "About Yourself"
 msgstr "Hakkınızda"
 
-#: ../register-plus-redux.php:559
+#: rpr-admin-menu.php:217
 msgid "User Set Password"
 msgstr "Şifre"
 
-#: ../register-plus-redux.php:561
+#: rpr-admin-menu.php:219
 msgid "Require new users enter a password during registration..."
 msgstr "Kullanıcı kaydında şifre girmek zorunlu olsun"
 
-#: ../register-plus-redux.php:563
+#: rpr-admin-menu.php:221
 msgid "Minimum password length: "
 msgstr "En az şifre uzunluğu:"
 
-#: ../register-plus-redux.php:564
+#: rpr-admin-menu.php:222
+msgid "Do not require users to confirm password."
+msgstr ""
+
+#: rpr-admin-menu.php:223
 msgid "Show password strength meter..."
 msgstr "Şifrenin zorluk seviyesini göster.."
 
-#: ../register-plus-redux.php:568
+#: rpr-admin-menu.php:227
 msgid "Empty"
 msgstr "Basit"
 
-#: ../register-plus-redux.php:572
+#: rpr-admin-menu.php:231
 msgid "Short"
 msgstr "Kısa"
 
-#: ../register-plus-redux.php:576
+#: rpr-admin-menu.php:235
 msgid "Bad"
 msgstr "Kötü"
 
-#: ../register-plus-redux.php:580
+#: rpr-admin-menu.php:239
 msgid "Good"
 msgstr "İyi"
 
-#: ../register-plus-redux.php:584
+#: rpr-admin-menu.php:243
 msgid "Strong"
 msgstr "Güçlü"
 
-#: ../register-plus-redux.php:588
+#: rpr-admin-menu.php:247
 msgid "Mismatch"
 msgstr "Eşleşmiyor"
 
-#: ../register-plus-redux.php:597 ../register-plus-redux.php:1705
-#: ../register-plus-redux.php:1929
-msgid "Invitation Code"
-msgstr "Davet Kodu"
-
-#: ../register-plus-redux.php:599
+#: rpr-admin-menu.php:258
 msgid "Use invitation codes to track or authorize new user registration..."
 msgstr "Yeni üye kayıtlarında daveti etkinleştir"
 
-#: ../register-plus-redux.php:601
+#: rpr-admin-menu.php:260
 msgid ""
 "Require new user enter one of the following invitation codes to register."
 msgstr "Yeni kullanıcı kayıt sırasında bir tanesini girmek zorunda"
 
-#: ../register-plus-redux.php:602
+#: rpr-admin-menu.php:261
 msgid "Enforce case-sensitivity of invitation codes."
 msgstr "Davetiye kodlarının küçük harf duyarlılığı"
 
-#: ../register-plus-redux.php:603
+#: rpr-admin-menu.php:262
+msgid "Each invitation code may only be used once."
+msgstr ""
+
+#: rpr-admin-menu.php:263
 msgid "Show Invitation Code Tracking widget on Dashboard."
 msgstr "Davet Kodu İzleme widgetini panoda göster."
 
-#: ../register-plus-redux.php:612
+#: rpr-admin-menu.php:272 rpr-admin-menu.php:676 rpr-admin-menu.php:677
+msgid "Remove Code"
+msgstr "Kodu Sil"
+
+#: rpr-admin-menu.php:275
+#, fuzzy
+msgid "Show %d hidden invitation code"
+msgid_plural "Show %d hidden invitation codes"
+msgstr[0] "Yeni ekle"
+msgstr[1] "Yeni ekle"
+
+#: rpr-admin-menu.php:279
 msgid "Add Code"
 msgstr "Kod Ekle"
 
-#: ../register-plus-redux.php:612
+#: rpr-admin-menu.php:279
 msgid "Add a new invitation code"
 msgstr "Yeni ekle"
 
-#: ../register-plus-redux.php:617
+#: rpr-admin-menu.php:284
 msgid "Disclaimer"
 msgstr "Sözleşme"
 
-#: ../register-plus-redux.php:619
+#: rpr-admin-menu.php:286
 msgid "Show Disclaimer during registration..."
 msgstr "Kayıt Sırasında Sözleşme metnini göster"
 
-#: ../register-plus-redux.php:624
+#: rpr-admin-menu.php:291
 msgid "Disclaimer Title"
 msgstr "Sözleşme Başlığı"
 
-#: ../register-plus-redux.php:632
+#: rpr-admin-menu.php:299
 msgid "Disclaimer Content"
 msgstr "Sözleşme Metni"
 
-#: ../register-plus-redux.php:638 ../register-plus-redux.php:670
-#: ../register-plus-redux.php:702
+#: rpr-admin-menu.php:305 rpr-admin-menu.php:337 rpr-admin-menu.php:369
 msgid "Require Agreement"
 msgstr "Onay Zorunluluğu"
 
-#: ../register-plus-redux.php:649
+#: rpr-admin-menu.php:316
 msgid "License Agreement"
 msgstr "Lisans Anlaşması"
 
-#: ../register-plus-redux.php:651
+#: rpr-admin-menu.php:318
 msgid "Show License Agreement during registration..."
 msgstr "Kayıt sırasında Lisans Anlaşması'nı göster"
 
-#: ../register-plus-redux.php:656
+#: rpr-admin-menu.php:323
 msgid "License Agreement Title"
 msgstr "Lisans Anlaşması Başlığı"
 
-#: ../register-plus-redux.php:664
+#: rpr-admin-menu.php:331
 msgid "License Agreement Content"
 msgstr "Lisans Anlaşması Metni"
 
-#: ../register-plus-redux.php:681
+#: rpr-admin-menu.php:348
 msgid "Privacy Policy"
 msgstr "Gizlilik Politikası"
 
-#: ../register-plus-redux.php:683
+#: rpr-admin-menu.php:350
 msgid "Show Privacy Policy during registration..."
 msgstr "Kayıt sırasında Gizlilik Politikası'nı Göster"
 
-#: ../register-plus-redux.php:688
+#: rpr-admin-menu.php:355
 msgid "Privacy Policy Title"
 msgstr "Gizlilik Politikası Başlığı"
 
-#: ../register-plus-redux.php:696
+#: rpr-admin-menu.php:363
 msgid "Privacy Policy Content"
 msgstr "Gizlilik Politikası Metni"
 
-#: ../register-plus-redux.php:713
+#: rpr-admin-menu.php:380
 msgid "Use Default Style Rules"
 msgstr "Varsayılan Kuralları kullan"
 
-#: ../register-plus-redux.php:714
-msgid "Apply default Wordpress 3.0.1 styling to all fields."
+#: rpr-admin-menu.php:381
+#, fuzzy
+msgid "Apply default Wordpress styling to all fields."
 msgstr "Geçerli tüm alanlar Wordpress 3.0.1. stilini uygula"
 
-#: ../register-plus-redux.php:717
+#: rpr-admin-menu.php:384
 msgid "Required Fields Style Rules"
 msgstr "Stil ayarları"
 
-#: ../register-plus-redux.php:721
+#: rpr-admin-menu.php:388
 msgid "Required Fields Asterisk"
 msgstr "Gerekli alanlarda yıldız işareti"
 
-#: ../register-plus-redux.php:722
+#: rpr-admin-menu.php:389
 msgid "Add asterisk to left of all required field's name."
 msgstr "Gerekli Alanların sonuna yıldız işareti ekle"
 
-#: ../register-plus-redux.php:725
+#: rpr-admin-menu.php:393
 msgid "Starting Tabindex"
 msgstr "Başlangıç Tabindex'i"
 
-#: ../register-plus-redux.php:728
+#: rpr-admin-menu.php:396
+#, fuzzy
 msgid ""
-"The first field added will have this tabindex, the tabindex will incriment "
+"The first field added will have this tabindex, the tabindex will increment "
 "by 1 for each additional field. Enter 0 to remove all tabindex's."
 msgstr ""
 "The first field added will have this tabindex, the tabindex will incriment "
 "by 1 for each additional field. Enter 0 to remove all tabindex's."
 
-#: ../register-plus-redux.php:732
+#: rpr-admin-menu.php:401
 msgid "Additional Fields"
 msgstr "Ek Alanlar"
 
-#: ../register-plus-redux.php:733
+#: rpr-admin-menu.php:402
+#, fuzzy
 msgid ""
 "Enter additional fields to show on the User Profile and/or Registration "
 "Pages. Additional fields will be shown after existing profile fields on User "
 "Profile, and after selected profile fields on Registration Page but before "
 "Password, Invitation Code, Disclaimer, License Agreement, or Privacy Policy "
 "(if any of those fields are enabled). Options must be entered for Select, "
-"Checkbox, and Radio fields. Options should be entered with commas seperating "
+"Checkbox, and Radio fields. Options should be entered with commas separating "
 "each possible value. For example, a Radio field named \"Gender\" could have "
 "the following options, \"Male,Female\"."
 msgstr ""
@@ -487,271 +535,195 @@ msgstr ""
 "belirtin. Örnek Çoklu Seçenek Alanı ; İsim Cinsiyetiniz, seçenekleri Kadın, "
 "Erkek. (Virgülle ayırın)"
 
-#: ../register-plus-redux.php:736
-msgid "Name"
-msgstr "İsim"
+#: rpr-admin-menu.php:413
+msgid "Reorder"
+msgstr ""
 
-#: ../register-plus-redux.php:737
-msgid "Type"
-msgstr "Türü"
+#: rpr-admin-menu.php:413
+msgid "Drag to Reorder"
+msgstr ""
 
-#: ../register-plus-redux.php:738
+#: rpr-admin-menu.php:418
+msgid "Display"
+msgstr ""
+
+#: rpr-admin-menu.php:420
+#, fuzzy
+msgid "Textbox Field"
+msgstr "Metin Alanı"
+
+#: rpr-admin-menu.php:421
+msgid "Select Field"
+msgstr "Alanı Seç"
+
+#: rpr-admin-menu.php:422
+msgid "Checkbox Fields"
+msgstr "İşaretleme Alanları"
+
+#: rpr-admin-menu.php:423
+msgid "Radio Fields"
+msgstr "Çoklu Seçenek Alanı"
+
+#: rpr-admin-menu.php:424
+msgid "Text Area"
+msgstr "Metin Alanı"
+
+#: rpr-admin-menu.php:425
+msgid "Hidden Field"
+msgstr "Gizli Alan"
+
+#: rpr-admin-menu.php:426
+msgid "Static Text"
+msgstr ""
+
+#: rpr-admin-menu.php:429
 msgid "Options"
 msgstr "Seçenekler"
 
-#: ../register-plus-redux.php:739
-msgid "Profile"
+#: rpr-admin-menu.php:432
+msgid "Database Key"
+msgstr ""
+
+#: rpr-admin-menu.php:435
+#, fuzzy
+msgid "Show on Profile"
 msgstr "Profil"
 
-#: ../register-plus-redux.php:740
-msgid "Registration"
+#: rpr-admin-menu.php:438
+#, fuzzy
+msgid "Show on Registration"
 msgstr "Kayıt"
 
-#: ../register-plus-redux.php:741
-msgid "Require"
-msgstr "Zorunlu"
+#: rpr-admin-menu.php:441
+#, fuzzy
+msgid "Required Field"
+msgstr "Gerekli alanlarda yıldız işareti"
 
-#: ../register-plus-redux.php:742
+#: rpr-admin-menu.php:444
 msgid "Actions"
 msgstr "Eylemler"
 
-#: ../register-plus-redux.php:803
+#: rpr-admin-menu.php:445 rpr-admin-menu.php:709
+msgid "Help"
+msgstr ""
+
+#: rpr-admin-menu.php:445
+msgid "No help available"
+msgstr ""
+
+#: rpr-admin-menu.php:446 rpr-admin-menu.php:701
+#, fuzzy
+msgid "Remove"
+msgstr "Kodu Sil"
+
+#: rpr-admin-menu.php:446 rpr-admin-menu.php:702
+msgid "Remove Field"
+msgstr "Alanı Sil"
+
+#: rpr-admin-menu.php:457
 msgid "Add Field"
 msgstr "Alan Ekle"
 
-#: ../register-plus-redux.php:803
+#: rpr-admin-menu.php:457
 msgid "Add a new custom field."
 msgstr "Yeni bir özel alan ekle"
 
-#: ../register-plus-redux.php:806
-msgid "Date Field Settings"
-msgstr "Tarih Alanı Ayarları"
-
-#: ../register-plus-redux.php:808
-msgid "First Day of the Week"
-msgstr "Haftanın İlk Günü"
-
-#: ../register-plus-redux.php:810
-msgid "Monday"
-msgstr "Pazartesi"
-
-#: ../register-plus-redux.php:811
-msgid "Tuesday"
-msgstr "Salı"
-
-#: ../register-plus-redux.php:812
-msgid "Wednesday"
-msgstr "Çarşamba"
-
-#: ../register-plus-redux.php:813
-msgid "Thursday"
-msgstr "Perşembe"
-
-#: ../register-plus-redux.php:814
-msgid "Friday"
-msgstr "Cuma"
-
-#: ../register-plus-redux.php:815
-msgid "Saturday"
-msgstr "Cumartesi"
-
-#: ../register-plus-redux.php:816
-msgid "Sunday"
-msgstr "Pazar"
-
-#: ../register-plus-redux.php:818
-msgid "Date Format"
-msgstr "Tarih Biçimi"
-
-#: ../register-plus-redux.php:819
-msgid "First Selectable Date"
-msgstr "İlk Seçilebilir Tarih"
-
-#: ../register-plus-redux.php:820
-msgid "Default Year"
-msgstr "Varsayılan Yıl"
-
-#: ../register-plus-redux.php:821
-msgid "Default Month"
-msgstr "Varsayılan Ay"
-
-#: ../register-plus-redux.php:823
-msgid "Current Month"
-msgstr "Şimdiki Ay"
-
-#: ../register-plus-redux.php:824
-msgid "Jan"
-msgstr "Ocak"
-
-#: ../register-plus-redux.php:825
-msgid "Feb"
-msgstr "Şubat"
-
-#: ../register-plus-redux.php:826
-msgid "Mar"
-msgstr "Mart"
-
-#: ../register-plus-redux.php:827
-msgid "Apr"
-msgstr "Nisan"
-
-#: ../register-plus-redux.php:828
-msgid "May"
-msgstr "Mayıs"
-
-#: ../register-plus-redux.php:829
-msgid "Jun"
-msgstr "Haziran"
-
-#: ../register-plus-redux.php:830
-msgid "Jul"
-msgstr "Temmz"
-
-#: ../register-plus-redux.php:831
-msgid "Aug"
-msgstr "Ağustos"
-
-#: ../register-plus-redux.php:832
-msgid "Sep"
-msgstr "Eylül"
-
-#: ../register-plus-redux.php:833
-msgid "Oct"
-msgstr "Ekim"
-
-#: ../register-plus-redux.php:834
-msgid "Nov"
-msgstr "Kasım"
-
-#: ../register-plus-redux.php:835
-msgid "Dec"
-msgstr "Aralık"
-
-#: ../register-plus-redux.php:840
-msgid "Auto-Complete Queries"
+#: rpr-admin-menu.php:496
+#, fuzzy
+msgid "Autocomplete URL"
 msgstr "Otomatik Tamamlama Sorguları"
 
-#: ../register-plus-redux.php:841
+#: rpr-admin-menu.php:497
+#, fuzzy
 msgid ""
-"You can now link to the registration page with queries to autocomplete "
-"specific fields for the user. I have included the query keys below and an "
-"example of a query URL."
+"You can create a URL to autocomplete specific fields for the user. "
+"Additional fields use the database key. Included below are available keys "
+"and an example URL."
 msgstr ""
 "You can now link to the registration page with queries to autocomplete "
 "specific fields for the user. I have included the query keys below and an "
 "example of a query URL."
 
-#: ../register-plus-redux.php:849
-msgid ""
-"For any custom fields, use your custom field label with the text all "
-"lowercase, using underscores instead of spaces. For example if your custom "
-"field was \"Middle Name\" your query key would be %middle_name%"
-msgstr ""
-"For any custom fields, use your custom field label with the text all "
-"lowercase, using underscores instead of spaces. For example if your custom "
-"field was \"Middle Name\" your query key would be %middle_name%"
-
-#: ../register-plus-redux.php:850
-msgid "Example Query URL"
-msgstr "Örnek SORGU Adresi"
-
-#: ../register-plus-redux.php:852
+#: rpr-admin-menu.php:501
 msgid "New User Message Settings"
 msgstr "Yeni Kullanıcı Mesaj Ayarları"
 
-#: ../register-plus-redux.php:855
+#: rpr-admin-menu.php:504
 msgid "New User Message"
 msgstr "Yeni Kulanıcı Bildirim Mesajları"
 
-#: ../register-plus-redux.php:857
+#: rpr-admin-menu.php:506
 msgid "Do NOT send user an email after they are registered"
 msgstr "Kayıt olduktan sonra kullanıcıya e-posta GÖNDERME"
 
-#: ../register-plus-redux.php:858
+#: rpr-admin-menu.php:507
 msgid "Do NOT send user an email when created by an administrator"
 msgstr "Yönetici tarafından oluşturula/eklenen  kullanıcıya e-posta GÖNDERME"
 
-#: ../register-plus-redux.php:862
+#: rpr-admin-menu.php:511
 msgid "Custom New User Message"
 msgstr "Yeni Kullanıcı Mesajı"
 
-#: ../register-plus-redux.php:864 ../register-plus-redux.php:902
-#: ../register-plus-redux.php:949
+#: rpr-admin-menu.php:513 rpr-admin-menu.php:544 rpr-admin-menu.php:592
 msgid "Enable..."
 msgstr "Etkinleştir..."
 
-#: ../register-plus-redux.php:868 ../register-plus-redux.php:906
-#: ../register-plus-redux.php:953
+#: rpr-admin-menu.php:517 rpr-admin-menu.php:548 rpr-admin-menu.php:596
 msgid "From Email"
 msgstr "E-posta"
 
-#: ../register-plus-redux.php:869 ../register-plus-redux.php:873
-#: ../register-plus-redux.php:877 ../register-plus-redux.php:882
-#: ../register-plus-redux.php:907 ../register-plus-redux.php:911
-#: ../register-plus-redux.php:915 ../register-plus-redux.php:920
-#: ../register-plus-redux.php:954 ../register-plus-redux.php:958
-#: ../register-plus-redux.php:962 ../register-plus-redux.php:967
+#: rpr-admin-menu.php:518 rpr-admin-menu.php:522 rpr-admin-menu.php:526
+#: rpr-admin-menu.php:531 rpr-admin-menu.php:549 rpr-admin-menu.php:553
+#: rpr-admin-menu.php:557 rpr-admin-menu.php:562 rpr-admin-menu.php:597
+#: rpr-admin-menu.php:601 rpr-admin-menu.php:605 rpr-admin-menu.php:610
 msgid "Restore Default"
 msgstr "Varsayılanı Geri Getir"
 
-#: ../register-plus-redux.php:872 ../register-plus-redux.php:910
-#: ../register-plus-redux.php:957
+#: rpr-admin-menu.php:521 rpr-admin-menu.php:552 rpr-admin-menu.php:600
 msgid "From Name"
 msgstr "İsim"
 
-#: ../register-plus-redux.php:876 ../register-plus-redux.php:914
-#: ../register-plus-redux.php:961
+#: rpr-admin-menu.php:525 rpr-admin-menu.php:556 rpr-admin-menu.php:604
 msgid "Subject"
 msgstr "Konu"
 
-#: ../register-plus-redux.php:881 ../register-plus-redux.php:919
+#: rpr-admin-menu.php:530 rpr-admin-menu.php:561
 msgid "User Message"
 msgstr "Kullanıcı Mesajı"
 
-#: ../register-plus-redux.php:883 ../register-plus-redux.php:921
-#: ../register-plus-redux.php:968
+#: rpr-admin-menu.php:532 rpr-admin-menu.php:563 rpr-admin-menu.php:611
 msgid "Replacement Keywords"
 msgstr "Yedek Anahat Kelime"
 
-#: ../register-plus-redux.php:884 ../register-plus-redux.php:922
-#: ../register-plus-redux.php:969
+#: rpr-admin-menu.php:533 rpr-admin-menu.php:564 rpr-admin-menu.php:612
 msgid "Send as HTML"
 msgstr "HTML Olarak Gönder"
 
-#: ../register-plus-redux.php:885 ../register-plus-redux.php:923
-#: ../register-plus-redux.php:970
+#: rpr-admin-menu.php:534 rpr-admin-menu.php:565 rpr-admin-menu.php:613
 msgid "Convert new lines to &lt;br /&gt; tags (HTML only)"
 msgstr "XXX___Convert new lines to &lt;br /&gt; tags (HTML only)"
 
-#: ../register-plus-redux.php:889
-msgid "Login URL"
-msgstr "Giriş Adresi"
-
-#: ../register-plus-redux.php:892
-msgid "This will redirect the users login after registration."
-msgstr "Kullanızı kayıt olduktan sonra Giriş sayfasına yönlendir."
-
-#: ../register-plus-redux.php:900
+#: rpr-admin-menu.php:542
 msgid "Custom Verification Message"
 msgstr "Doğrulama için mesaj"
 
-#: ../register-plus-redux.php:931 ../register-plus-redux.php:978
+#: rpr-admin-menu.php:573 rpr-admin-menu.php:621
 msgid "Summary"
 msgstr "Özet"
 
-#: ../register-plus-redux.php:937
+#: rpr-admin-menu.php:579
 msgid "Admin Notification Settings"
 msgstr "Yönetici Bildirim Ayarları"
 
-#: ../register-plus-redux.php:940
+#: rpr-admin-menu.php:582
 msgid "Admin Notification"
 msgstr "Yönetici Bildirimi"
 
-#: ../register-plus-redux.php:942
+#: rpr-admin-menu.php:584
 msgid "Do NOT send administrator an email whenever a new user registers"
 msgstr "Yeni bir üye kayıt olduğunfa yöneticiye E-Posta GÖNDERME"
 
-#: ../register-plus-redux.php:943
+#: rpr-admin-menu.php:585
 msgid ""
 "Do NOT send administrator an email whenever a new user is created by an "
 "administrator"
@@ -759,127 +731,244 @@ msgstr ""
 "Yönetici tarafından yeni bir kullanıcı eklendiğinde yöneticiye E-posta "
 "GÖNDERME"
 
-#: ../register-plus-redux.php:947
+#: rpr-admin-menu.php:586
+#, fuzzy
+msgid "Send administrator an email after a new user is verified"
+msgstr "Yeni bir üye kayıt olduğunfa yöneticiye E-Posta GÖNDERME"
+
+#: rpr-admin-menu.php:590
 msgid "Custom Admin Notification"
 msgstr "Özel Yönetici Bildirimi"
 
-#: ../register-plus-redux.php:966
+#: rpr-admin-menu.php:609
 msgid "Admin Message"
 msgstr "Yönetici Mesajı"
 
-#: ../register-plus-redux.php:985
+#: rpr-admin-menu.php:628
 msgid "Custom CSS for Register & Login Pages"
 msgstr "Kayıt ve Giriş Sayfaları İçin Özelleştirilmiş CSS"
 
-#: ../register-plus-redux.php:986
+#: rpr-admin-menu.php:629
 msgid "CSS Rule Example:"
 msgstr "CSS Örneği:"
 
-#: ../register-plus-redux.php:989
+#: rpr-admin-menu.php:632
 msgid "Custom Register CSS"
 msgstr "Kayıt Sayfası için Özelleştirilmiş CSS"
 
-#: ../register-plus-redux.php:993
+#: rpr-admin-menu.php:636
 msgid "Custom Login CSS"
 msgstr "Giriş Sayfası için Özelleştirilmiş CSS"
 
-#: ../register-plus-redux.php:998
+#: rpr-admin-menu.php:641
+msgid "Hacks & Fixes"
+msgstr ""
+
+#: rpr-admin-menu.php:644
+msgid "Random Password Appears in Messages"
+msgstr ""
+
+#: rpr-admin-menu.php:646
+#, fuzzy
+msgid "Filter Random Passwords."
+msgstr "کلمه عبور قوی"
+
+#: rpr-admin-menu.php:647
+msgid ""
+"When user set password is enabled, and another plugin is being used to "
+"modify outgoing messages, a random password may appear in those messages, "
+"regardless of the fact that a user entered password was specified. This "
+"option will filter all password requests and show the user entered password "
+"if possible."
+msgstr ""
+
+#: rpr-admin-menu.php:652
 msgid "Save Changes"
 msgstr "Değişiklikleri Kaydet"
 
-#: ../register-plus-redux.php:999
-msgid "Preview Registraton Page"
+#: rpr-admin-menu.php:653
+#, fuzzy
+msgid "Preview Registration Page"
 msgstr "Kayıt Sayfasını Önizlemede Gör"
 
-#: ../register-plus-redux.php:1150
+#: rpr-admin-menu.php:690
+msgid "New"
+msgstr ""
+
+#: rpr-admin-menu.php:691
+#, fuzzy
+msgid "New Field"
+msgstr "Metin Alanı"
+
+#: rpr-admin-menu.php:710
+msgid ""
+"You must save after adding new fields before all options become available."
+msgstr ""
+
+#: rpr-admin-menu.php:727
+msgid "The following message will be sent when a user is registered:"
+msgstr "Aşağıdaki ileti kullancı kayıt olduğunda gönderilir"
+
+#: rpr-admin-menu.php:741 rpr-admin-menu.php:780 rpr-admin-menu.php:817
+msgid "To: "
+msgstr "Kime:"
+
+#: rpr-admin-menu.php:742 rpr-admin-menu.php:781 rpr-admin-menu.php:818
+msgid "From: "
+msgstr "Kimden:"
+
+#: rpr-admin-menu.php:743 rpr-admin-menu.php:782 rpr-admin-menu.php:819
+msgid "Subject: "
+msgstr "Konu:"
+
+#: rpr-admin-menu.php:744 rpr-admin-menu.php:783 rpr-admin-menu.php:820
+msgid "Content-Type: "
+msgstr "İçerik:"
+
+#: rpr-admin-menu.php:752
+msgid ""
+"No message will be sent to user whether they are registered or created by an "
+"administrator."
+msgstr ""
+"Bir kullanıcı kayıt olduğunda yada yönetici tarafından kayıt açıldığında "
+"hiçbir mesaj gönderilmeyecek"
+
+#: rpr-admin-menu.php:756 rpr-admin-menu.php:799
+msgid "The following message will be sent when a user is "
+msgstr "Aşağıdaki ilet bir kullanıcı oduğunda gönderilir"
+
+#: rpr-admin-menu.php:757 rpr-admin-menu.php:800
+msgid "registered"
+msgstr "Kayıtlı"
+
+#: rpr-admin-menu.php:758 rpr-admin-menu.php:801
+msgid " or "
+msgstr " veya"
+
+#: rpr-admin-menu.php:759 rpr-admin-menu.php:802
+msgid "created"
+msgstr "oluşturuldu"
+
+#: rpr-admin-menu.php:760
+msgid " after "
+msgstr " sonra"
+
+#: rpr-admin-menu.php:762
+msgid "the user has verified their email address"
+msgstr ""
+
+#: rpr-admin-menu.php:763
+msgid " and/or "
+msgstr " ve/veya"
+
+#: rpr-admin-menu.php:765
+msgid "an administrator has approved the new user"
+msgstr "yönetici yeni bir kullanıcı onayladı"
+
+# Register Plus Redux eklentisi.
+# wp-fa.com tarafından geliştirilmiştir
+# Türkçe çeviri Serhat ESEN - testcalismasi@gmail.com
+#: rpr-admin-menu.php:795
+msgid ""
+"No message will be sent to administrator whether a user is registered or "
+"created."
+msgstr "Bir kullanıcı kaydı gerçekleştiğinde yönetici mesaj gönderme."
+
+#: rpr-admin-menu.php:972
 msgid "You cannot edit that user."
 msgstr "Bu kullanıcıyı düzenleyemezsin."
 
-#: ../register-plus-redux.php:1167
+#: rpr-admin-menu.php:996
 msgid "Users approved."
 msgstr "Kullanıcı onaylı"
 
-#: ../register-plus-redux.php:1170
+#: rpr-admin-menu.php:999
 msgid "Verification emails sent."
 msgstr "Doğrulama e-postası gönderidi"
 
-#: ../register-plus-redux.php:1173
+#: rpr-admin-menu.php:1002
 msgid "Users deleted."
 msgstr "Kullanıcı silindi"
 
-#: ../register-plus-redux.php:1179
-msgid "Unverified Users"
-msgstr "Onaylanmamış Kullanıcılar"
-
-#: ../register-plus-redux.php:1184
+#: rpr-admin-menu.php:1014
 msgid "Bulk Actions"
 msgstr "Toplu İşlem"
 
-#: ../register-plus-redux.php:1185
+#: rpr-admin-menu.php:1015
 msgid "Approve"
 msgstr "Onayla"
 
-#: ../register-plus-redux.php:1186
+#: rpr-admin-menu.php:1016
 msgid "Send E-mail Verification"
 msgstr "Doğrulama E-postası Gönder"
 
-#: ../register-plus-redux.php:1187 ../register-plus-redux.php:1222
+#: rpr-admin-menu.php:1017 rpr-admin-menu.php:1051
 msgid "Delete"
 msgstr "Sil"
 
-#: ../register-plus-redux.php:1189
+#: rpr-admin-menu.php:1019
 msgid "Apply"
 msgstr "Uygula"
 
-#: ../register-plus-redux.php:1199
+#: rpr-admin-menu.php:1028
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: ../register-plus-redux.php:1200
+#: rpr-admin-menu.php:1029
 msgid "Temp Username"
 msgstr "Temp Username"
 
-#: ../register-plus-redux.php:1201
+#: rpr-admin-menu.php:1030 rpr-login.php:821 rpr-login.php:826
+#: rpr-login.php:835 rpr-login.php:840
 msgid "E-mail"
 msgstr "E-posta"
 
-#: ../register-plus-redux.php:1202
+#: rpr-admin-menu.php:1031
 msgid "Registered"
 msgstr "Kayıtlı"
 
-#: ../register-plus-redux.php:1203
+#: rpr-admin-menu.php:1032
 msgid "Verification Sent"
 msgstr "Doğrulama Gönderildi"
 
-#: ../register-plus-redux.php:1204
+#: rpr-admin-menu.php:1033
 msgid "Verified"
 msgstr "Doğrulanmadı"
 
-#: ../register-plus-redux.php:1221
+#: rpr-admin-menu.php:1050
 msgid "Edit"
 msgstr "Düzenle"
 
-#: ../register-plus-redux.php:1226
+#: rpr-admin-menu.php:1055
 msgid "E-mail: "
 msgstr "E-posta:"
 
-#: ../register-plus-redux.php:1237
+#: rpr-admin-menu.php:1068
 msgid "Approve Selected Users"
 msgstr "Seçili Kullanıcıları Onayla"
 
-#: ../register-plus-redux.php:1238
+#: rpr-admin-menu.php:1069
 msgid "Send E-mail Verification to Selected Users"
 msgstr "Seçili Kullanıcıları Doğrulama E-Postası Gönder"
 
-#: ../register-plus-redux.php:1239
+#: rpr-admin-menu.php:1070
 msgid "Delete Selected Users"
 msgstr "Seçili Kulanıcıları Sil"
 
-#: ../register-plus-redux.php:1513
+#: rpr-dashboard-widget.php:14
+msgid "Invitation Code Tracking"
+msgstr "Davetiye İzleme Kodu"
+
+#: rpr-dashboard-widget.php:22
+#, fuzzy
+msgid "%s Users Registered."
+msgstr "Yeni Kayıtlı Kullanıcı"
+
+#: rpr-login.php:63 rpr-signup.php:238
 msgid "Confirm E-mail"
 msgstr "E-Posta Adresini Tekrar Giriniz"
 
-#: ../register-plus-redux.php:1578
+#: rpr-login.php:127 rpr-signup.php:320
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
@@ -887,16 +976,15 @@ msgstr ""
 "Profil bilgilerin için biraz biyogrofi bilgisi girebilirsin. Belki görünüme "
 "açık olabilir."
 
-#: ../register-plus-redux.php:1686
+#: rpr-login.php:218 rpr-signup.php:390
 msgid "Password"
 msgstr "Şifre"
 
-#: ../register-plus-redux.php:1692
+#: rpr-login.php:224 rpr-signup.php:398
 msgid "Confirm Password"
 msgstr "Şifreyi Tekrar Giriniz"
 
-#: ../register-plus-redux.php:1698
-#, php-format
+#: rpr-login.php:230 rpr-signup.php:406
 msgid ""
 "Your password must be at least %d characters long. To make your password "
 "stronger, use upper and lower case letters, numbers, and the following "
@@ -906,7 +994,7 @@ msgstr ""
 "için aşağıdaki gibi , üst ve küçük harfler, sayılar ve semboller kullanın !@#"
 "$%%^&*()"
 
-#: ../register-plus-redux.php:1710
+#: rpr-login.php:243 rpr-signup.php:420
 msgid ""
 "This website is currently closed to public registrations. You will need an "
 "invitation code to register."
@@ -914,157 +1002,295 @@ msgstr ""
 "Bu sitede üye kayıtları kapatılmıştır. Ancak davet kodunuz olduğunda üye "
 "olabilirsiniz."
 
-#: ../register-plus-redux.php:1712
+#: rpr-login.php:246 rpr-signup.php:422
 msgid "Have an invitation code? Enter it here. (This is not required)"
 msgstr "Davut kodunuz varsa lütfen giriniz. (opsiyonel)"
 
-#: ../register-plus-redux.php:1760
+#: rpr-login.php:298 rpr-login.php:304 rpr-login.php:309 rpr-login.php:312
+#: rpr-login.php:317 rpr-login.php:322 rpr-login.php:327 rpr-login.php:332
+#: rpr-login.php:337 rpr-login.php:342 rpr-login.php:347 rpr-login.php:355
+#: rpr-login.php:358 rpr-login.php:363 rpr-login.php:366 rpr-login.php:369
+#: rpr-login.php:374 rpr-login.php:385 rpr-login.php:395 rpr-login.php:403
+#: rpr-login.php:408 rpr-login.php:413
+msgid "ERROR"
+msgstr "HATA"
+
+#: rpr-login.php:298
 msgid ""
-"<strong>ERROR</strong>: This username is already registered, please choose "
-"another one."
+"Email address is not appropriate as a username, please enter another email "
+"address."
 msgstr ""
-"<strong>HATA</strong>: Bu kullanıcı adı kullanımda. Lütfen farklı bir isimle "
-"deneyiniz."
 
-#: ../register-plus-redux.php:1765
-msgid "<strong>ERROR</strong>: Please confirm your e-mail address."
-msgstr "<strong>HATA</strong>: Lütfen e-posta adresinizi onaylayın"
+#: rpr-login.php:304
+#, fuzzy
+msgid "This username is already registered, please choose another one."
+msgstr "Bu kullanıcı adı kullanımda. Lütfen farklı bir isimle deneyiniz."
 
-#: ../register-plus-redux.php:1767
-msgid "<strong>ERROR</strong>: Your e-mail address does not match."
-msgstr "<strong>HATA</strong>: E-posta adresiniz eşleşmiyor."
+#: rpr-login.php:309 rpr-signup.php:519
+#, fuzzy
+msgid "Please confirm your e-mail address."
+msgstr "Lütfen e-posta adresinizi onaylayın"
 
-#: ../register-plus-redux.php:1774
-msgid "<strong>ERROR</strong>: Please enter your first name."
-msgstr "<strong>HATA</strong>: Lütfen adınızı girin."
+#: rpr-login.php:312 rpr-signup.php:522
+#, fuzzy
+msgid "Your e-mail address does not match."
+msgstr "E-posta adresiniz eşleşmiyor."
 
-#: ../register-plus-redux.php:1779
-msgid "<strong>ERROR</strong>: Please enter your last name."
-msgstr "<strong>HATA</strong>: Lütfen soyadınızı girin."
+#: rpr-login.php:317 rpr-signup.php:527
+#, fuzzy
+msgid "Please enter your first name."
+msgstr "Lütfen adınızı girin."
 
-#: ../register-plus-redux.php:1784
-msgid "<strong>ERROR</strong>: Please enter your website URL."
-msgstr "<strong>HATA</strong>: Lütfen site adresinizi girin"
+#: rpr-login.php:322 rpr-signup.php:532
+#, fuzzy
+msgid "Please enter your last name."
+msgstr "Lütfen soyadınızı girin."
 
-#: ../register-plus-redux.php:1789
-msgid "<strong>ERROR</strong>: Please enter your AIM username."
-msgstr "<strong>HATA</strong>: Lütfen AIM kullanıcı adını giriniz."
+#: rpr-login.php:327 rpr-signup.php:537
+#, fuzzy
+msgid "Please enter your website URL."
+msgstr "Lütfen site adresinizi girin"
 
-#: ../register-plus-redux.php:1794
-msgid "<strong>ERROR</strong>: Please enter your Yahoo IM username."
+#: rpr-login.php:332 rpr-signup.php:542
+#, fuzzy
+msgid "Please enter your AIM username."
+msgstr "Lütfen AIM kullanıcı adını giriniz."
+
+#: rpr-login.php:337 rpr-signup.php:547
+#, fuzzy
+msgid "Please enter your Yahoo IM username."
 msgstr "<strong>HATA</strong>:Lütfen Yahoo IM kullanıcı adını giriniz."
 
-#: ../register-plus-redux.php:1799
-msgid ""
-"<strong>ERROR</strong>: Please enter your Jabber / Google Talk username."
+#: rpr-login.php:342 rpr-signup.php:552
+#, fuzzy
+msgid "Please enter your Jabber / Google Talk username."
 msgstr ""
 "<strong>HATA</strong>:Lütfen Jabber / Google Talk kullanıcı adını giriniz."
 
-#: ../register-plus-redux.php:1804
-msgid "<strong>ERROR</strong>: Please enter some information about yourself."
+#: rpr-login.php:347 rpr-signup.php:557
+#, fuzzy
+msgid "Please enter some information about yourself."
+msgstr "Lütfen kendiniz hakkında kısa birşeyler paylaşın"
+
+#: rpr-login.php:355 rpr-signup.php:565
+msgid "Please enter a value for %s."
 msgstr ""
-"<strong>HATA</strong>: Lütfen kendiniz hakkında kısa birşeyler paylaşın"
 
-#: ../register-plus-redux.php:1813
-#, php-format
-msgid "<strong>ERROR</strong>: Please complete %s."
-msgstr "<strong>HATA</strong>: Lütfen %s tamamlayınız"
-
-#: ../register-plus-redux.php:1819
-msgid "<strong>ERROR</strong>: Please enter a password."
-msgstr "<strong>HATA</strong>: Lütfen bir şifre giriniz"
-
-#: ../register-plus-redux.php:1821
-msgid "<strong>ERROR</strong>: Your password does not match."
-msgstr ""
-"<strong>HATA</strong>: Şifreleriniz uyuşmuyor. Lütfen tekrar ve dikkatli "
-"giriniz."
-
-#: ../register-plus-redux.php:1823
-#, php-format
+#: rpr-login.php:358 rpr-signup.php:568
 msgid ""
-"<strong>ERROR</strong>: Your password must be at least %d characters in "
-"length."
+"Please enter new value for %s, value specified is not in the correct format."
 msgstr ""
-"<strong>HATA</strong>: Şifreniz en az %d karakter yada daha uzun olmalıdır."
 
-#: ../register-plus-redux.php:1830
-msgid "<strong>ERROR</strong>: Please enter an invitation code."
-msgstr "<strong>HATA</strong>: Davet kodunu giriniz."
+#: rpr-login.php:363 rpr-signup.php:573
+#, fuzzy
+msgid "Please enter a password."
+msgstr "Lütfen bir şifre giriniz"
 
-#: ../register-plus-redux.php:1841
-msgid "<strong>ERROR</strong>: That invitation code is invalid."
-msgstr "<strong>HATA</strong>: Davet kodu geçersiz."
+#: rpr-login.php:366 rpr-signup.php:576
+#, fuzzy
+msgid "Your password must be at least %d characters in length."
+msgstr "Şifreniz en az %d karakter yada daha uzun olmalıdır."
 
-#: ../register-plus-redux.php:1847 ../register-plus-redux.php:1852
-#: ../register-plus-redux.php:1857
-#, php-format
-msgid "<strong>ERROR</strong>: Please accept the %s"
+#: rpr-login.php:369 rpr-signup.php:579
+#, fuzzy
+msgid "Your password does not match."
+msgstr "Şifreleriniz uyuşmuyor. Lütfen tekrar ve dikkatli giriniz."
+
+#: rpr-login.php:374 rpr-signup.php:589
+#, fuzzy
+msgid "Please enter an invitation code."
+msgstr "Davet kodunu giriniz."
+
+#: rpr-login.php:385 rpr-signup.php:600
+#, fuzzy
+msgid "That invitation code is invalid."
+msgstr "Davet kodu geçersiz."
+
+#: rpr-login.php:395 rpr-signup.php:610
+msgid ""
+"This invitation code is already in use, please enter a unique invitation "
+"code."
+msgstr ""
+
+#: rpr-login.php:403 rpr-login.php:408 rpr-login.php:413 rpr-signup.php:618
+#: rpr-signup.php:623 rpr-signup.php:628
+#, fuzzy
+msgid "Please accept the %s"
 msgstr "<strong>HATA</strong> Lütfen %s onaylayınız"
 
-#: ../register-plus-redux.php:1884
-#, php-format
-msgid "Thank you %s, your account has been verified, please login."
+#: rpr-login.php:445
+#, fuzzy
+msgid ""
+"Thank you %s, your account has been verified, please login with the password "
+"you specified during registration."
 msgstr "Teşekkürler %s, hesabınız onaylandı. Şimdi giriş yapabilirsiniz."
 
-#: ../register-plus-redux.php:1887 ../register-plus-redux.php:2025
+#: rpr-login.php:447
+#, fuzzy
 msgid ""
-"Your account will be reviewed by an administrator and you will be notified "
-"when it is activated."
+"Thank you %s, your account has been verified, your password will be emailed "
+"to you."
+msgstr "Teşekkürler %s, hesabınız onaylandı. Şimdi giriş yapabilirsiniz."
+
+#: rpr-login.php:455
+#, fuzzy
+msgid "Invalid verification code."
+msgstr "E-posta Doğrulama"
+
+#: rpr-signup.php:502
+msgid "Sorry, that username already exists!"
 msgstr ""
-"Hesabınız yönetici tarafından incelenecek ve onaylandığında bildirilecek."
 
-#: ../register-plus-redux.php:1925
-msgid "Additional Information"
-msgstr "Ek Bilgiler"
-
-#: ../register-plus-redux.php:2023
+#: rpr-signup.php:511
 msgid ""
-"Please verify your account using the verification link sent to your email "
-"address."
+"That username is currently reserved but may be available in a couple of days."
 msgstr ""
-"Lütfen e-posta adresinize gönderilen doğrulama bağlantısı ile hesabınızı "
-"doğrulayınız."
 
-#: ../register-plus-redux.php:2076
-msgid "Your Login Information"
-msgstr "Giriş Bilgileriniz"
+#: rpr-signup.php:514
+msgid "username and email used"
+msgstr ""
 
-#: ../register-plus-redux.php:2084
-msgid "Verify Your Account"
-msgstr "Hesabınızı Doğrulayınız"
+#. Plugin Name of the plugin/theme
+#, fuzzy
+msgid "Register Plus Redux"
+msgstr "Register Plus Redux Ayarları"
 
-#: ../register-plus-redux.php:2094
-msgid "New User Registered"
-msgstr "Yeni Kayıtlı Kullanıcı"
+#. Plugin URI of the plugin/theme
+msgid "http://radiok.info/blog/category/register-plus-redux/"
+msgstr ""
 
-#: ../register-plus-redux.php:2224
-msgid "Settings"
-msgstr "Ayarlar"
-
-#: ../register-plus-redux.php:2284
+#. Description of the plugin/theme
 msgid ""
-"There is another active plugin that is conflicting with Register Plus Redux. "
-"The conflicting plugin is creating its own wp_new_user_notification "
-"function, this function is used to alter the messages sent out following the "
-"creation of a new user. Please refer to <a href='http://radiok.info/blog/"
-"wp_new_user_notification-conflicts/'>http://radiok.info/blog/"
-"wp_new_user_notification-conflicts/</a> for help resolving this issue."
+"Enhances the user registration process with complete customization and "
+"additional administration options."
 msgstr ""
-"Register Plus Redux eklentisi ile çakışan başka bir aktif eklenti var. Bu "
-"çakışan eklenti kendi wp_new_user_notification fonsiyonunu yaratıyor. Sorunu "
-"çözmek için ; <a href='http://radiok.info/blog/wp_new_user_notification-"
-"conflicts/'>Buraya Tıklayınız/</a> "
 
-#: ../register-plus-redux.php:2289
-#, php-format
-msgid ""
-"Register Plus Redux requires WordPress 3.0 or greater. You are currently "
-"using WordPress %s, please upgrade or deactivate Register Plus Redux."
+#. Author of the plugin/theme
+msgid "radiok"
 msgstr ""
-"Register Plus Redux WordPress 3.0 ya da daha yüksek gerektirir. Şu anda "
-"WordPress %s kullanıyorsanız, Kayıt Artı Redux yükseltme veya devre dışı "
-"bırakın."
+
+#. Author URI of the plugin/theme
+msgid "http://radiok.info/"
+msgstr ""
+
+#~ msgid "Date Field"
+#~ msgstr "Tarih Alanı"
+
+#~ msgid "URL Field"
+#~ msgstr "URL Alanı"
+
+#~ msgid "Move this Field Up"
+#~ msgstr "Bu alanı yukarı taşı"
+
+#~ msgid "Move this Field Down"
+#~ msgstr "Bu alanı aşağı taşı"
+
+#~ msgid "You must Save Changes to upload logo."
+#~ msgstr ""
+#~ "Logoyu seçtikten sonra sayfa altından \"Değişiklikleri Kaydet\" tıklamayı "
+#~ "unutmayın!"
+
+#~ msgid "Name"
+#~ msgstr "İsim"
+
+#~ msgid "Type"
+#~ msgstr "Türü"
+
+#~ msgid "Date Field Settings"
+#~ msgstr "Tarih Alanı Ayarları"
+
+#~ msgid "First Day of the Week"
+#~ msgstr "Haftanın İlk Günü"
+
+#~ msgid "Monday"
+#~ msgstr "Pazartesi"
+
+#~ msgid "Tuesday"
+#~ msgstr "Salı"
+
+#~ msgid "Wednesday"
+#~ msgstr "Çarşamba"
+
+#~ msgid "Thursday"
+#~ msgstr "Perşembe"
+
+#~ msgid "Friday"
+#~ msgstr "Cuma"
+
+#~ msgid "Saturday"
+#~ msgstr "Cumartesi"
+
+#~ msgid "Sunday"
+#~ msgstr "Pazar"
+
+#~ msgid "Date Format"
+#~ msgstr "Tarih Biçimi"
+
+#~ msgid "First Selectable Date"
+#~ msgstr "İlk Seçilebilir Tarih"
+
+#~ msgid "Default Year"
+#~ msgstr "Varsayılan Yıl"
+
+#~ msgid "Default Month"
+#~ msgstr "Varsayılan Ay"
+
+#~ msgid "Current Month"
+#~ msgstr "Şimdiki Ay"
+
+#~ msgid "Jan"
+#~ msgstr "Ocak"
+
+#~ msgid "Feb"
+#~ msgstr "Şubat"
+
+#~ msgid "Mar"
+#~ msgstr "Mart"
+
+#~ msgid "Apr"
+#~ msgstr "Nisan"
+
+#~ msgid "May"
+#~ msgstr "Mayıs"
+
+#~ msgid "Jun"
+#~ msgstr "Haziran"
+
+#~ msgid "Jul"
+#~ msgstr "Temmz"
+
+#~ msgid "Aug"
+#~ msgstr "Ağustos"
+
+#~ msgid "Sep"
+#~ msgstr "Eylül"
+
+#~ msgid "Oct"
+#~ msgstr "Ekim"
+
+#~ msgid "Nov"
+#~ msgstr "Kasım"
+
+#~ msgid "Dec"
+#~ msgstr "Aralık"
+
+#~ msgid ""
+#~ "For any custom fields, use your custom field label with the text all "
+#~ "lowercase, using underscores instead of spaces. For example if your "
+#~ "custom field was \"Middle Name\" your query key would be %middle_name%"
+#~ msgstr ""
+#~ "For any custom fields, use your custom field label with the text all "
+#~ "lowercase, using underscores instead of spaces. For example if your "
+#~ "custom field was \"Middle Name\" your query key would be %middle_name%"
+
+#~ msgid "Example Query URL"
+#~ msgstr "Örnek SORGU Adresi"
+
+#~ msgid "Login URL"
+#~ msgstr "Giriş Adresi"
+
+#~ msgid "<strong>ERROR</strong>: Please complete %s."
+#~ msgstr "<strong>HATA</strong>: Lütfen %s tamamlayınız"
 
 #~ msgid "Agreement Text"
 #~ msgstr "متن توافقنامه"
@@ -1080,9 +1306,6 @@ msgstr ""
 
 #~ msgid "Good Password"
 #~ msgstr "کلمه عبور خوب"
-
-#~ msgid "Strong Password"
-#~ msgstr "کلمه عبور قوی"
 
 #~ msgid "Password Mismatch"
 #~ msgstr "عدم تطابق کلمه عبور"
