@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.6
+Stable tag: 3.9.7
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -113,6 +113,11 @@ HTML attributes should go in the following order name -> id -> class
 4. Unverified User Management
 
 == Changelog ==
+
+= 3.9.7 =
+March 2, 2013 by radiok
+
+* Regression, PHP 5.3+ required for class constants, reverting to global constant
 
 = 3.9.6 =
 March 2, 2013 by radiok

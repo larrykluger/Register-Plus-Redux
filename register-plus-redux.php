@@ -5,7 +5,7 @@ Plugin Name: Register Plus Redux
 Author URI: http://radiok.info/
 Plugin URI: http://radiok.info/blog/category/register-plus-redux/
 Description: Enhances the user registration process with complete customization and additional administration options.
-Version: 3.9.6.1
+Version: 3.9.7
 Text Domain: register-plus-redux
 Domain Path: /languages
 */
@@ -27,10 +27,10 @@ Domain Path: /languages
 // TODO: Enhancement- Alter admin pages to match registration/signup
 // TODO: Enhancement- Widget is lame/near worthless
 
+define( 'RPR_ACTIVATION_REQUIRED', '3.9.6' );
+
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
 	class Register_Plus_Redux {
-		const activation_required = '3.9.6';
-		
 		private /*.array[string]mixed.*/ $options;
 
 		public /*.void.*/ function __construct() {

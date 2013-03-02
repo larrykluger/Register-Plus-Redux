@@ -13,7 +13,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 
 			if ( !current_user_can( 'manage_options' ) ) return;
 			
-			if ( $register_plus_redux::activation_required !== $register_plus_redux->rpr_get_option( 'last_activated' ) ) {
+			if ( RPR_ACTIVATION_REQUIRED !== $register_plus_redux->rpr_get_option( 'last_activated' ) ) {
 				$register_plus_redux->rpr_activation();
 			}
 
