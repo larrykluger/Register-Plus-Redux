@@ -936,10 +936,35 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		public /*.void.*/ function rpr_users_submenu() {
 			global $register_plus_redux;
 			global $wpdb;
-			if ( ( isset( $_REQUEST['action'] ) && 'verify_users' === $_REQUEST['action'] ) || isset( $_REQUEST['verify_users'] ) ) {
+			if ( isset( $_GET['action'] ) && 'approve_user' === $_GET['action'] && isset( $_GET['user_id'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
-				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
-					foreach ( (array) $_REQUEST['users'] as $id ) {
+				$user_id = (int) $_GET['user_id'];
+				if ( current_user_can( 'promote_user', $user_id ) ) {
+					$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
+					$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
+					$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
+					if ( empty( $plaintext_pass ) ) {
+						$plaintext_pass = wp_generate_password();
+						update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
+						wp_set_password( $plaintext_pass, $user_id );
+					}
+					do_action( 'rpr_signup_complete', $user_id );
+					if ( $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) == FALSE )
+						$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
+					if ( $register_plus_redux->rpr_get_option( 'admin_message_when_verified' ) == TRUE )
+						$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass );
+					delete_user_meta( $user_id, 'email_verification_code' );
+					delete_user_meta( $user_id, 'email_verification_sent' );
+					delete_user_meta( $user_id, 'email_verified' );
+					delete_user_meta( $user_id, 'stored_user_login' );
+					delete_user_meta( $user_id, 'stored_user_password' );
+					$_REQUEST['completed'] = 'approved_user';
+				}
+			}
+			if ( ( isset( $_POST['action'] ) && 'approve_users' === $_POST['action'] ) || isset( $_POST['approve_users'] ) ) {
+				check_admin_referer( 'register-plus-redux-unverified-users' );
+				if ( isset( $_POST['users'] ) && is_array( $_POST['users'] ) && !empty( $_POST['users'] ) ) {
+					foreach ( (array) $_POST['users'] as $id ) {
 						$user_id = (int) $id;
 						if ( current_user_can( 'promote_user', $user_id ) ) {
 							$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
@@ -960,45 +985,76 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							delete_user_meta( $user_id, 'email_verified' );
 							delete_user_meta( $user_id, 'stored_user_login' );
 							delete_user_meta( $user_id, 'stored_user_password' );
+							$_REQUEST['completed'] = 'approved_users';
 						}
 					}
 				}
 			}
-			if ( ( isset( $_REQUEST['action'] ) && 'send_verification_email' === $_REQUEST['action'] ) || isset( $_REQUEST['send_verification_email'] ) ) {
+			if ( isset( $_GET['action'] ) && 'send_verification_email' === $_GET['action'] && isset( $_GET['user_id'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
-				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
-					foreach ( (array) $_REQUEST['users'] as $id ) {
+				$user_id = (int) $_GET['user_id'];
+				$verification_code = wp_generate_password( 20, FALSE );
+				update_user_meta( $user_id, 'email_verification_code', $verification_code );
+				update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
+				$register_plus_redux->send_verification_mail( $user_id, $verification_code );
+				$_REQUEST['completed'] = 'sent_verification_email';
+			}
+			if ( ( isset( $_POST['action'] ) && 'send_verification_emails' === $_POST['action'] ) || isset( $_POST['send_verification_emails'] ) ) {
+				check_admin_referer( 'register-plus-redux-unverified-users' );
+				if ( isset( $_POST['users'] ) && is_array( $_POST['users'] ) && !empty( $_POST['users'] ) ) {
+					foreach ( (array) $_POST['users'] as $id ) {
 						$user_id = (int) $id;
-						if ( current_user_can( 'promote_user', $user_id ) ) {
-							$verification_code = wp_generate_password( 20, FALSE );
-							update_user_meta( $user_id, 'email_verification_code', $verification_code );
-							update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
-							$register_plus_redux->send_verification_mail( $user_id, $verification_code );
-						}
+						$verification_code = wp_generate_password( 20, FALSE );
+						update_user_meta( $user_id, 'email_verification_code', $verification_code );
+						update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
+						$register_plus_redux->send_verification_mail( $user_id, $verification_code );
+						$_REQUEST['completed'] = 'sent_verification_emails';
 					}
 				}
 			}
-			if ( ( isset( $_REQUEST['action'] ) && 'delete_users' === $_REQUEST['action'] ) || isset( $_REQUEST['delete_users'] ) ) {
+			if ( isset( $_GET['action'] ) && 'delete_user' === $_GET['action'] && isset( $_GET['user_id'] ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
-				if ( isset( $_REQUEST['users'] ) && is_array( $_REQUEST['users'] ) && !empty( $_REQUEST['users'] ) ) {
+				//necessary for wp_delete_user to function
+				if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
+				if ( current_user_can( 'delete_user', (int) $_GET['user_id'] ) ) { 
+					wp_delete_user( (int) $_GET['user_id'] );
+					$_REQUEST['completed'] = 'deleted_user';
+				}
+				// TODO: Odd bug, if unverified users exist, page exists, if from page all unverified users are deleted, on the post back page won't have any reason to exist anymore, need a redirect in that case
+			}
+			if ( ( isset( $_POST['action'] ) && 'delete_users' === $_POST['action'] ) || isset( $_POST['delete_users'] ) ) {
+				check_admin_referer( 'register-plus-redux-unverified-users' );
+				if ( isset( $_POST['users'] ) && is_array( $_POST['users'] ) && !empty( $_POST['users'] ) ) {
 					//necessary for wp_delete_user to function
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
-					foreach ( (array) $_REQUEST['users'] as $id ) {
+					foreach ( (array) $_POST['users'] as $id ) {
 						$user_id = (int) $id;
-						if ( current_user_can( 'delete_user', $user_id ) ) { wp_delete_user( $user_id ); }
+						if ( current_user_can( 'delete_user', $user_id ) ) { 
+							wp_delete_user( $user_id );
+							$_REQUEST['completed'] = 'deleted_users';
+						}
 					}
 					// TODO: Odd bug, if unverified users exist, page exists, if from page all unverified users are deleted, on the post back page won't have any reason to exist anymore, need a redirect in that case
 				}
 			}
-			if ( !empty( $_REQUEST['action'] ) ) {
-				switch( (string) $_REQUEST['action'] ) {
-					case 'verify_users':
+			if ( !empty( $_REQUEST['completed'] ) ) {
+				switch( (string) $_REQUEST['completed'] ) {
+					case 'approved_user':
+						echo '<div id="message" class="updated"><p>', __( 'User approved.', 'register-plus-redux' ), '</p></div>';
+						break;
+					case 'approved_users':
 						echo '<div id="message" class="updated"><p>', __( 'Users approved.', 'register-plus-redux' ), '</p></div>';
 						break;
-					case 'send_verification_email':
+					case 'sent_verification_email':
+						echo '<div id="message" class="updated"><p>', __( 'Verification email sent.', 'register-plus-redux' ), '</p></div>';
+						break;
+					case 'sent_verification_emails':
 						echo '<div id="message" class="updated"><p>', __( 'Verification emails sent.', 'register-plus-redux' ), '</p></div>';
 						break;
-					case 'delete_users':
+					case 'deleted_user':
+						echo '<div id="message" class="updated"><p>', __( 'User deleted.', 'register-plus-redux' ), '</p></div>';
+						break;
+					case 'deleted_users':
 						echo '<div id="message" class="updated"><p>', __( 'Users deleted.', 'register-plus-redux' ), '</p></div>';
 						break;
 					default:
@@ -1013,12 +1069,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<div class="alignleft actions">
 						<select name="action">
 							<option value="" selected="selected"><?php _e( 'Bulk Actions', 'register-plus-redux' ); ?></option>
-							<?php if ( current_user_can( 'promote_users' ) ) echo '<option value="verify_users">', __( 'Approve', 'register-plus-redux' ), '</option>', "\n"; ?>
-							<option value="send_verification_email"><?php _e( 'Send E-mail Verification', 'register-plus-redux' ); ?></option>
+							<?php if ( current_user_can( 'promote_users' ) ) echo '<option value="approve_users">', __( 'Approve', 'register-plus-redux' ), '</option>', "\n"; ?>
+							<option value="send_verification_emails"><?php _e( 'Send E-mail Verification', 'register-plus-redux' ); ?></option>
 							<?php if ( current_user_can( 'delete_users' ) ) echo '<option value="delete_users">', __( 'Delete', 'register-plus-redux' ), '</option>', "\n"; ?>
 						</select>
 						<input type="submit" value="<?php esc_attr_e( 'Apply', 'register-plus-redux' ); ?>" name="doaction" id="doaction" class="button-secondary action" />
-
 					</div>
 					<br class="clear">
 				</div>
@@ -1046,10 +1101,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 								<tr id="user-<?php echo $user_info->ID; ?>"<?php echo $style; ?>>
 									<th scope="row" class="check-column"><input type="checkbox" name="users[]" id="user_<?php echo $user_info->ID; ?>" name="user_<?php echo $user_info->ID; ?>" value="<?php echo $user_info->ID; ?>"></th>
 									<td class="username column-username">
-										<strong><?php if ( current_user_can( 'edit_users' ) ) echo '<a href="', esc_url( add_query_arg( array( 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php') ) , '">', $user_info->stored_user_login, '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
+										<strong><?php if ( current_user_can( 'edit_users' ) )    echo                         '<a href="', esc_url(      add_query_arg( array(                                                                      'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php')                                        ), '"                     >', $user_info->stored_user_login,                    '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
 										<div class="row-actions">
-											<?php if ( current_user_can( 'edit_users' ) ) echo '<span class="edit"><a href="', esc_url( add_query_arg( array( 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php') ), '">', __( 'Edit', 'register-plus-redux' ), '</a></span>', "\n"; ?>
-											<?php if ( current_user_can( 'delete_users' ) ) echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'action' => 'delete', 'user' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'), 'bulk-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ), '</a></span>', "\n"; ?>
+											<?php if ( current_user_can( 'promote_users' ) ) echo '<span class="edit">     <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'approve_user',            'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '"                     >', __( 'Approve', 'register-plus-redux' ),           '</a></span> | ', "\n"; ?>
+											<?php                                            echo '<span class="edit">     <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'send_verification_email', 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '"                     >', __( 'Send Verification', 'register-plus-redux' ), '</a></span>   ', "\n"; ?>
+											<?php if ( current_user_can( 'delete_users' ) )  echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'delete_user',             'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ),            '</a></span>   ', "\n"; ?>
 										</div>
 									</td>
 									<td><?php echo $user_info->user_login; ?></td>
@@ -1066,9 +1122,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				</table>
 				<div class="tablenav">
 					<div class="alignleft actions">
-						<?php if ( current_user_can( 'promote_users' ) ) echo '<input type="submit" value="', esc_attr__( 'Approve Selected Users', 'register-plus-redux' ), '" name="verify_users" class="button-secondary action" />&nbsp;', "\n"; ?>
-						<input type="submit" value="<?php esc_attr_e( 'Send E-mail Verification to Selected Users', 'register-plus-redux' ); ?>" name="send_verification_email" class="button-secondary action" />&nbsp;
-						<?php if ( current_user_can( 'delete_users' ) ) echo '&nbsp;<input type="submit" value="', esc_attr__( 'Delete Selected Users', 'register-plus-redux' ), '" name="delete_users" class="button-secondary action" />', "\n"; ?>
+						<?php if ( current_user_can( 'promote_users' ) ) echo       '<input type="submit" value="',    esc_attr__( 'Approve Selected Users',                     'register-plus-redux' ),  '" name="approve_users"            class="button-secondary action" />&nbsp;', "\n"; ?>
+					                                                                     <input type="submit" value="<?php esc_attr_e( 'Send E-mail Verification to Selected Users', 'register-plus-redux' ); ?>" name="send_verification_emails" class="button-secondary action" />
+						<?php if ( current_user_can( 'delete_users' ) )  echo '&nbsp;<input type="submit" value="',    esc_attr__( 'Delete Selected Users',                      'register-plus-redux' ),  '" name="delete_users"             class="button-secondary action" />',       "\n"; ?>
 					</div>
 					<br class="clear">
 				</div>
