@@ -2,7 +2,6 @@
 if ( !class_exists( 'RPR_Signup' ) ) {
 	class RPR_Signup {
 		public /*.void.*/ function __construct() {
-			//add_action( 'init', array( $this, 'rpr_signup_init' ), 10, 1 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'rpr_enqueue_scripts' ), 10, 0 );
 			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 0 );
 			add_action( 'signup_extra_fields', array( $this, 'rpr_signup_extra_fields' ), 9, 1 ); // Higher priority to avoid getting bumped by other plugins
@@ -14,13 +13,6 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			add_action( 'signup_finished', array( $this, 'rpr_signup_finished' ), 10, 0 );
 			add_filter( 'random_password', array( $this, 'rpr_signup_filter_random_password' ), 10, 1 ); // Replace random password with user set password
 			add_action( 'preprocess_signup_form', array( $this, 'rpr_preprocess_signup_form' ), 10, 0 );
-		}
-
-		public /*.void.*/ function rpr_signup_init() {
-			global $pagenow;
-			if ( $pagenow === 'wp-signup.php' ) {
-				trigger_error( sprintf( __( 'Register Plus Redux DEBUG: rpr_test from %s', 'register-plus-redux' ), $pagenow ) );
-			}
 		}
 
 		public /*.void.*/ function rpr_enqueue_scripts() {
@@ -736,9 +728,10 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				    echo '<p>'.$result->get_error_message().'</p>';
 				}
 			} else {
-				extract($result);
-				$url = get_blogaddress_by_id( (int) $blog_id);
-				$user = get_userdata( (int) $user_id);
+				//TODO: Why not reference $result->blog_id?
+				extract( $result );
+				$url = get_blogaddress_by_id( (int) $blog_id );
+				$user = get_userdata( (int) $user_id );
 				?>
 				<h2><?php _e('Your account is now active!'); ?></h2>
 	

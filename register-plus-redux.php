@@ -12,6 +12,7 @@ Domain Path: /languages
 
 // NOTE: Debug, no more echoing
 // trigger_error( sprintf( 'Register Plus Redux DEBUG: function($parameter=%s) from %s', print_r( $value, TRUE ), $pagenow ) ); 
+// trigger_error( sprintf( 'Register Plus Redux DEBUG: function($parameter=%s)', print_r( $value, TRUE ) ) ); 
 
 // TODO: meta key could be changed and ruin look ups
 // TODO: Datepicker is never exposed as an option
@@ -31,6 +32,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		private /*.array[string]mixed.*/ $options;
 
 		public /*.void.*/ function __construct() {
+			register_activation_hook( __FILE__, array( $this, 'rpr_activation' ) );
+			register_deactivation_hook( __FILE__, array( 'Register_Plus_Redux', 'rpr_uninstall' ) );
+			register_uninstall_hook( __FILE__, array( 'Register_Plus_Redux', 'rpr_uninstall' ) );
+
 			add_action( 'init', array( $this, 'rpr_i18n_init' ), 10, 1 );
 
 			if ( !is_multisite() ) {
@@ -43,6 +48,24 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 			add_action( 'admin_head-profile.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 			add_action( 'admin_head-user-edit.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
+		}
+
+		public /*.void.*/ function rpr_activation() {
+			global $wp_roles;
+		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
+		 		if ( 'rpr_unverified' !== $role_name ) {
+			 		$wp_roles->add_cap( $role_name, 'rpr_login' );
+		 		}
+			}
+			add_role( 'rpr_unverified', 'Unverified' );
+		}
+
+		public static /*.void.*/ function rpr_uninstall() {
+			global $wp_roles;
+			remove_role( 'rpr_unverified' );
+		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
+		 		$wp_roles->remove_cap( $role_name, 'rpr_login' );
+			}
 		}
 
 		public static /*.mixed.*/ function default_options( $option = '' )
@@ -345,15 +368,15 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
-		// $user_info is a WP_User object
-		public /*.string.*/ function replace_keywords( /*.mixed.*/ $message, $user_info, $plaintext_pass = '', $verification_code = '' ) {
+		// $user is a WP_User object
+		public /*.string.*/ function replace_keywords( /*.mixed.*/ $message, $user, $plaintext_pass = '', $verification_code = '' ) {
 			global $pagenow;
-			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %stored_user_login% %user_password% %verification_code% %verification_url%';
+			if ( empty( $message ) ) return '%blogname% %site_url% %http_referer% %http_user_agent% %registered_from_ip% %registered_from_host% %user_login% %user_email% %user_password% %verification_code% %verification_url%';
 
 			preg_match_all( '/%=([^%]+)%/', (string) $message, $keys );
 			if ( is_array( $keys ) && is_array( $keys[1] ) ) {
 				foreach( $keys[1] as $key ) {
-					$message = str_replace( "%=$key%", get_user_meta( $user_info->ID, $key, TRUE ), $message );
+					$message = str_replace( "%=$key%", get_user_meta( $user->ID, $key, TRUE ), $message );
 				}
 			}
 
@@ -363,7 +386,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			$message = str_replace( '%blogname%', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $message );
 			$message = str_replace( '%site_url%', site_url(), $message );
 			$message = str_replace( '%?pagenow%', $pagenow, $message ); //debug keyword
-			$message = str_replace( '%?user_info%', print_r( $user_info, TRUE ), $message ); //debug keyword
+			$message = str_replace( '%?user_info%', print_r( $user, TRUE ), $message ); //debug keyword
 			$message = str_replace( '%?keys%', print_r( $keys, TRUE ), $message ); //debug keyword
 
 			if ( !empty( $_SERVER ) ) {
@@ -372,17 +395,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$message = str_replace( '%registered_from_ip%', isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '', $message );
 				$message = str_replace( '%registered_from_host%', isset( $_SERVER['REMOTE_ADDR'] ) ? gethostbyaddr( $_SERVER['REMOTE_ADDR'] ) : '', $message );
 			}
-			if ( !empty( $user_info ) ) {
-				if ( '1' === $this->rpr_get_option( 'verify_user_email' ) || '1' === $this->rpr_get_option( 'verify_user_admin' ) ) {
-					$user_login = get_user_meta( $user_info->ID, 'stored_user_login', TRUE );
-					if ( empty( $user_login ) ) $user_login = $user_info->user_login;
-					$message = str_replace( '%user_login%', $user_login, $message );
-				}
-				else {
-					$message = str_replace( '%user_login%', $user_info->user_login, $message );
-				}
-				$message = str_replace( '%user_email%', $user_info->user_email, $message );
-				$message = str_replace( '%stored_user_login%', get_user_meta( $user_info->ID, 'stored_user_login', TRUE ), $message );
+			if ( !empty( $user ) ) {
+				$message = str_replace( '%user_login%', $user->user_login, $message );
+				$message = str_replace( '%user_email%', $user->user_email, $message );
+				$message = str_replace( '%stored_user_login%', $user->user_login, $message );
 			}
 			if ( !empty( $plaintext_pass ) ) {
 				$message = str_replace( '%user_password%', $plaintext_pass, $message );
@@ -431,7 +447,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		}
 
 		public /*.void.*/ function send_verification_mail( /*.int.*/ $user_id, /*.string.*/ $verification_code ) {
-			$user_info = get_userdata( $user_id );
+			$user = get_userdata( $user_id );
 			$subject = Register_Plus_Redux::default_options( 'verification_message_subject' );
 			$message = Register_Plus_Redux::default_options( 'verification_message_body' );
 			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
@@ -449,13 +465,13 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				if ( '1' === $this->rpr_get_option( 'send_verification_message_in_html' ) )
 					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
 			}
-			$subject = $this->replace_keywords( $subject, $user_info );
-			$message = $this->replace_keywords( $message, $user_info, '', $verification_code );
-			wp_mail( $user_info->user_email, $subject, $message );
+			$subject = $this->replace_keywords( $subject, $user );
+			$message = $this->replace_keywords( $message, $user, '', $verification_code );
+			wp_mail( $user->user_email, $subject, $message );
 		}
 
 		public /*.void.*/ function send_welcome_user_mail( /*.int.*/ $user_id, /*.string.*/ $plaintext_pass ) {
-			$user_info = get_userdata( $user_id );
+			$user = get_userdata( $user_id );
 			$subject = Register_Plus_Redux::default_options( 'user_message_subject' );
 			$message = Register_Plus_Redux::default_options( 'user_message_body' );
 			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
@@ -472,13 +488,13 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				if ( '1' === $this->rpr_get_option( 'send_user_message_in_html' ) )
 					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
 			}
-			$subject = $this->replace_keywords( $subject, $user_info );
-			$message = $this->replace_keywords( $message, $user_info, $plaintext_pass );
-			wp_mail( $user_info->user_email, $subject, $message );
+			$subject = $this->replace_keywords( $subject, $user );
+			$message = $this->replace_keywords( $message, $user, $plaintext_pass );
+			wp_mail( $user->user_email, $subject, $message );
 		}
 
 		public /*.void.*/ function send_admin_mail( /*.int.*/ $user_id, /*.string.*/ $plaintext_pass, $verification_code = '' ) {
-			$user_info = get_userdata( $user_id );
+			$user = get_userdata( $user_id );
 			$subject = Register_Plus_Redux::default_options( 'admin_message_subject' );
 			$message = Register_Plus_Redux::default_options( 'admin_message_body' );
 			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
@@ -495,8 +511,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				if ( '1' === $this->rpr_get_option( 'send_admin_message_in_html' ) )
 					add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_html' ), 10, 1 );
 			}
-			$subject = $this->replace_keywords( $subject, $user_info );
-			$message = $this->replace_keywords( $message, $user_info, $plaintext_pass, $verification_code );
+			$subject = $this->replace_keywords( $subject, $user );
+			$message = $this->replace_keywords( $message, $user, $plaintext_pass, $verification_code );
 			wp_mail( get_option( 'admin_email' ), $subject, $message );
 		}
 

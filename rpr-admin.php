@@ -116,41 +116,29 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 
 		public /*.void.*/ function rpr_delete_unverified_users() {
 			global $register_plus_redux;
-
 			if ( !current_user_can( 'delete_users' ) ) return;
-
-			$delete_unverified_users_after = $register_plus_redux->rpr_get_option( 'delete_unverified_users_after' );
-			if ( is_numeric( $delete_unverified_users_after ) && absint( $delete_unverified_users_after ) > 0 ) {
-				global $wpdb;
-				/*.array[]object.*/ $unverified_users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" );
-				//TODO: How often is this triggered?
-				if ( !empty( $unverified_users ) ) {
-					//$expirationdate = date( 'Ymd', strtotime( '-' . absint( $register_plus_redux->rpr_get_option( 'delete_unverified_users_after' ) ) . ' days' ) );
-					$expirationdate = strtotime( '-' . absint( $register_plus_redux->rpr_get_option( 'delete_unverified_users_after' ) ) . ' days' );
+			if ( absint( $register_plus_redux->rpr_get_option( 'delete_unverified_users_after' ) ) > 0 ) {
+				/*.object.*/ $user_query = new WP_User_Query( array( 'role' => 'rpr_unverified' ) );
+				if ( !empty( $user_query->results ) ) {
+					$expirationtimestamp = strtotime( '-' . absint( $register_plus_redux->rpr_get_option( 'delete_unverified_users_after' ) ) . ' days' );
 					//NOTE: necessary for wp_delete_user
 					if ( !function_exists( 'wp_delete_user' ) ) require_once( ABSPATH . '/wp-admin/includes/user.php' );
-					foreach ( $unverified_users as $unverified_user ) {
-						/*.object.*/ $user_info = get_userdata( $unverified_user->user_id );
-						if ( !empty( $user_info->stored_user_login ) && 'unverified_' === substr( $user_info->user_login, 0, 11 ) ) {
-							//if ( $expirationdate > date( 'Ymd', strtotime( $user_info->user_registered ) ) ) {
-							if ( $expirationdate > strtotime( $user_info->user_registered ) ) {
-								if ( !empty( $user_info->email_verification_sent ) ) {
-									//if ( $expirationdate > date( 'Ymd', strtotime( $user_info->email_verification_sent ) ) ) {
-									if ( $expirationdate > strtotime( $user_info->email_verification_sent ) ) {
-										if ( !empty( $user_info->email_verified ) ) {
-											//if ( $expirationdate > date( 'Ymd', strtotime( $user_info->email_verified ) ) ) {
-											if ( $expirationdate > strtotime( $user_info->email_verified ) ) {
-												wp_delete_user( $unverified_user->user_id );
-											}
-										}
-										else {
+					foreach ( $user_query->results as $user ) {
+						if ( $expirationtimestamp > strtotime( $user->user_registered ) ) {
+							if ( !empty( $user->email_verification_sent ) ) {
+								if ( $expirationtimestamp > strtotime( $user->email_verification_sent ) ) {
+									if ( !empty( $user->email_verified ) ) {
+										if ( $expirationtimestamp > strtotime( $user->email_verified ) ) {
 											wp_delete_user( $unverified_user->user_id );
 										}
 									}
+									else {
+										wp_delete_user( $unverified_user->user_id );
+									}
 								}
-								else {
-									wp_delete_user( $unverified_user->user_id );
-								}
+							}
+							else {
+								wp_delete_user( $unverified_user->user_id );
 							}
 						}
 					}

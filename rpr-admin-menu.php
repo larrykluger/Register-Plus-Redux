@@ -44,8 +44,10 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			add_action( 'admin_footer-' . $hookname, array( $this, 'rpr_options_submenu_footer' ), 10, 1 );
 			//add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
 			add_filter( 'plugin_action_links_' . 'register-plus-redux/register-plus-redux.php', array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
-			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) || '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) || 0 !== (int) $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" ) )
+			$user_query = new WP_User_Query( array( 'role' => 'rpr_unverified' ) );
+			if ( 0 < (int) $user_query->total_users || '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) || '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 				add_submenu_page( 'users.php', __( 'Unverified Users', 'register-plus-redux' ), __( 'Unverified Users', 'register-plus-redux' ), 'promote_users', 'unverified-users', array( $this, 'rpr_users_submenu' ) );
+			}
 		}
 
 		public /*.array[string]string.*/ function rpr_filter_plugin_action_links( /*.array[string]string.*/ $actions, /*.string.*/ $plugin_file, /*.string.*/ $plugin_data, /*.string.*/ $context ) {
@@ -940,9 +942,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				check_admin_referer( 'register-plus-redux-unverified-users' );
 				$user_id = (int) $_GET['user_id'];
 				if ( current_user_can( 'promote_user', $user_id ) ) {
-					$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
 					$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
-					$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
+					wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
 					if ( empty( $plaintext_pass ) ) {
 						$plaintext_pass = wp_generate_password();
 						update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
@@ -956,7 +957,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					delete_user_meta( $user_id, 'email_verification_code' );
 					delete_user_meta( $user_id, 'email_verification_sent' );
 					delete_user_meta( $user_id, 'email_verified' );
-					delete_user_meta( $user_id, 'stored_user_login' );
 					delete_user_meta( $user_id, 'stored_user_password' );
 					$_REQUEST['completed'] = 'approved_user';
 				}
@@ -967,9 +967,8 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					foreach ( (array) $_POST['users'] as $id ) {
 						$user_id = (int) $id;
 						if ( current_user_can( 'promote_user', $user_id ) ) {
-							$stored_user_login = get_user_meta( $user_id, 'stored_user_login', TRUE );
 							$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
-							$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user_id ) );
+							wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
 							if ( empty( $plaintext_pass ) ) {
 								$plaintext_pass = wp_generate_password();
 								update_user_option( $user_id, 'default_password_nag', TRUE, TRUE );
@@ -983,7 +982,6 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 							delete_user_meta( $user_id, 'email_verification_code' );
 							delete_user_meta( $user_id, 'email_verification_sent' );
 							delete_user_meta( $user_id, 'email_verified' );
-							delete_user_meta( $user_id, 'stored_user_login' );
 							delete_user_meta( $user_id, 'stored_user_password' );
 							$_REQUEST['completed'] = 'approved_users';
 						}
@@ -1081,8 +1079,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					<thead>
 						<tr class="thead">
 							<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><input type="checkbox" /></th>
-							<th scope="col" id="stored_username" class="manage-column column-stored_username" style=""><?php _e( 'Username', 'register-plus-redux' ); ?></th>
-							<th scope="col" id="temp_username" class="manage-column column-temp_username" style=""><?php _e( 'Temp Username', 'register-plus-redux' ); ?></th>
+							<th scope="col" id="username" class="manage-column column-username" style=""><?php _e( 'Username', 'register-plus-redux' ); ?></th>
 							<th scope="col" id="email" class="manage-column column-email" style=""><?php _e( 'E-mail', 'register-plus-redux' ); ?></th>
 							<th scope="col" id="registered" class="manage-column column-registered" style=""><?php _e( 'Registered', 'register-plus-redux' ); ?></th>
 							<th scope="col" id="verification_sent"class="manage-column column-verification_sent" style=""><?php _e( 'Verification Sent', 'register-plus-redux' ); ?></th>
@@ -1091,28 +1088,26 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					</thead>
 					<tbody id="users" class="list:user user-list">
 						<?php 
-						$unverified_users = $wpdb->get_results( "SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 'stored_user_login';" );
-						if ( !empty( $unverified_users ) ) {
+						/*.object.*/ $user_query = new WP_User_Query( array( 'role' => 'rpr_unverified' ) );
+						if ( !empty( $user_query->results ) ) {
 							$style = '';
-							foreach ( $unverified_users as $unverified_user ) {
-								$user_info = get_userdata( $unverified_user->user_id );
+							foreach ( $user_query->results as $user ) {
 								$style = ( $style == ' class="alternate"' ) ? '' : ' class="alternate"';
 								?>
-								<tr id="user-<?php echo $user_info->ID; ?>"<?php echo $style; ?>>
-									<th scope="row" class="check-column"><input type="checkbox" name="users[]" id="user_<?php echo $user_info->ID; ?>" name="user_<?php echo $user_info->ID; ?>" value="<?php echo $user_info->ID; ?>"></th>
+								<tr id="user-<?php echo $user->ID; ?>"<?php echo $style; ?>>
+									<th scope="row" class="check-column"><input type="checkbox" name="users[]" id="user_<?php echo $user->ID; ?>" name="user_<?php echo $user->ID; ?>" value="<?php echo $user->ID; ?>"></th>
 									<td class="username column-username">
-										<strong><?php if ( current_user_can( 'edit_users' ) )    echo                         '<a href="', esc_url(      add_query_arg( array(                                                                      'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php')                                        ), '"                     >', $user_info->stored_user_login,                    '</a>'; else echo $user_info->stored_user_login; ?></strong><br />
+										<strong><?php if ( current_user_can( 'edit_users' ) )    echo                         '<a href="', esc_url(      add_query_arg( array(                                                                      'user_id' => $user->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'user-edit.php')                                        ), '"                     >', $user->user_login,                    '</a>'; else echo $user->user_login; ?></strong><br />
 										<div class="row-actions">
-											<?php if ( current_user_can( 'promote_users' ) ) echo '<span class="edit">     <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'approve_user',            'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '"                     >', __( 'Approve', 'register-plus-redux' ),           '</a></span> | ', "\n"; ?>
-											<?php                                            echo '<span class="edit">     <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'send_verification_email', 'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '"                     >', __( 'Send Verification', 'register-plus-redux' ), '</a></span>   ', "\n"; ?>
-											<?php if ( current_user_can( 'delete_users' ) )  echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'delete_user',             'user_id' => $user_info->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ),            '</a></span>   ', "\n"; ?>
+											<?php if ( current_user_can( 'promote_users' ) ) echo '<span class="edit">     <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'approve_user',            'user_id' => $user->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '"                     >', __( 'Approve', 'register-plus-redux' ),           '</a></span> | ', "\n"; ?>
+											<?php                                            echo '<span class="edit">     <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'send_verification_email', 'user_id' => $user->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '"                     >', __( 'Send Verification', 'register-plus-redux' ), '</a></span>   ', "\n"; ?>
+											<?php if ( current_user_can( 'delete_users' ) )  echo '<span class="delete"> | <a href="', wp_nonce_url( add_query_arg( array( 'page' => 'unverified-users', 'action' => 'delete_user',             'user_id' => $user->ID, 'wp_http_referer' => urlencode( stripslashes( $_SERVER['REQUEST_URI'] ) ) ), 'users.php'),    'register-plus-redux-unverified-users' ), '" class="submitdelete">', __( 'Delete', 'register-plus-redux' ),            '</a></span>   ', "\n"; ?>
 										</div>
 									</td>
-									<td><?php echo $user_info->user_login; ?></td>
-									<td class="email column-email"><a href="mailto:<?php echo $user_info->user_email; ?>" title="<?php esc_attr_e( 'E-mail: ', 'register-plus-redux' ); echo $user_info->user_email; ?>"><?php echo $user_info->user_email; ?></a></td>
-									<td><?php echo $user_info->user_registered; ?></td>
-									<td><?php echo $user_info->email_verification_sent; ?></td>
-									<td><?php echo $user_info->email_verified; ?></td>
+									<td class="email column-email"><a href="mailto:<?php echo $user->user_email; ?>" title="<?php esc_attr_e( 'E-mail: ', 'register-plus-redux' ); echo $user->user_email; ?>"><?php echo $user->user_email; ?></a></td>
+									<td><?php echo $user->user_registered; ?></td>
+									<td><?php echo $user->email_verification_sent; ?></td>
+									<td><?php echo $user->email_verified; ?></td>
 								</tr>
 								<?php
 							}

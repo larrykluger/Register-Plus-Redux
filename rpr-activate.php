@@ -2,11 +2,19 @@
 if ( !class_exists( 'RPR_Activate' ) ) {
 	class RPR_Activate {
 		public /*.void.*/ function __construct() {
+			//add_action( 'init', array( $this, 'rpr_activate_init' ), 10, 1 );
 			add_filter( 'random_password', array( $this, 'rpr_activate_filter_random_password' ), 10, 1 ); // Replace random password with user set password
 			add_filter( 'wpmu_welcome_user_notification', array( $this, 'rpr_filter_wpmu_welcome_user_notification' ), 10, 3 );
 			add_filter( 'wpmu_welcome_notification', array( $this, 'rpr_filter_wpmu_welcome_notification' ), 10, 5 );
 			add_action( 'wpmu_activate_user', array( $this, 'rpr_wpmu_activate_user' ), 10, 3 ); // Restore metadata to activated user's profile
 			add_action( 'wpmu_activate_blog', array( $this, 'rpr_wpmu_activate_blog' ), 10, 5 );
+		}
+
+		public /*.void.*/ function rpr_activate_init() {
+			global $pagenow;
+			if ( 'wp-activate.php' === $pagenow ) {
+				trigger_error( sprintf( __( 'Register Plus Redux DEBUG: rpr_activate_init from %s', 'register-plus-redux' ), $pagenow ) );
+			}
 		}
 
 		public /*.string.*/ function rpr_activate_filter_random_password( /*.string.*/ $password ) {
@@ -42,15 +50,12 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 
 		public /*.void.*/ function rpr_wpmu_activate_user( /*.int.*/ $user_id, /*.string.*/ $password, /*.array[]mixed.*/ $meta ) {
 			global $register_plus_redux;
+			global $wpdb;
 
 			//TODO: Not the most elegant solution, it would be better to interupt the activation and keep the data in the signups table with a flag to alert admin to complete activation			
 			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
-				$user_info = get_userdata( $user_id );
-				update_user_meta( $user_id, 'stored_user_login', sanitize_text_field( $user_info->user_login ) );
 				update_user_meta( $user_id, 'stored_user_password', sanitize_text_field( $password ) );
-				$user_login = 'unverified_' . wp_generate_password( 7, FALSE );
-				global $wpdb;
-				$wpdb->update( $wpdb->users, array( 'user_login' => $user_login ), array( 'ID' => $user_id ) );
+				wp_update_user( array( 'ID' => $user_id, 'role' => 'rpr_unverified' ) );
 			}
 
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['first_name'] ) ) update_user_meta( $user_id, 'first_name', sanitize_text_field( $meta['first_name'] ) );
@@ -86,10 +91,10 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 
 			// TODO: Eh, semi-autologin works
 			if ( '1' === $register_plus_redux->rpr_get_option( 'autologin_user' ) && '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) && '1' !== $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
-				$user_info = get_userdata( $user_id );
+				$user = get_userdata( $user_id );
 				?>
 				<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
-				<input type="hidden" name="log" value="<?php echo $user_info->user_login; ?>">
+				<input type="hidden" name="log" value="<?php echo $user->user_login; ?>">
 				<input type="hidden" name="pwd" value="<?php echo $password; ?>">
 				</form>
 				
@@ -97,13 +102,13 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 				jQuery(document).ready(function() {
 					jQuery(document).on("click", "a:contains('Log in')", function(eventObject) {
 						eventObject.preventDefault();
-						//jQuery.post("<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>", { log: "<?php echo $user_info->user_login; ?>", pwd: "<?php echo $password; ?>" } );
+						//jQuery.post("<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>", { log: "<?php echo $user->user_login; ?>", pwd: "<?php echo $password; ?>" } );
 						//window.location.assign("http://radiok.info/wp-admin/");
 						jQuery("#loginform").submit();
 					});
 				});
 				window.onbeforeunload = function(e) {
-					jQuery.post("<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>", { log: "<?php echo $user_info->user_login; ?>", pwd: "<?php echo $password; ?>" } );
+					jQuery.post("<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>", { log: "<?php echo $user->user_login; ?>", pwd: "<?php echo $password; ?>" } );
 				};
 				</script>
 				<?php

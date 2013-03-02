@@ -114,6 +114,12 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 
+= 3.9.6 =
+March 2, 2013 by radiok
+
+* Significant re-factor of code base, specifically involving explicit conversions
+* Improved Unverified Users page with consistent behavior and added functionality
+
 = 3.9.5 =
 February 19, 2013 by radiok
 
