@@ -750,7 +750,25 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				}
 				if ( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) ) echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) );
 				echo "\n", '</style>';
-
+				//TODO: this may not be the best option to tie this behavior to
+				if ( '1' === $register_plus_redux->rpr_get_option( 'default_css' ) ) {
+					if ( empty( $jquery_loaded ) ) {
+						wp_print_scripts( 'jquery' );
+						$jquery_loaded = TRUE;
+					}
+					?>
+					<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery("#user_login").removeAttr("size");
+						jQuery("#user_login").parent().attr("id", "user_login-label");
+						jQuery("#user_login").parent().parent().attr("id", "user_login-p");
+						jQuery("#user_email").removeAttr("size");
+						jQuery("#user_email").parent().attr("id", "user_email-label");
+						jQuery("#user_email").parent().parent().attr("id", "user_email-p");
+					});
+					</script>
+					<?php
+				}
 				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) {
 					if ( empty( $jquery_loaded ) ) {
 						wp_print_scripts( 'jquery' );
