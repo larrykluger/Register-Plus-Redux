@@ -12,12 +12,17 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			// should not be in init, likely to use similar code to rename
 
 			if ( !current_user_can( 'manage_options' ) ) return;
+			
+			if ( $register_plus_redux::activation_required !== $register_plus_redux->rpr_get_option( 'last_activated' ) ) {
+				$register_plus_redux->rpr_activation();
+			}
+
+			$updated = FALSE;
 
 			// Rename options as necessary, prior to defaulting any new options
 			$rename_options = array(
 				'registration_redirect' => 'registration_redirect_url'
 			);
-
 			foreach ( $rename_options as $old_name => $new_name ) {
 				$old_value = $register_plus_redux->rpr_get_option( $old_name );
 				$new_value = $register_plus_redux->rpr_get_option( $new_name );
@@ -29,13 +34,13 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			}
 
 			// Load defaults for any options
-			$updated = FALSE;
 			foreach ( Register_Plus_Redux::default_options() as $option => $default_value ) {
 				if ( NULL === $register_plus_redux->rpr_get_option( $option ) ) {
 					$register_plus_redux->rpr_set_option( $option, $default_value );
 					$updated = TRUE;
 				}
 			}
+
 			if ( TRUE === $updated ) $register_plus_redux->rpr_update_options( NULL );
 
 			// Added 03/28/11 in 3.7.4 converting invitation_code_bank to own option
@@ -46,6 +51,19 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 				update_option( 'register_plus_redux_invitation_code_bank-rv1', $nested_invitation_code_bank );
 				//TODO: Confirm old invitation codes are migrating successfully, then kill old option
 				//$register_plus_redux->rpr_unset_option( 'invitation_code_bank' );
+			}
+
+
+			// Added 03/02/13 in 3.9.6 converting 'unverified_*' users to "Unverified" users
+			/*.object.*/ $user_query = new WP_User_Query( array( 'meta_key' => 'stored_user_login' ) );
+			if ( !empty( $user_query->results ) ) {
+				global $wpdb;
+				foreach ( $user_query->results as $user ) {			
+					$stored_user_login = get_user_meta( $user->ID, 'stored_user_login', TRUE );
+					$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user->ID ) );
+					wp_update_user( array( 'ID' => $user->ID, 'role' => 'rpr_unverified' ) );
+					delete_user_meta( $user->ID, 'stored_user_login' );
+				}
 			}
 
 			// Added 03/28/11 in 3.7.4 converting custom fields
