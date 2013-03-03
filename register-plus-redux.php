@@ -184,7 +184,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$this->options = get_option( 'register_plus_redux_options' );
 			}
 			if ( empty( $this->options ) ) {
-				$this->rpr_update_options( self::default_options() );
+				$this->rpr_update_options( Register_Plus_Redux::default_options() );
 			}
 		}
 
@@ -453,8 +453,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function send_verification_mail( /*.int.*/ $user_id, /*.string.*/ $verification_code ) {
 			$user = get_userdata( $user_id );
-			$subject = self::default_options( 'verification_message_subject' );
-			$message = self::default_options( 'verification_message_body' );
+			$subject = Register_Plus_Redux::default_options( 'verification_message_subject' );
+			$message = Register_Plus_Redux::default_options( 'verification_message_body' );
 			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
 			if ( '1' === $this->rpr_get_option( 'custom_verification_message' ) ) {
 				$subject = esc_html( $this->rpr_get_option( 'verification_message_subject' ) );
@@ -477,8 +477,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function send_welcome_user_mail( /*.int.*/ $user_id, /*.string.*/ $plaintext_pass ) {
 			$user = get_userdata( $user_id );
-			$subject = self::default_options( 'user_message_subject' );
-			$message = self::default_options( 'user_message_body' );
+			$subject = Register_Plus_Redux::default_options( 'user_message_subject' );
+			$message = Register_Plus_Redux::default_options( 'user_message_body' );
 			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
 			if ( '1' === $this->rpr_get_option( 'custom_user_message' ) ) {
 				$subject = esc_html( $this->rpr_get_option( 'user_message_subject' ) );
@@ -500,8 +500,8 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function send_admin_mail( /*.int.*/ $user_id, /*.string.*/ $plaintext_pass, $verification_code = '' ) {
 			$user = get_userdata( $user_id );
-			$subject = self::default_options( 'admin_message_subject' );
-			$message = self::default_options( 'admin_message_body' );
+			$subject = Register_Plus_Redux::default_options( 'admin_message_subject' );
+			$message = Register_Plus_Redux::default_options( 'admin_message_body' );
 			add_filter( 'wp_mail_content_type', array( $this, 'rpr_filter_mail_content_type_text' ), 10, 1 );
 			if ( '1' === $this->rpr_get_option( 'custom_admin_message' ) ) {
 				$subject = esc_html( $this->rpr_get_option( 'admin_message_subject' ) );
