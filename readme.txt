@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.7
+Stable tag: 3.9.8
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -114,6 +114,13 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 
+= 3.9.8 =
+March 3, 2013 by radiok
+
+* Regression, PHP 5.3+ required for static keywords, reverting to static methods
+* Added sanity checks to allow default behavior if Redux activation fails
+* New Wordpress option, register_plus_redux_last_activated to assist in debugging
+
 = 3.9.7 =
 March 2, 2013 by radiok
 
@@ -127,7 +134,7 @@ March 2, 2013 by radiok
 * Improved Unverified Users page with consistent behavior and added functionality
 * Added new 'rpr_unverified' (Unverified) user role
 * Added new 'rpr_can_login' capability
-* Convert stored_user_login to Unverified user role
+* Converted 'unverified_*' users to Unverified user role
 * Added activation/deactivation/uninstall functions, specifically for new role purposes
 * Removed filter_login_message hack, use action to determine behavior following registration
 * Use Default CSS now adds ID's to username and e-mail's label and paragraph element on registration form
@@ -582,5 +589,5 @@ New feature, meta keywords for custom messages, %=keyword% will search user_meta
 = 3.9.5 =
 WordPress Multisite users please update, signup pages were not validating, any information entered was accepted, also Email as Username was not functioning, same root cause
 
-= 3.9.6 =
+= 3.9.8 =
 Added new role, Unverified, and new capability, rpr_can_login, unverified users now take advantage of these, change may be jarring for long time users
