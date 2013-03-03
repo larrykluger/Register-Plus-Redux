@@ -496,7 +496,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				*/ ?>
 				<h3 class="title"><?php _e( 'Autocomplete URL', 'register-plus-redux' ); ?></h3>
 				<p><?php _e( 'You can create a URL to autocomplete specific fields for the user. Additional fields use the database key. Included below are available keys and an example URL.', 'register-plus-redux' ); ?></p>
-				<p><code>user_login user_email first_name last_name user_url aim yahoo jabber description invitation_code<?php foreach ( $redux_usermeta as $index => $meta_field ) echo ' ', $meta_field['meta_key']; ?></code></p>
+				<p><code>user_login user_email first_name last_name user_url aim yahoo jabber description invitation_code<?php if ( is_array( $redux_usermeta ) ) { foreach ( $redux_usermeta as $meta_field ) echo ' ', $meta_field['meta_key']; } ?></code></p>
 				<p><code>http://www.radiok.info/wp-login.php?action=register&user_login=radiok&user_email=radiok@radiok.info&first_name=Radio&last_name=K&user_url=www.radiok.info&aim=radioko&invitation_code=1979&middle_name=Billy</code></p>
 				<?php if ( !is_multisite() ) { ?>
 				<h3 class="title"><?php _e( 'New User Message Settings', 'register-plus-redux' ); ?></h3>
