@@ -36,7 +36,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 		public /*.bool.*/ function rpr_filter_allow_password_reset( /*.bool.*/ $allow, /*.int.*/ $user_id ) {
 			$user = get_userdata( $user_id );
 			if ( !empty($user) && !is_wp_error( $user ) ) {
-				if ( !$user->has_cap('rpr_can_login') ) {
+				if ( NULL !== get_role( 'rpr_unverified' ) && !$user->has_cap('rpr_can_login') ) {
 					return FALSE;
 				}
 			}
