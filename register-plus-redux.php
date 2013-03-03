@@ -60,6 +60,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		 		}
 			}
 			add_role( 'rpr_unverified', 'Unverified' );
+			update_option( 'register_plus_redux_last_activated', RPR_ACTIVATION_REQUIRED );
 			$this->rpr_set_option( 'last_activated', RPR_ACTIVATION_REQUIRED, TRUE );
 		}
 

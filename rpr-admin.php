@@ -12,8 +12,8 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			// should not be in init, likely to use similar code to rename
 
 			if ( !current_user_can( 'manage_options' ) ) return;
-			
-			if ( RPR_ACTIVATION_REQUIRED !== $register_plus_redux->rpr_get_option( 'last_activated' ) ) {
+
+			if ( RPR_ACTIVATION_REQUIRED !== get_option( 'register_plus_redux_last_activated' ) ) {
 				$register_plus_redux->rpr_activation();
 			}
 
