@@ -26,7 +26,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 
 		public /*.object.*/ function rpr_authenticate( /*.object.*/ $user, /*.string.*/ $username, /*.string.*/ $password) {
 			if ( !empty($user) && !is_wp_error( $user ) ) {
-				if ( !$user->has_cap('rpr_can_login') ) {
+				if ( NULL !== get_role( 'rpr_unverified' ) && !$user->has_cap('rpr_can_login') ) {
 					return null;
 				}
 			}
@@ -161,7 +161,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( is_array( $redux_usermeta ) ) {
-				foreach ( $redux_usermeta as $index => $meta_field ) {
+				foreach ( $redux_usermeta as $meta_field ) {
 					if ( !empty( $meta_field['show_on_registration'] ) ) {
 						$meta_key = esc_attr( $meta_field['meta_key'] );
 						if ( 'checkbox' === $meta_field['display'] ) {
@@ -370,7 +370,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			}
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( is_array( $redux_usermeta ) ) {
-				foreach ( $redux_usermeta as $index => $meta_field ) {
+				foreach ( $redux_usermeta as $meta_field ) {
 					$meta_key = $meta_field['meta_key'];
 					if ( !empty( $meta_field['show_on_registration'] ) && !empty( $meta_field['require_on_registration'] ) && empty( $_POST[$meta_key] ) ) {
 						$errors->add( 'empty_' . $meta_key, sprintf( '<strong>' . __( 'ERROR', 'register-plus-redux' ) . '</strong>:&nbsp;' . __( 'Please enter a value for %s.', 'register-plus-redux' ), $meta_field['label'] ) );
@@ -639,7 +639,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				}
 				$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 				if ( is_array( $redux_usermeta ) ) {
-					foreach ( $redux_usermeta as $index => $meta_field ) {
+					foreach ( $redux_usermeta as $meta_field ) {
 						if ( !empty( $meta_field['show_on_registration'] ) ) {
 							$meta_key = esc_attr( $meta_field['meta_key'] );
 							if ( 'textbox' === $meta_field['display'] ) {
