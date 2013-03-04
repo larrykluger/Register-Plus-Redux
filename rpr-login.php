@@ -464,7 +464,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			if ( isset( $_GET['verification_code'] ) && '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) {
 				$user_id = $this->check_verification_code( (string) $_GET['verification_code'] );
 				if ( !is_wp_error( $user_id ) ) {
-					if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) {
+					if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 						global $wpdb;
 						$user_password = get_user_meta( $user_id, 'stored_user_password', TRUE );
 						wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
@@ -490,7 +490,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							$errors->add( 'account_verified_checkemail', sprintf( __( 'Thank you %s, your account has been verified, your password will be emailed to you.', 'register-plus-redux' ), $user->user_login ), 'message' );
 						}
 					}
-					elseif ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
+					else {
 						update_user_meta( $user_id, 'email_verified', gmdate( 'Y-m-d H:i:s' ) );
 						$errors->add( 'admin_review', __( 'Your account will be reviewed by an administrator and you will be notified when it is activated.', 'register-plus-redux' ), 'message' );
 					}
