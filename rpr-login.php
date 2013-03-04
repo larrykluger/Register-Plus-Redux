@@ -470,11 +470,12 @@ if ( !class_exists( 'RPR_Login' ) ) {
 						wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
 						delete_user_meta( $user_id, 'email_verification_code' );
 						delete_user_meta( $user_id, 'email_verification_sent' );
-						delete_user_meta( $user_id, 'stored_user_login' );
+						delete_user_meta( $user_id, 'stored_user_password' );
 						if ( empty( $user_password ) ) {
 							$user_password = wp_generate_password();
 							wp_set_password( $user_password, $user_id );
 						}
+						$user = get_userdata( $user_id );
 						do_action( 'rpr_signup_complete', $user_id );
 						if ( '1' !== $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) {
 							$register_plus_redux->send_welcome_user_mail( $user_id, $user_password );
@@ -483,10 +484,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							$register_plus_redux->send_admin_mail( $user_id, $user_password );
 						}
 						if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
-							$errors->add( 'account_verified', sprintf( __( 'Thank you %s, your account has been verified, please login with the password you specified during registration.', 'register-plus-redux' ), $user_login ), 'message' );
+							$errors->add( 'account_verified', sprintf( __( 'Thank you %s, your account has been verified, please login with the password you specified during registration.', 'register-plus-redux' ), $user->user_login ), 'message' );
 						}
 						else {
-							$errors->add( 'account_verified_checkemail', sprintf( __( 'Thank you %s, your account has been verified, your password will be emailed to you.', 'register-plus-redux' ), $user_login ), 'message' );
+							$errors->add( 'account_verified_checkemail', sprintf( __( 'Thank you %s, your account has been verified, your password will be emailed to you.', 'register-plus-redux' ), $user->user_login ), 'message' );
 						}
 					}
 					elseif ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
