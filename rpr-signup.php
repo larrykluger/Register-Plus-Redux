@@ -530,6 +530,8 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
 				$pass1 = isset( $_REQUEST['pass1'] ) ? (string) $_REQUEST['pass1'] : '';
 				echo "\n", '<input type="hidden" name="pass1" value="', esc_attr($pass1), '" />';
+				$pass2 = isset( $_REQUEST['pass2'] ) ? (string) $_REQUEST['pass2'] : '';
+				echo "\n", '<input type="hidden" name="pass2" value="', esc_attr($pass2), '" />';
 			}
 			if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) {
 				$invitation_code = isset( $_REQUEST['invitation_code'] ) ? (string) $_REQUEST['invitation_code'] : '';
