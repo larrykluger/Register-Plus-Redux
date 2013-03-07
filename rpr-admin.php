@@ -130,6 +130,8 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 					if ( !empty( $redux_usermeta ) ) update_option( 'register_plus_redux_usermeta-rv2', $redux_usermeta );
 				}
 			}
+
+			update_option( 'register_plus_redux_version', RPR_VERSION );
 		}
 
 		public /*.void.*/ function rpr_delete_unverified_users() {

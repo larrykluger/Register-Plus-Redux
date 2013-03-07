@@ -27,6 +27,7 @@ Domain Path: /languages
 // TODO: Enhancement- Alter admin pages to match registration/signup
 // TODO: Enhancement- Widget is lame/near worthless
 
+define( 'RPR_VERSION', '3.9.8' );
 define( 'RPR_ACTIVATION_REQUIRED', '3.9.6' );
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
@@ -61,7 +62,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			add_role( 'rpr_unverified', 'Unverified' );
 			update_option( 'register_plus_redux_last_activated', RPR_ACTIVATION_REQUIRED );
-			$this->rpr_set_option( 'last_activated', RPR_ACTIVATION_REQUIRED, TRUE );
 		}
 
 		public static /*.void.*/ function rpr_uninstall() {
@@ -70,6 +70,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
 		 		$wp_roles->remove_cap( $role_name, 'rpr_can_login' );
 			}
+			delete_option( 'register_plus_redux_last_activated' );
 		}
 
 		public static /*.mixed.*/ function default_options( $option = '' )
