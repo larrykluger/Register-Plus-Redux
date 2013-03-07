@@ -6,6 +6,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 0 );
 			add_action( 'signup_extra_fields', array( $this, 'rpr_signup_extra_fields' ), 9, 1 ); // Higher priority to avoid getting bumped by other plugins
 			add_action( 'after_signup_form', array( $this, 'rpr_after_signup_form' ), 10, 0 ); // Closest thing to signup_footer
+			add_action( 'signup_hidden_fields', array( $this, 'rpr_signup_hidden_fields' ), 10, 0 );
 			add_filter( 'wpmu_validate_user_signup', array( $this, 'rpr_filter_wpmu_validate_user_signup' ), 10, 1 );
 			add_filter( 'add_signup_meta', array( $this, 'filter_add_signup_meta' ), 10, 1 ); // Store metadata until user is activated
 			add_filter( 'wpmu_signup_user_notification', array( $this, 'filter_wpmu_signup_user_notification' ), 10, 4 ); // Store metadata until user is activated
@@ -447,7 +448,23 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				?>
 				<script type="text/javascript">
 				jQuery(document).ready(function() {
-					jQuery("input[name='stage']").val("user-signup");
+					if (jQuery("input[type='hidden'][name='signup_for']").length > 0) {
+						jQuery("input[name='stage']").val("user-signup");
+					}
+					if (jQuery("input[type='radio'][name='signup_for']:checked").val() === "blog") {
+						jQuery("input[name='stage']").val("blog-signup");
+					}
+					if (jQuery("input[type='radio'][name='signup_for']:checked").val() === "user") {
+						jQuery("input[name='stage']").val("user-signup");
+					}
+					jQuery(document).on("click", "input[type='radio'][name='signup_for']", function() {
+						if (jQuery("input[type='radio'][name='signup_for']:checked").val() === "blog") {
+							jQuery("input[name='stage']").val("blog-signup");
+						}
+						if (jQuery("input[type='radio'][name='signup_for']:checked").val() === "user") {
+							jQuery("input[name='stage']").val("user-signup");
+						}
+					});
 				});
 				</script>
 				<?php
@@ -464,11 +481,79 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 		}
 
+		public /*.void.*/ function rpr_signup_hidden_fields() {
+			global $register_plus_redux;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'double_check_email' ) ) {
+				$user_email2 = isset( $_REQUEST['user_email2'] ) ? (string) $_REQUEST['user_email2'] : '';
+				echo "\n", '<input type="hidden" name="user_email2" value="', esc_attr($user_email2), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$first_name = isset( $_REQUEST['first_name'] ) ? (string) $_REQUEST['first_name'] : '';
+				echo "\n", '<input type="hidden" name="first_name" value="', esc_attr($first_name), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'last_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$last_name = isset( $_REQUEST['last_name'] ) ? (string) $_REQUEST['last_name'] : '';
+				echo "\n", '<input type="hidden" name="last_name" value="', esc_attr($last_name), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'user_url', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$user_url = isset( $_REQUEST['user_url'] ) ? (string) $_REQUEST['user_url'] : '';
+				echo "\n", '<input type="hidden" name="user_url" value="', esc_attr($user_url), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'aim', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$aim = isset( $_REQUEST['aim'] ) ? (string) $_REQUEST['aim'] : '';
+				echo "\n", '<input type="hidden" name="aim" value="', esc_attr($aim), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'yahoo', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$yahoo = isset( $_REQUEST['yahoo'] ) ? (string) $_REQUEST['yahoo'] : '';
+				echo "\n", '<input type="hidden" name="yahoo" value="', esc_attr($yahoo), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'jabber', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$jabber = isset( $_REQUEST['jabber'] ) ? (string) $_REQUEST['jabber'] : '';
+				echo "\n", '<input type="hidden" name="jabber" value="', esc_attr($jabber), '" />';
+			}
+			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
+				$description = isset( $_REQUEST['description'] ) ? (string) $_REQUEST['description'] : '';
+				echo "\n", '<input type="hidden" name="description" value="', esc_attr($description), '" />';
+			}
+
+			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( !empty( $meta_field['show_on_registration'] ) ) {
+						$meta_key = esc_attr( $meta_field['meta_key'] );
+						$meta_value = isset( $_REQUEST[$meta_key] ) ? (string) $_REQUEST[$meta_key] : '';
+						echo "\n", '<input type="hidden" name="', $meta_key, '" value="', esc_attr($meta_value), '" />';
+					}
+				}
+			}
+
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) {
+				$pass1 = isset( $_REQUEST['pass1'] ) ? (string) $_REQUEST['pass1'] : '';
+				echo "\n", '<input type="hidden" name="pass1" value="', esc_attr($pass1), '" />';
+			}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) {
+				$invitation_code = isset( $_REQUEST['invitation_code'] ) ? (string) $_REQUEST['invitation_code'] : '';
+				echo "\n", '<input type="hidden" name="invitation_code" value="', esc_attr($invitation_code), '" />';
+			}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_disclaimer' ) ) {
+				$accept_disclaimer = isset( $_REQUEST['accept_disclaimer'] ) ? '1' : '0';
+				echo "\n", '<input type="hidden" name="accept_disclaimer" value="', esc_attr($accept_disclaimer), '" />';
+			}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_license' ) ) {
+				$accept_license = isset( $_REQUEST['accept_license'] ) ? '1' : '0';
+				echo "\n", '<input type="hidden" name="accept_license" value="', esc_attr($accept_license), '" />';
+			}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) ) {
+				$accept_privacy_policy = isset( $_REQUEST['accept_privacy_policy'] ) ? '1' : '0';
+				echo "\n", '<input type="hidden" name="accept_privacy_policy" value="', esc_attr($accept_privacy_policy), '" />';
+			}
+		}
+
 		public /*.array[string]mixed.*/ function rpr_filter_wpmu_validate_user_signup( /*.array[string]mixed.*/ $result ) {
 			global $register_plus_redux;
 			global $pagenow;
 			if ( $pagenow != 'wp-signup.php' ) return $result;
-			//trigger_error( sprintf( __( 'Register Plus Redux DEBUG: filter_wpmu_validate_user_signup($result=%s) from %s', 'register-plus-redux' ), $result, $pagenow ) ); 
+			//trigger_error( sprintf( __( 'Register Plus Redux DEBUG: filter_wpmu_validate_user_signup($result=%s) from %s', 'register-plus-redux' ), print_r($result), $pagenow ) ); 
 			if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
 				global $wpdb;
 
@@ -647,6 +732,15 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 
 		public /*.void.*/ function rpr_signup_finished() {
 			global $register_plus_redux;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_admin' ) ) {
+				?>
+				<script type="text/javascript">
+				jQuery(document).ready(function() {
+					jQuery("#content").html("<?php echo $register_plus_redux->rpr_get_option( 'message_verify_user_admin' ) ?>");
+				});
+				</script>
+				<?php
+			}
 			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) {
 				?>
 				<script type="text/javascript">
@@ -672,37 +766,83 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 
 		public /*.void.*/ function rpr_preprocess_signup_form() {
 			global $active_signup, $stage;
-			if ( 'user-signup' !== $stage ) return;
-			if ( $active_signup == 'all' || $_POST[ 'signup_for' ] == 'blog' && $active_signup == 'blog' || $_POST[ 'signup_for' ] == 'user' && $active_signup == 'user' ) {
-				/* begin validate_user_signup stage */
-				// validate signup form, do wpmu_validate_user_signup action
-				$result = wpmu_validate_user_signup( (string) $_POST['user_name'], (string) $_POST['user_email'] );
-				extract($result);
-				if ( $errors->get_error_code() ) {
-					echo "signup_user";
-					signup_user($user_name, $user_email, $errors);
-					return FALSE;
-				}
-				if ( 'blog' === $_POST['signup_for'] ) {
-					echo "signup_blog";
-					signup_blog($user_name, $user_email);
-					return FALSE;
-				}
-				// collect meta, commit user to database, send email
-				wpmu_signup_user($user_name, $user_email, apply_filters( 'add_signup_meta', array() ) );
-				// previously, displayed confirm_user_signup message before signup_finished action
-				do_action( 'signup_finished' );
-				/* end validate_user_signup stage */
-			}
-			else {
-				_e( 'User registration has been disabled.' );
-				?>
-				</div>
-				</div>
-				<?php do_action( 'after_signup_form' ); ?>
-				<?php get_footer(); ?>
-				<?php
-				exit();
+			switch ( $stage ) {
+				case 'user-signup' :
+					if ( $active_signup == 'all' || $_POST[ 'signup_for' ] == 'blog' && $active_signup == 'blog' || $_POST[ 'signup_for' ] == 'user' && $active_signup == 'user' ) {
+						/* begin validate_user_signup stage */
+						// validate signup form, do wpmu_validate_user_signup action
+						$result = wpmu_validate_user_signup( isset( $_POST['user_name'] ) ? (string) $_POST['user_name'] : "", isset( $_POST['user_email'] ) ? (string) $_POST['user_email'] : "" );
+						extract( $result );
+						if ( $errors->get_error_code() ) {
+							echo "signup_user";
+							signup_user($user_name, $user_email, $errors);
+							do_action( 'after_signup_form' );
+							get_footer();
+							exit();
+						}
+						if ( 'blog' === $_POST['signup_for'] ) {
+							echo "signup_blog";
+							signup_blog($user_name, $user_email);
+							do_action( 'after_signup_form' );
+							get_footer();
+							exit();
+						}
+						// collect meta, commit user to database, send email
+						wpmu_signup_user( $user_name, $user_email, apply_filters( 'add_signup_meta', array() ) );
+						// previously, displayed confirm_user_signup message before signup_finished action
+						do_action( 'signup_finished' );
+						/* end validate_user_signup stage */
+					}
+					else {
+						_e( 'User registration has been disabled.' );
+						?>
+						</div>
+						</div>
+						<?php do_action( 'after_signup_form' );
+						get_footer();
+						exit();
+					}
+				break;
+				case 'blog-signup' :
+					if ( $active_signup == 'all' || $active_signup == 'blog' ) {
+						/* begin validate_blog_signup stage */
+						$result = wpmu_validate_user_signup( isset( $_POST['user_name'] ) ? (string) $_POST['user_name'] : "", isset( $_POST['user_email'] ) ? (string) $_POST['user_email'] : "" );
+						extract( $result );
+						if ( $errors->get_error_code() ) {
+							echo "signup_user";
+							signup_user($user_name, $user_email, $errors);
+							do_action( 'after_signup_form' );
+							get_footer();
+							exit();
+						}
+						$result = wpmu_validate_blog_signup( isset( $_POST['blogname'] ) ? (string) $_POST['blogname'] : "", isset( $_POST['blog_title'] ) ? (string) $_POST['blog_title'] : "" );
+						extract( $result );
+						if ( $errors->get_error_code() ) {
+							signup_blog($user_name, $user_email, $blogname, $blog_title, $errors);
+							do_action( 'after_signup_form' );
+							get_footer();
+							exit();
+						}
+						// collect meta, commit user to database, send email
+						$meta = array ( 'lang_id' => 1, 
+								'public'  => (int) $_POST['blog_public'] );
+						wpmu_signup_blog( $domain, $path, $blog_title, $user_name, $user_email, apply_filters( 'add_signup_meta', $meta ) );
+						// previously, displayed confirm_blog_signup message before signup_finished action
+						do_action( 'signup_finished' );
+						/* end validate_blog_signup stage */
+					}
+					else {
+						_e( 'Site registration has been disabled.' );
+						?>
+						</div>
+						</div>
+						<?php do_action( 'after_signup_form' );
+						get_footer();
+						exit();
+					}
+				break;
+				default :
+					return;
 			}
 			/* begin wp-activate page */
 			$key = (string) $_REQUEST['key'];
@@ -730,16 +870,14 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			} else {
 				//TODO: Why not reference $result->blog_id?
 				extract( $result );
-				$url = get_blogaddress_by_id( (int) $blog_id );
+				if ( isset( $blog_id ) ) $url = get_blogaddress_by_id( (int) $blog_id );
 				$user = get_userdata( (int) $user_id );
 				?>
 				<h2><?php _e('Your account is now active!'); ?></h2>
-	
 				<div id="signup-welcome">
 					<p><span class="h3"><?php _e('Username:'); ?></span> <?php echo $user->user_login ?></p>
 					<p><span class="h3"><?php _e('Password:'); ?></span> <?php echo $password; ?></p>
 				</div>
-	
 				<?php if ( $url != network_home_url('', 'http') ) : ?>
 					<p class="view"><?php printf( __('Your account is now activated. <a href="%1$s">View your site</a> or <a href="%2$s">Log in</a>'), $url, $url . 'wp-login.php' ); ?></p>
 				<?php else: ?>
@@ -747,14 +885,14 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				<?php endif;
 			}
 			?>
-		</div>
-		<script type="text/javascript">
-			var key_input = document.getElementById('key');
-			key_input && key_input.focus();
-		</script>
-		<?php get_footer(); ?>
-		<?php
-		exit();
+			</div>
+			<script type="text/javascript">
+				var key_input = document.getElementById('key');
+				key_input && key_input.focus();
+			</script>
+			<?php get_footer(); ?>
+			<?php
+			exit();
 		}
 	}
 }
