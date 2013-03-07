@@ -8,7 +8,12 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			if ( is_multisite() && !Register_Plus_Redux::rpr_active_for_network() )
 				add_action( 'admin_notices', array( $this, 'rpr_network_activate_warning' ), 10, 0 ); // Runs after the admin menu is printed to the screen.
 
-			add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
+			if ( !is_multisite() ) {
+				add_action( 'admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
+			}
+			if ( is_multisite() ) {
+				add_action( 'network_admin_menu', array( $this, 'rpr_admin_menu' ), 10, 0 );
+			}
 		}
 
 		public /*.void.*/ function rpr_version_warning() {
@@ -37,7 +42,12 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		public /*.void.*/ function rpr_admin_menu() {
 			global $register_plus_redux;
 			global $wpdb;
-			$hookname = add_options_page( __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_options', 'register-plus-redux', array( $this, 'rpr_options_submenu' ) );
+			if ( !is_multisite() ) {
+				$hookname = add_submenu_page( 'options-general.php', __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_options', 'register-plus-redux', array( $this, 'rpr_options_submenu' ) );
+			}
+			if ( is_multisite() ) {
+				$hookname = add_submenu_page( 'settings.php', __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_network_options', 'register-plus-redux', array( $this, 'rpr_options_submenu' ) );
+			}
 			// NOTE: $hookname = settings_page_register-plus-redux 
 			add_action( 'admin_print_scripts-' . $hookname, array( $this, 'rpr_options_submenu_scripts' ), 10, 1 );
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
@@ -51,7 +61,12 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 		}
 
 		public /*.array[string]string.*/ function rpr_filter_plugin_action_links( /*.array[string]string.*/ $actions, /*.string.*/ $plugin_file, /*.string.*/ $plugin_data, /*.string.*/ $context ) {
-			$actions['settings'] = '<a href="' . admin_url( 'options-general.php?page=register-plus-redux' ) . '">'. __( 'Settings', 'register-plus-redux' ) . '</a>';
+			if ( !is_multisite() ) {
+				$actions['settings'] = '<a href="' . admin_url( 'options-general.php?page=register-plus-redux' ) . '">'. __( 'Settings', 'register-plus-redux' ) . '</a>';
+			}
+			if ( is_multisite() ) {
+				$actions['settings'] = '<a href="' . admin_url( 'options-general.php?page=register-plus-redux' ) . '">'. __( 'Settings', 'register-plus-redux' ) . '</a>';
+			}
 			return $actions;
 		}
 
