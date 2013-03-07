@@ -53,8 +53,13 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
 			add_action( 'admin_footer-' . $hookname, array( $this, 'rpr_options_submenu_footer' ), 10, 1 );
 			//add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
-			add_filter( 'plugin_action_links_' . 'register-plus-redux/register-plus-redux.php', array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
-			$user_query = new WP_User_Query( array( 'role' => 'rpr_unverified' ) );
+			if ( !is_multisite() ) {
+				add_filter( 'plugin_action_links_' . 'register-plus-redux/register-plus-redux.php', array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
+			}
+			if ( is_multisite() ) {
+				add_filter( 'network_admin_plugin_action_links_' . 'register-plus-redux/register-plus-redux.php', array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
+			}
+		$user_query = new WP_User_Query( array( 'role' => 'rpr_unverified' ) );
 			if ( 0 < (int) $user_query->total_users || '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) || '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 				add_submenu_page( 'users.php', __( 'Unverified Users', 'register-plus-redux' ), __( 'Unverified Users', 'register-plus-redux' ), 'promote_users', 'unverified-users', array( $this, 'rpr_users_submenu' ) );
 			}
