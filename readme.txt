@@ -114,6 +114,13 @@ HTML attributes should go in the following order name -> id -> class
 
 == Changelog ==
 
+= 3.9.9 =
+March 10, 2013 by radiok
+
+* Fixed bug, when both email and admin verification were enabled, admin verification was not obeyed after completing email verification
+* Delete Wordpress option register_plus_redux_last_activated on deactivation or uninstall
+* New Wordpress option, register_plus_redux_version to assist in debugging
+
 = 3.9.8 =
 March 3, 2013 by radiok
 
