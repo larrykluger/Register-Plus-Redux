@@ -433,9 +433,9 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			if ( TRUE === $show_custom_date_fields ) {
 				wp_print_scripts( 'jquery' );
 				wp_print_scripts( 'jquery-ui-core' );
+				wp_print_scripts( 'jquery-ui-datepicker' );
 				?>
-				<link type="text/css" rel="stylesheet" href="<?php echo plugins_url( 'js/theme/jquery.ui.all.css', __FILE__ ); ?>" />
-				<script type="text/javascript" src="<?php echo plugins_url( 'js/jquery.ui.datepicker.min.js', __FILE__ ); ?>"></script>
+				<link type="text/css" rel="stylesheet" href="<?php echo plugins_url( 'css/ui-lightness/jquery-ui-1.10.1.custom.min.css', __FILE__ ); ?>" />
 				<script type="text/javascript">
 				jQuery(function() {
 					jQuery(".datepicker").datepicker();

@@ -92,8 +92,8 @@ Register Plus did have a feature that allowed multiple users to register with th
 = I do not want users to go to the Dashboard after logging in. How do I redirect users after they login? =
 This isn't quite a registration issue, but I can see how the line blurs since A) Redux does have configuration options for the Login screen, and B) Redux has a configuration for redirect after registration. I briefly considering programming this feature, but [Peter's Login Redirect](http://wordpress.org/extend/plugins/peters-login-redirect/) does everything I could do and so much more. I endorse the use of that plugin for this purpose.
 
-= Why does Register Plus Redux require WordPress 3.2+ =
-Prior to WordPress 3.2, WordPress required PHP 4, version 3.2 bumped up the requirement to PHP 5 (specifically PHP 5.2).  Register Plus Redux has been built specifically against PHP 5, functions and features may not function properly in PHP 4 or older.
+= Why does Register Plus Redux require WordPress 3.3+ =
+Prior to WordPress 3.2, WordPress required PHP 4, version 3.2 bumped up the requirement to PHP 5 (specifically PHP 5.2).  Register Plus Redux has been built specifically against PHP 5, functions and features may not function properly in PHP 4 or older.  WordPress 3.3 included the full jQuery UI library, previously Register Plus Redux had to include its own copy for the Datepicker widget.
 
 = Can you add a feature to change the width of the Registration Form? / How you change the width of the Registration Form? =
 You can use the Custom Register CSS (found in Register Plus Redux's settings) to specify the width of the Registration form via CSS.  Specifically the code follows:
