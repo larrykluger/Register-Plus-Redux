@@ -47,7 +47,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 			/*.array[]string.*/ $nested_invitation_code_bank = $register_plus_redux->rpr_get_option( 'invitation_code_bank' );
 			/*.array[]string.*/ $invitation_code_bank = get_option( 'register_plus_redux_invitation_code_bank-rv1' );
 			// TODO: This may need some work, not sure isset will fire the way I think it does
-			if ( !isset( $invitation_code_bank ) && isset( $nested_invitation_code_bank ) ) {
+			if ( FALSE === $invitation_code_bank && isset( $nested_invitation_code_bank ) ) {
 				update_option( 'register_plus_redux_invitation_code_bank-rv1', $nested_invitation_code_bank );
 				//TODO: Confirm old invitation codes are migrating successfully, then kill old option
 				//$register_plus_redux->rpr_unset_option( 'invitation_code_bank' );
@@ -149,16 +149,16 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 								if ( $expirationtimestamp > strtotime( $user->email_verification_sent ) ) {
 									if ( !empty( $user->email_verified ) ) {
 										if ( $expirationtimestamp > strtotime( $user->email_verified ) ) {
-											wp_delete_user( $unverified_user->user_id );
+											wp_delete_user( $user->ID );
 										}
 									}
 									else {
-										wp_delete_user( $unverified_user->user_id );
+										wp_delete_user( $user->ID );
 									}
 								}
 							}
 							else {
-								wp_delete_user( $unverified_user->user_id );
+								wp_delete_user( $user->ID );
 							}
 						}
 					}
