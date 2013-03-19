@@ -880,7 +880,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 					<p><span class="h3"><?php _e('Username:'); ?></span> <?php echo $user->user_login ?></p>
 					<p><span class="h3"><?php _e('Password:'); ?></span> <?php echo $password; ?></p>
 				</div>
-				<?php if ( $url != network_home_url('', 'http') ) : ?>
+				<?php if ( isset( $blog_id ) && $url != network_home_url('', 'http') ) : ?>
 					<p class="view"><?php printf( __('Your account is now activated. <a href="%1$s">View your site</a> or <a href="%2$s">Log in</a>'), $url, $url . 'wp-login.php' ); ?></p>
 				<?php else: ?>
 					<p class="view"><?php printf( __('Your account is now activated. <a href="%1$s">Log in</a> or go back to the <a href="%2$s">homepage</a>.' ), network_site_url('wp-login.php', 'login'), network_home_url() ); ?></p>
