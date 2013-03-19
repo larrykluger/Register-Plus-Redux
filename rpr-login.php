@@ -26,7 +26,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 
 		public /*.object.*/ function rpr_authenticate( /*.object.*/ $user, /*.string.*/ $username, /*.string.*/ $password) {
 			if ( !empty($user) && !is_wp_error( $user ) ) {
-				if ( NULL !== get_role( 'rpr_unverified' ) && !$user->has_cap('rpr_can_login') ) {
+				if ( NULL !== get_role( 'rpr_unverified' ) && $user->has_cap('rpr_unverified') ) {
 					return null;
 				}
 			}
@@ -36,7 +36,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 		public /*.bool.*/ function rpr_filter_allow_password_reset( /*.bool.*/ $allow, /*.int.*/ $user_id ) {
 			$user = get_userdata( $user_id );
 			if ( !empty($user) && !is_wp_error( $user ) ) {
-				if ( NULL !== get_role( 'rpr_unverified' ) && !$user->has_cap('rpr_can_login') ) {
+				if ( NULL !== get_role( 'rpr_unverified' ) && $user->has_cap('rpr_unverified') ) {
 					return FALSE;
 				}
 			}
@@ -467,7 +467,13 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 						global $wpdb;
 						$user_password = get_user_meta( $user_id, 'stored_user_password', TRUE );
-						wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
+						if ( !is_multisite() ) {
+							wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
+						}
+						else {
+							$user = get_userdata( $user_id );
+							$user->remove_role( 'rpr_unverified' );
+						}
 						delete_user_meta( $user_id, 'email_verification_code' );
 						delete_user_meta( $user_id, 'email_verification_sent' );
 						delete_user_meta( $user_id, 'stored_user_password' );
@@ -475,7 +481,6 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							$user_password = wp_generate_password();
 							wp_set_password( $user_password, $user_id );
 						}
-						$user = get_userdata( $user_id );
 						do_action( 'rpr_signup_complete', $user_id );
 						if ( '1' !== $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) {
 							$register_plus_redux->send_welcome_user_mail( $user_id, $user_password );

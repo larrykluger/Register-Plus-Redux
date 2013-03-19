@@ -66,6 +66,12 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 				}
 			}
 
+			// Added 03/18/13 in 3.9.9 remove capability 'rpr_can_login', rely on role 'rpr_unverified' alone
+			global $wp_roles;
+		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
+		 		$wp_roles->remove_cap( $role_name, 'rpr_can_login' );
+			}
+
 			// Added 03/28/11 in 3.7.4 converting custom fields
 			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( empty( $redux_usermeta ) ) {

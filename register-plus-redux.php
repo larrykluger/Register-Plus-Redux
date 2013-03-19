@@ -55,11 +55,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		public /*.void.*/ function rpr_activation() {
 			global $wp_roles;
-		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
-		 		if ( 'rpr_unverified' !== $role_name ) {
-			 		$wp_roles->add_cap( $role_name, 'rpr_can_login' );
-		 		}
-			}
 			add_role( 'rpr_unverified', 'Unverified' );
 			update_option( 'register_plus_redux_last_activated', RPR_ACTIVATION_REQUIRED );
 		}
@@ -67,9 +62,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		public static /*.void.*/ function rpr_uninstall() {
 			global $wp_roles;
 			remove_role( 'rpr_unverified' );
-		 	foreach ( $wp_roles->get_names() as $role_name => $display_name ) {
-		 		$wp_roles->remove_cap( $role_name, 'rpr_can_login' );
-			}
 			delete_option( 'register_plus_redux_last_activated' );
 		}
 
