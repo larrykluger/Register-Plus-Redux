@@ -405,6 +405,13 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				$message = str_replace( '%verification_code%', $verification_code, $message );
 				$message = str_replace( '%verification_url%', wp_login_url() . '?action=verifyemail&verification_code=' . $verification_code, $message );
 			}
+
+			preg_match_all( '/%([^%]+)%/', (string) $message, $keys );
+			if ( is_array( $keys ) && is_array( $keys[1] ) ) {
+				foreach( $keys[1] as $key ) {
+					$message = str_replace( "%$key%", get_user_meta( $user->ID, $key, TRUE ), $message );
+				}
+			}
 			return (string) $message;
 		}
 
