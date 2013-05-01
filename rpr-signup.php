@@ -2,7 +2,7 @@
 if ( !class_exists( 'RPR_Signup' ) ) {
 	class RPR_Signup {
 		public /*.void.*/ function __construct() {
-			add_action( 'wp_enqueue_scripts', array( $this, 'rpr_enqueue_scripts' ), 10, 0 );
+			add_action( 'wp_enqueue_scripts', array( $this, 'rpr_signup_enqueue_scripts' ), 10, 0 );
 			add_action( 'signup_header', array( $this, 'rpr_signup_header' ), 10, 0 );
 			add_action( 'signup_extra_fields', array( $this, 'rpr_signup_extra_fields' ), 9, 1 ); // Higher priority to avoid getting bumped by other plugins
 			add_action( 'after_signup_form', array( $this, 'rpr_after_signup_form' ), 10, 0 ); // Closest thing to signup_footer
@@ -16,14 +16,25 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			add_action( 'preprocess_signup_form', array( $this, 'rpr_preprocess_signup_form' ), 10, 0 );
 		}
 
-		public /*.void.*/ function rpr_enqueue_scripts() {
+		public /*.void.*/ function rpr_signup_enqueue_scripts() {
 			global $register_plus_redux;
-			$do_enqueue = FALSE;
-			if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) { $do_enqueue = TRUE; }
-			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) { $do_enqueue = TRUE; }
-			if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) { $do_enqueue = TRUE; }
-			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) { $do_enqueue = TRUE; }
-			if ( $do_enqueue ) wp_enqueue_script('jquery');
+			$enqueue_jquery = FALSE;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) { $enqueue_jquery = TRUE; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) { $enqueue_jquery = TRUE; }
+			if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) { $enqueue_jquery = TRUE; }
+			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_email' ) ) { $enqueue_jquery = TRUE; }
+			if ( $enqueue_jquery ) wp_enqueue_script( 'jquery' );
+
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( '1' === $meta_field['show_on_registration'] && '1' === $meta_field['show_datepicker'] ) {
+						wp_enqueue_style( 'jquery-ui-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css', false ); 
+						wp_enqueue_script( 'jquery-ui-datepicker' );
+						break;
+					}
+				}
+			}
 		}
 
 		public /*.void.*/ function rpr_signup_header() {
@@ -123,97 +134,6 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			}
 			if ( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) ) echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) );
 			echo "\n", '</style>';
-
-			if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) {
-				?>
-				<script type="text/javascript">
-				jQuery(document).ready(function() {
-					jQuery("#user_login").parent().prepend("*");
-					jQuery("#user_email").parent().prepend("*");
-				});
-				</script>
-				<?php
-			}
-			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
-				// TODO: Messages could be compromised, needs to be escaped, look into methods used by comments to display
-				?>
-				<script type="text/javascript">
-					/* <![CDATA[ */
-					pwsL10n={
-						empty: "<?php echo $register_plus_redux->rpr_get_option( 'message_empty_password' ); ?>",
-						short: "<?php echo $register_plus_redux->rpr_get_option( 'message_short_password' ); ?>",
-						bad: "<?php echo $register_plus_redux->rpr_get_option( 'message_bad_password' ); ?>",
-						good: "<?php echo $register_plus_redux->rpr_get_option( 'message_good_password' ); ?>",
-						strong: "<?php echo $register_plus_redux->rpr_get_option( 'message_strong_password' ); ?>",
-						mismatch: "<?php echo $register_plus_redux->rpr_get_option( 'message_mismatch_password' ); ?>"
-					}
-					/* ]]> */
-					function check_pass_strength() {
-						// HACK support username_is_email in function
-						var user = jQuery("<?php if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) echo '#user_email'; else echo '#user_login'; ?>").val();
-						var pass1 = jQuery("#pass1").val();
-						var pass2 = jQuery("#pass2").val();
-						var strength;
-						jQuery("#pass-strength-result").removeClass("short bad good strong mismatch");
-						if (!pass1) {
-							jQuery("#pass-strength-result").html( pwsL10n.empty );
-							return;
-						}
-						strength = passwordStrength(pass1, user, pass2);
-						switch (strength) {
-							case 2:
-								jQuery("#pass-strength-result").addClass("bad").html( pwsL10n['bad'] );
-								break;
-							case 3:
-								jQuery("#pass-strength-result").addClass("good").html( pwsL10n['good'] );
-								break;
-							case 4:
-								jQuery("#pass-strength-result").addClass("strong").html( pwsL10n['strong'] );
-								break;
-							case 5:
-								jQuery("#pass-strength-result").addClass("mismatch").html( pwsL10n['mismatch'] );
-								break;
-							default:
-								jQuery("#pass-strength-result").addClass("short").html( pwsL10n['short'] );
-						}
-					}
-					function passwordStrength(password1, username, password2) {
-						// HACK support disable_password_confirmation in function
-						password2 = typeof password2 !== 'undefined' ? password2 : '';
-						var shortPass = 1, badPass = 2, goodPass = 3, strongPass = 4, mismatch = 5, symbolSize = 0, natLog, score;
-						// password 1 != password 2
-						if ((password1 != password2) && password2.length > 0)
-							return mismatch
-						// password < <?php echo absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ); ?> 
-						if (password1.length < <?php echo absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ); ?>)
-							return shortPass
-						// password1 == username
-						if (password1.toLowerCase() == username.toLowerCase())
-							return badPass;
-						if (password1.match(/[0-9]/))
-							symbolSize +=10;
-						if (password1.match(/[a-z]/))
-							symbolSize +=26;
-						if (password1.match(/[A-Z]/))
-							symbolSize +=26;
-						if (password1.match(/[^a-zA-Z0-9]/))
-							symbolSize +=31;
-						natLog = Math.log(Math.pow(symbolSize, password1.length));
-							score = natLog / Math.LN2;
-						if (score < 40)
-							return badPass
-						if (score < 56)
-							return goodPass
-						return strongPass;
-					}
-					jQuery(document).ready( function() {
-						jQuery("#pass1").val("").keyup( check_pass_strength );
-						jQuery("#pass2").val("").keyup( check_pass_strength );
-					});
-				</script>
-				<?php
-			}
-
 			if ( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) ) {
 				echo "\n", '<style type="text/css">';
 				echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) );
@@ -734,6 +654,95 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 
 		public /*.void.*/ function rpr_signup_finished() {
 			global $register_plus_redux;
+			if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) {
+				?>
+				<script type="text/javascript">
+				jQuery(document).ready(function() {
+					jQuery("#user_login").parent().prepend("*");
+					jQuery("#user_email").parent().prepend("*");
+				});
+				</script>
+				<?php
+			}
+			if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
+				// TODO: Messages could be compromised, needs to be escaped, look into methods used by comments to display
+				?>
+				<script type="text/javascript">
+					/* <![CDATA[ */
+					pwsL10n={
+						empty: "<?php echo $register_plus_redux->rpr_get_option( 'message_empty_password' ); ?>",
+						short: "<?php echo $register_plus_redux->rpr_get_option( 'message_short_password' ); ?>",
+						bad: "<?php echo $register_plus_redux->rpr_get_option( 'message_bad_password' ); ?>",
+						good: "<?php echo $register_plus_redux->rpr_get_option( 'message_good_password' ); ?>",
+						strong: "<?php echo $register_plus_redux->rpr_get_option( 'message_strong_password' ); ?>",
+						mismatch: "<?php echo $register_plus_redux->rpr_get_option( 'message_mismatch_password' ); ?>"
+					}
+					/* ]]> */
+					function check_pass_strength() {
+						// HACK support username_is_email in function
+						var user = jQuery("<?php if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) echo '#user_email'; else echo '#user_login'; ?>").val();
+						var pass1 = jQuery("#pass1").val();
+						var pass2 = jQuery("#pass2").val();
+						var strength;
+						jQuery("#pass-strength-result").removeClass("short bad good strong mismatch");
+						if (!pass1) {
+							jQuery("#pass-strength-result").html( pwsL10n.empty );
+							return;
+						}
+						strength = passwordStrength(pass1, user, pass2);
+						switch (strength) {
+							case 2:
+								jQuery("#pass-strength-result").addClass("bad").html( pwsL10n['bad'] );
+								break;
+							case 3:
+								jQuery("#pass-strength-result").addClass("good").html( pwsL10n['good'] );
+								break;
+							case 4:
+								jQuery("#pass-strength-result").addClass("strong").html( pwsL10n['strong'] );
+								break;
+							case 5:
+								jQuery("#pass-strength-result").addClass("mismatch").html( pwsL10n['mismatch'] );
+								break;
+							default:
+								jQuery("#pass-strength-result").addClass("short").html( pwsL10n['short'] );
+						}
+					}
+					function passwordStrength(password1, username, password2) {
+						// HACK support disable_password_confirmation in function
+						password2 = typeof password2 !== 'undefined' ? password2 : '';
+						var shortPass = 1, badPass = 2, goodPass = 3, strongPass = 4, mismatch = 5, symbolSize = 0, natLog, score;
+						// password 1 != password 2
+						if ((password1 != password2) && password2.length > 0)
+							return mismatch
+						// password < <?php echo absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ); ?> 
+						if (password1.length < <?php echo absint( $register_plus_redux->rpr_get_option( 'min_password_length' ) ); ?>)
+							return shortPass
+						// password1 == username
+						if (password1.toLowerCase() == username.toLowerCase())
+							return badPass;
+						if (password1.match(/[0-9]/))
+							symbolSize +=10;
+						if (password1.match(/[a-z]/))
+							symbolSize +=26;
+						if (password1.match(/[A-Z]/))
+							symbolSize +=26;
+						if (password1.match(/[^a-zA-Z0-9]/))
+							symbolSize +=31;
+						natLog = Math.log(Math.pow(symbolSize, password1.length));
+							score = natLog / Math.LN2;
+						if (score < 40)
+							return badPass
+						if (score < 56)
+							return goodPass
+						return strongPass;
+					}
+					jQuery(document).ready( function() {
+						jQuery("#pass1").val("").keyup( check_pass_strength );
+						jQuery("#pass2").val("").keyup( check_pass_strength );
+					});
+				</script>
+				<?php
+			}
 			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) && $register_plus_redux->rpr_get_option( 'message_verify_user_admin' ) ) {
 				?>
 				<script type="text/javascript">
@@ -751,6 +760,23 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 				});
 				</script>
 				<?php
+			}
+
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			$show_custom_date_fields = FALSE;
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( '1' === $meta_field['show_on_registration'] && '1' === $meta_field['show_datepicker'] ) {
+						?>
+						<script type="text/javascript">
+						jQuery(document).ready(function() {
+							jQuery(".datepicker").datepicker();
+						});
+						</script>
+						<?php
+						break;
+					}
+				}
 			}
 		}
 

@@ -20,18 +20,27 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			add_action( 'user_register', array( $this, 'rpr_user_register' ), 10, 1 ); // Runs when a user's profile is first created. Action function argument: user ID. 
 			add_filter( 'registration_redirect', array( $this, 'rpr_filter_registration_redirect' ), 10, 1 );
 
-			add_action( 'login_head', array( $this, 'rpr_login_head' ), 10, 0 );
-			add_action( 'login_footer', array( $this, 'rpr_login_footer' ), 10, 0 ); // Hides user_login, changed username to e-mail
+			add_action( 'login_head', array( $this, 'rpr_login_head' ), 10, 0 ); // Print CSS
+			add_action( 'login_footer', array( $this, 'rpr_login_footer' ), 10, 0 ); // Print scripts
 			add_filter( 'login_headerurl', array( $this, 'rpr_filter_login_headerurl' ), 10, 1); // Modify url to point to site
 			add_filter( 'login_headertitle', array( $this, 'rpr_filter_login_headertitle' ), 10, 1 ); // Modify header to blogname
 		}
 
 		public /*.void.*/ function rpr_login_enqueue_scripts() {
-			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			if ( is_array( $redux_usermeta ) ) {
-				foreach ( $redux_usermeta as $meta_field ) {
-					if ( '1' === $meta_field['show_on_registration'] ) {
-						if ( '1' === $meta_field['show_datepicker'] ) {
+			if ( isset( $_GET['action'] ) && 'register' === $_GET['action'] ) {
+				global $register_plus_redux;
+				$enqueue_jquery = FALSE;
+				if ( isset( $_REQUEST['user_login'] ) || isset( $_REQUEST['user_email'] ) ) { $enqueue_jquery = TRUE; }
+				if ( '1' === $register_plus_redux->rpr_get_option( 'default_css' ) ) { $enqueue_jquery = TRUE; }
+				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) { $enqueue_jquery = TRUE; }
+				if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) { $enqueue_jquery = TRUE; }
+				if ( $enqueue_jquery ) wp_enqueue_script( 'jquery' );
+
+				/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+				if ( is_array( $redux_usermeta ) ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( '1' === $meta_field['show_on_registration'] && '1' === $meta_field['show_datepicker'] ) {
+							wp_enqueue_style( 'jquery-ui-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css', false ); 
 							wp_enqueue_script( 'jquery-ui-datepicker' );
 							break;
 						}
@@ -642,27 +651,11 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				<?php
 			}
 			if ( isset( $_GET['action'] ) && 'register' === $_GET['action'] ) {
-				$user_login = isset( $_REQUEST['user_login'] ) ? stripslashes( (string) $_REQUEST['user_login'] ) : '';
-				$user_email = isset( $_REQUEST['user_email'] ) ? stripslashes( (string) $_REQUEST['user_email'] ) : '';
-				if ( !empty( $user_login ) || !empty( $user_email ) ) {
-					if ( empty( $jquery_loaded ) ) {
-						wp_print_scripts( 'jquery' );
-						$jquery_loaded = TRUE;
-					}
-					// TODO: I'd rather escape than sanitize
-					?>
-					<script type="text/javascript">
-					jQuery(document).ready(function() {
-						jQuery("#user_login").val("<?php echo sanitize_user( $user_login ); ?>");
-						jQuery("#user_email").val("<?php echo is_email( $user_email ); ?>");
-					});
-					</script>
-					<?php
-				}
-				$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+				/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+				$show_custom_date_fields = FALSE;
 				if ( is_array( $redux_usermeta ) ) {
 					foreach ( $redux_usermeta as $meta_field ) {
-						if ( !empty( $meta_field['show_on_registration'] ) ) {
+						if ( '1' === $meta_field['show_on_registration'] ) {
 							$meta_key = esc_attr( $meta_field['meta_key'] );
 							if ( 'textbox' === $meta_field['display'] ) {
 								if ( empty( $show_custom_textbox_fields ) )
@@ -716,12 +709,8 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					}
 				}
 
-				if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) {
-					$show_fields = '#' . implode( ', #', $register_plus_redux->rpr_get_option( 'show_fields' ) );
-				}
-				if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) {
-					$required_fields = '#' . implode( ', #', $register_plus_redux->rpr_get_option( 'required_fields' ) );
-				}
+				if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) ) { $show_fields = '#' . implode( ', #', $register_plus_redux->rpr_get_option( 'show_fields' ) ); }
+				if ( is_array( $register_plus_redux->rpr_get_option( 'required_fields' ) ) ) { 	$required_fields = '#' . implode( ', #', $register_plus_redux->rpr_get_option( 'required_fields' ) ); }
 
 				echo "\n", '<style type="text/css">';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'default_css' ) ) {
@@ -772,12 +761,52 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				}
 				if ( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) ) echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_registration_page_css' ) );
 				echo "\n", '</style>';
+			}
+			else {
+				if ( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) ) {
+					echo "\n", '<style type="text/css">';
+					echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) );
+					echo "\n", '</style>';
+				}
+			}
+		}
+
+		public /*.void.*/ function rpr_login_footer() {
+			global $register_plus_redux;
+			if ( isset( $_GET['action'] ) && 'register' === $_GET['action'] ) {
+				$user_login = isset( $_REQUEST['user_login'] ) ? stripslashes( (string) $_REQUEST['user_login'] ) : '';
+				$user_email = isset( $_REQUEST['user_email'] ) ? stripslashes( (string) $_REQUEST['user_email'] ) : '';
+				if ( !empty( $user_login ) || !empty( $user_email ) ) {
+					// TODO: I'd rather escape than sanitize
+					?>
+					<script type="text/javascript">
+					jQuery(document).ready(function() {
+						jQuery("#user_login").val("<?php echo sanitize_user( $user_login ); ?>");
+						jQuery("#user_email").val("<?php echo is_email( $user_email ); ?>");
+					});
+					</script>
+					<?php
+				}
+
+				/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+				$show_custom_date_fields = FALSE;
+				if ( is_array( $redux_usermeta ) ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( '1' === $meta_field['show_on_registration'] && '1' === $meta_field['show_datepicker'] ) {
+							?>
+							<script type="text/javascript">
+							jQuery(document).ready(function() {
+								jQuery(".datepicker").datepicker();
+							});
+							</script>
+							<?php
+							break;
+						}
+					}
+				}
+
 				//TODO: this may not be the best option to tie this behavior to
 				if ( '1' === $register_plus_redux->rpr_get_option( 'default_css' ) ) {
-					if ( empty( $jquery_loaded ) ) {
-						wp_print_scripts( 'jquery' );
-						$jquery_loaded = TRUE;
-					}
 					?>
 					<script type="text/javascript">
 					jQuery(document).ready(function() {
@@ -792,10 +821,6 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					<?php
 				}
 				if ( '1' === $register_plus_redux->rpr_get_option( 'required_fields_asterisk' ) ) {
-					if ( empty( $jquery_loaded ) ) {
-						wp_print_scripts( 'jquery' );
-						$jquery_loaded = TRUE;
-					}
 					?>
 					<script type="text/javascript">
 					jQuery(document).ready(function() {
@@ -806,10 +831,6 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					<?php
 				}
 				if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) && '1' === $register_plus_redux->rpr_get_option( 'show_password_meter' ) ) {
-					if ( empty( $jquery_loaded ) ) {
-						wp_print_scripts( 'jquery' );
-						$jquery_loaded = TRUE;
-					}
 					// TODO: Messages could be compromised, needs to be escaped, look into methods used by comments to display
 					?>
 					<script type="text/javascript">
@@ -888,20 +909,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					</script>
 					<?php
 				}
-			}
-			else {
-				if ( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) ) {
-					echo "\n", '<style type="text/css">';
-					echo "\n", esc_html( $register_plus_redux->rpr_get_option( 'custom_login_page_css' ) );
-					echo "\n", '</style>';
-				}
-			}
-		}
-
-		public /*.void.*/ function rpr_login_footer() {
-			global $register_plus_redux;
-			if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
-				if ( isset( $_GET['action'] ) && 'register' === $_GET['action'] ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
 					?>
 					<!--[if (lte IE 8)]>
 					<script type="text/javascript">
@@ -914,8 +922,10 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					</script>
 					<!--<![endif]-->
 					<?php
-				} 
-				elseif ( isset( $_GET['action'] ) && 'lostpassword' === $_GET['action'] ) {
+				}
+			} 
+			elseif ( isset( $_GET['action'] ) && 'lostpassword' === $_GET['action'] ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
 					?>
 					<!--[if (lte IE 8)]>
 					<script type="text/javascript">
@@ -929,7 +939,9 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					<!--<![endif]-->
 					<?php
 				}
-				elseif ( !isset( $_GET['action'] ) ) {
+			}
+			elseif ( !isset( $_GET['action'] ) ) {
+				if ( '1' === $register_plus_redux->rpr_get_option( 'username_is_email' ) ) {
 					?>
 					<!--[if (lte IE 8)]>
 					<script type="text/javascript">
