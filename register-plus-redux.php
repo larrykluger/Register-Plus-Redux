@@ -26,7 +26,7 @@ Domain Path: /languages
 // TODO: Enhancement- Alter admin pages to match registration/signup
 // TODO: Enhancement- Widget is lame/near worthless
 
-define( 'RPR_VERSION', '3.9.8' );
+define( 'RPR_VERSION', '3.9.9' );
 define( 'RPR_ACTIVATION_REQUIRED', '3.9.6' );
 
 if ( !class_exists( 'Register_Plus_Redux' ) ) {
@@ -44,12 +44,14 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				add_filter( 'pre_user_login', array( $this, 'rpr_filter_pre_user_login_swp' ), 10, 1 ); // Changes user_login to user_email
 			}
 
+			add_action( 'admin_enqueue_scripts', array( $this, 'rpr_admin_enqueue_scripts' ), 10, 1 );
+
 			add_action( 'show_user_profile', array( $this, 'rpr_show_custom_fields' ), 10, 1 ); // Runs near the end of the user profile editing screen.
 			add_action( 'edit_user_profile', array( $this, 'rpr_show_custom_fields' ), 10, 1 ); // Runs near the end of the user profile editing screen in the admin menus. 
 			add_action( 'profile_update', array( $this, 'rpr_save_custom_fields' ), 10, 1 ); // Runs when a user's profile is updated. Action function argument: user ID.
 
-			add_action( 'admin_head-profile.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
-			add_action( 'admin_head-user-edit.php', array( $this, 'DatepickerHead' ), 10, 1 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
+			add_action( 'admin_footer-profile.php', array( $this, 'rpr_admin_footer' ), 10, 0 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
+			add_action( 'admin_footer-user-edit.php', array( $this, 'rpr_admin_footer' ), 10, 0 ); // Runs in the HTML <head> section of the admin panel of a page or a plugin-generated page.
 		}
 
 		public /*.void.*/ function rpr_activation() {
@@ -257,6 +259,21 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			return $user_login;
 		}
 
+		public /*.void.*/ function rpr_admin_enqueue_scripts( /*.string.*/ $hook_suffix ) {
+			if ( 'profile.php' == $hook_suffix || 'user-edit.php' == $hook_suffix ) {
+				/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+				if ( is_array( $redux_usermeta ) ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( '1' === $meta_field['show_on_registration'] && '1' === $meta_field['show_datepicker'] ) {
+							wp_enqueue_style( 'jquery-ui-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css', false ); 
+							wp_enqueue_script( 'jquery-ui-datepicker' );
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		// $profileuser is a WP_User object
 		public /*.void.*/ function rpr_show_custom_fields( $profileuser ) {
 			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
@@ -365,6 +382,25 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 		}
 
+		public /*.void.*/ function rpr_admin_footer() {
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			$show_custom_date_fields = FALSE;
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( '1' === $meta_field['show_on_registration'] && '1' === $meta_field['show_datepicker'] ) {
+						?>
+						<script type="text/javascript">
+						jQuery(document).ready(function() {
+							jQuery(".datepicker").datepicker();
+						});
+						</script>
+						<?php
+						break;
+					}
+				}
+			}
+		}
+
 		// $user is a WP_User object
 		public /*.string.*/ function replace_keywords( /*.mixed.*/ $message, $user, $plaintext_pass = '', $verification_code = '' ) {
 			global $pagenow;
@@ -412,35 +448,6 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 				}
 			}
 			return (string) $message;
-		}
-
-		//TODO: Raname or ... something
-		public /*.void.*/ function DatepickerHead() {
-			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
-			$show_custom_date_fields = FALSE;
-			if ( is_array( $redux_usermeta ) ) {
-				foreach ( $redux_usermeta as $meta_field ) {
-					if ( '1' === $meta_field['show_on_profile'] ) {
-						if ( '1' === $meta_field['show_datepicker'] ) {
-							$show_custom_date_fields = TRUE;
-							break;
-						}
-					}
-				}
-			}
-			if ( TRUE === $show_custom_date_fields ) {
-				wp_print_scripts( 'jquery' );
-				wp_print_scripts( 'jquery-ui-core' );
-				wp_print_scripts( 'jquery-ui-datepicker' );
-				?>
-				<link type="text/css" rel="stylesheet" href="<?php echo plugins_url( 'css/ui-lightness/jquery-ui-1.10.1.custom.min.css', __FILE__ ); ?>" />
-				<script type="text/javascript">
-				jQuery(function() {
-					jQuery(".datepicker").datepicker();
-				});
-				</script>
-				<?php
-			}
 		}
 
 		public static /*.bool.*/ function rpr_active_for_network() {
