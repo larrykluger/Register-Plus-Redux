@@ -15,7 +15,6 @@ Domain Path: /languages
 // trigger_error( sprintf( 'Register Plus Redux DEBUG: function($parameter=%s)', print_r( $value, TRUE ) ) ); 
 
 // TODO: meta key could be changed and ruin look ups
-// TODO: Datepicker is never exposed as an option
 // TODO: Disable functionality in wp-signup and wp-admin around rpr_active_for_network
 // TODO: Custom messages may not work with Wordpress MS as it uses wpmu_welcome_user_notification not wp_new_user_notification 
 // TODO: Verify wp_new_user_notification triggers when used in MS due to the $pagenow checks
