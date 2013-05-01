@@ -2,6 +2,8 @@
 if ( !class_exists( 'RPR_Login' ) ) {
 	class RPR_Login {
 		public /*.void.*/ function __construct() {
+			add_action( 'login_enqueue_scripts', array( $this, 'rpr_login_enqueue_scripts' ), 10, 0 );
+
 			add_filter( 'authenticate', array( $this, 'rpr_authenticate' ), 100, 3 );
 			add_filter( 'allow_password_reset', array( $this, 'rpr_filter_allow_password_reset' ), 10, 2 );
 
@@ -22,6 +24,20 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			add_action( 'login_footer', array( $this, 'rpr_login_footer' ), 10, 0 ); // Hides user_login, changed username to e-mail
 			add_filter( 'login_headerurl', array( $this, 'rpr_filter_login_headerurl' ), 10, 1); // Modify url to point to site
 			add_filter( 'login_headertitle', array( $this, 'rpr_filter_login_headertitle' ), 10, 1 ); // Modify header to blogname
+		}
+
+		public /*.void.*/ function rpr_login_enqueue_scripts() {
+			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
+			if ( is_array( $redux_usermeta ) ) {
+				foreach ( $redux_usermeta as $meta_field ) {
+					if ( '1' === $meta_field['show_on_registration'] ) {
+						if ( '1' === $meta_field['show_datepicker'] ) {
+							wp_enqueue_script( 'jquery-ui-datepicker' );
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		public /*.object.*/ function rpr_authenticate( /*.object.*/ $user, /*.string.*/ $username, /*.string.*/ $password) {
