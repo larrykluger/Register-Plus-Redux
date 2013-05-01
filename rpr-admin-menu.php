@@ -459,8 +459,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 								echo "\n", '<td><input type="checkbox" name="show_on_registration[', $index, ']" id="show_on_registration[', $index, ']" value="1"', checked( $meta_field['show_on_registration'], 1 ), ' class="modifyNextRowCheckbox" /></td></tr>';
 		
 								echo "\n", '<tr><td>', __( 'Required Field', 'register-plus-redux' ), '</td>';
-								echo "\n", '<td><input type="checkbox" name="require_on_registration[', $index, ']" id="require_on_registration[', $index, ']" value="1"', checked( $meta_field['require_on_registration'], 1 ); if ( empty( $meta_field['show_on_registration'] ) ) echo ' disabled="disabled"'; echo ' /></td></tr>';
+								echo "\n", '<td><input type="checkbox" name="require_on_registration[', $index, ']" id="require_on_registration[', $index, ']" value="1"', checked( $meta_field['require_on_registration'], 1 ), ' ', disabled( empty( $meta_field['show_on_registration'] ), TRUE, FALSE ), ' /></td></tr>';
 		
+								echo "\n", '<tr><td>', __( 'Show Datepicker', 'register-plus-redux' ), '</td>';
+								echo "\n", '<td><input type="checkbox" name="show_datepicker[', $index, ']" id="show_datepicker[', $index, ']" value="1"', checked( $meta_field['show_datepicker'], 1 ), ' ', disabled( $meta_field['display'] == 'textbox', FALSE, FALSE ), ' /></td></tr>';
+
 								echo "\n", '<tr><td>', __( 'Actions', 'register-plus-redux' ), '</td>';
 								echo "\n", '<td><img src="', plugins_url( 'images\question.png', __FILE__ ), '" alt="', esc_attr__( 'Help', 'register-plus-redux' ), '" title="', esc_attr__( 'No help available', 'register-plus-redux' ), '" class="helpButton" style="cursor: pointer;" />';
 								echo "\n", '<img src="', plugins_url( 'images\minus-circle.png', __FILE__ ), '" alt="', esc_attr__( 'Remove', 'register-plus-redux' ), '" title="', esc_attr__( 'Remove Field', 'register-plus-redux' ), '" class="removeButton" style="cursor: pointer;" /></td></tr>';
@@ -906,10 +909,20 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				});
 
 				jQuery(document).on("change", ".enableDisableOptions", function() {
-					if (jQuery(this).val() == "textbox" || jQuery(this).val() == "select" || jQuery(this).val() == "checkbox" || jQuery(this).val() == "radio" || jQuery(this).val() == "text")
-						jQuery(this).closest("tr").next().find("input[type='text']").prop("readOnly", false);
-					else
-						jQuery(this).closest("tr").next().find("input[type='text']").prop("readOnly", true);
+					var name = jQuery(this).attr("name");
+					var index = name.substring(name.indexOf("[") + 1, name.indexOf("]"));
+					if (jQuery(this).val() == "textbox") {
+						jQuery("input[name='options[" + index + "]']").prop("readOnly", false);
+						jQuery("input[name='show_datepicker[" + index + "]']").prop("disabled", false);
+					}
+					else if (jQuery(this).val() == "select" || jQuery(this).val() == "checkbox" || jQuery(this).val() == "radio" || jQuery(this).val() == "text") {
+						jQuery("input[name='options[" + index + "]']").prop("readOnly", false);
+						jQuery("input[name='show_datepicker[" + index + "]']").prop("disabled", true);
+					}
+					else {
+						jQuery("input[name='options[" + index + "]']").prop("readOnly", true);
+						jQuery("input[name='show_datepicker[" + index + "]']").prop("disabled", true);
+					}
 				});
 
 				jQuery(document).on("click", ".modifyNextCellCheckbox", function() {
@@ -1348,6 +1361,7 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						$meta_field['escape_url'] = '0';
 						$meta_field['show_on_profile'] = isset( $_POST['show_on_profile'][$index] ) ? '1' : '0';
 						$meta_field['show_on_registration'] = isset( $_POST['show_on_registration'][$index] ) ? '1' : '0';
+						$meta_field['show_datepicker'] = isset( $_POST['show_datepicker'][$index] ) ? '1' : '0';
 						$meta_field['require_on_registration'] = isset( $_POST['require_on_registration'][$index] ) ? '1' : '0';
 						if ( empty( $meta_field['meta_key'] ) ) {
 							$meta_field['meta_key'] = 'rpr_' . Register_Plus_Redux::sanitize_text( $meta_field['label'] );
