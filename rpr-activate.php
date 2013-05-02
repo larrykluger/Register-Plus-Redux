@@ -74,7 +74,16 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			if ( is_array( $redux_usermeta ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
 					if ( '1' === $meta_field['show_on_registration'] ) {
-						if ( !empty( $meta[$meta_field['meta_key']] ) ) $register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta[ (string) $meta_field['meta_key']] );
+						if ( 'checkbox' === $meta_field['display'] ) {
+							$meta_value = isset( $meta[ (string) $meta_field['meta_key']] ) ? (array) $meta[ (string) $meta_field['meta_key']] : '';
+						}
+						else if ( 'terms' === $meta_field['display'] ) {
+							$meta_value = isset( $meta[ (string) $meta_field['meta_key']] ) ? (string) $meta[ (string) $meta_field['meta_key']] : 'N';
+						}
+						else {
+							$meta_value = isset( $meta[ (string) $meta_field['meta_key']] ) ? (string) $meta[ (string) $meta_field['meta_key']] : '';
+						}
+						$register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
 					}
 				}
 			}

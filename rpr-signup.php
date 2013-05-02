@@ -330,7 +330,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( '1' === $register_plus_redux->rpr_get_option( 'show_disclaimer' ) ) {
 				$accept_disclaimer = isset( $_REQUEST['accept_disclaimer'] ) ? '1' : '0';
 				echo "\n", '<label id="disclaimer-label" for="disclaimer">', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), ':</label>';
-				echo "\n", '<div name="disclaimer" id="disclaimer" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
+				echo "\n", '<div id="disclaimer" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) ) {
 					echo "\n", '<label id="accept_disclaimer-label"><input type="checkbox" name="accept_disclaimer" id="accept_disclaimer" value="1"'; if ( $accept_disclaimer ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_agree' ) ), '</label>';
 				}
@@ -341,7 +341,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( '1' === $register_plus_redux->rpr_get_option( 'show_license' ) ) {
 				$accept_license = isset( $_REQUEST['accept_license'] ) ? '1' : '0';
 				echo "\n", '<label id="license-label" for="license">', esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), ':</label>';
-				echo "\n", '<div name="license" id="license" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
+				echo "\n", '<div id="license" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'require_license_agree' ) ) {
 					echo "\n", '<label id="accept_license-label"><input type="checkbox" name="accept_license" id="accept_license" value="1"'; if ( $accept_license ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_license_agree' ) ), '</label>';
 				}
@@ -352,12 +352,38 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 			if ( '1' === $register_plus_redux->rpr_get_option( 'show_privacy_policy' ) ) {
 				$accept_privacy_policy = isset( $_REQUEST['accept_privacy_policy'] ) ? '1' : '0';
 				echo "\n", '<label id="privacy_policy-label" for="privacy_policy">', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), ':</label>';
-				echo "\n", '<div name="privacy_policy" id="privacy_policy" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
+				echo "\n", '<div id="privacy_policy" style="display: inline;">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) ) {
 					echo "\n", '<label id="accept_privacy_policy-label"><input type="checkbox" name="accept_privacy_policy" id="accept_privacy_policy" value="1"'; if ( $accept_privacy_policy ) echo ' checked="checked"'; echo ' />&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), '</label>';
 				}
 				if ( $errmsg = $errors->get_error_message('privacy_policy') ) {
 					echo '<p class="error">', $errmsg, '</p>';
+				}
+			}
+			if ( is_array( $redux_usermeta ) ) {
+				if ( !$terms_exist ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( 'terms' === $meta_field['display'] ) { 
+							$terms_exist = TRUE;
+							break;
+						}
+					}
+				}
+				if ( $terms_exist ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( 'terms' === $meta_field['display'] && '1' === $meta_field['show_on_registration'] ) {
+							$meta_value = isset( $_REQUEST[$meta_key] ) ? (string) $_REQUEST[$meta_key] : 'N';
+							$meta_key = (string) esc_attr( $meta_field['meta_key'] );
+							echo "\n", '<label id="', $meta_key, '-label">', esc_html( $meta_field['label'] ), '</label><br />';
+							echo "\n", '<div id="', $meta_key, '-content" style="display: inline;">', nl2br( $meta_field['terms_content'] ), '</div>';
+							if ( '1' === $meta_field['require_on_registration'] ) {
+								echo "\n", '<label id="accept_', $meta_key, '-label"><input type="checkbox" name="', $meta_key, '" id="', $meta_key, '" value="Y"', checked( $meta_value, 'Y' ), ' />&nbsp;', esc_html( $meta_field['terms_agreement_text'] ), '</label>';
+							}
+							if ( $errmsg = $errors->get_error_message($meta_key) ) {
+								echo '<p class="error">', $errmsg, '</p>';
+							}
+						}
+					}
 				}
 			}
 		}

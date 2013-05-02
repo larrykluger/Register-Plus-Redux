@@ -49,8 +49,9 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				$hookname = add_submenu_page( 'settings.php', __( 'Register Plus Redux Settings', 'register-plus-redux' ), __( 'Register Plus Redux', 'register-plus-redux' ), 'manage_network_options', 'register-plus-redux', array( $this, 'rpr_options_submenu' ) );
 			}
 			// NOTE: $hookname = settings_page_register-plus-redux 
-			add_action( 'admin_print_scripts-' . $hookname, array( $this, 'rpr_options_submenu_scripts' ), 10, 1 );
-			add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
+			add_action( 'load-' . $hookname, array( $this, 'rpr_options_submenu_load' ), 10, 1 );
+			//add_action( 'admin_print_scripts-' . $hookname, array( $this, 'rpr_options_submenu_scripts' ), 10, 1 );
+			//add_action( 'admin_print_styles-' . $hookname, array( $this, 'rpr_options_submenu_styles' ), 10, 1 );
 			add_action( 'admin_footer-' . $hookname, array( $this, 'rpr_options_submenu_footer' ), 10, 1 );
 			if ( !is_multisite() ) {
 				add_filter( 'plugin_action_links_' . 'register-plus-redux/register-plus-redux.php', array( $this, 'rpr_filter_plugin_action_links' ), 10, 4 );
@@ -72,6 +73,20 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				$actions['settings'] = '<a href="' . admin_url( 'options-general.php?page=register-plus-redux' ) . '">'. __( 'Settings', 'register-plus-redux' ) . '</a>';
 			}
 			return $actions;
+		}
+
+		public /*.void.*/ function rpr_options_submenu_load() {
+			add_action( 'admin_enqueue_scripts', array( $this, 'rpr_admin_enqueue_scripts' ), 10, 1 );
+		}
+
+		public /*.void.*/ function rpr_admin_enqueue_scripts( /*.string.*/ $hook_suffix ) {
+			wp_enqueue_style( 'jquery-ui-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css', false ); 
+			if ( !is_multisite() ) wp_enqueue_style( 'thickbox' );
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
+			if ( !is_multisite() ) wp_enqueue_script( 'media-upload' );
+			if ( !is_multisite() ) wp_enqueue_script( 'thickbox' );
 		}
 
 		public /*.void.*/ function rpr_options_submenu_scripts() {
@@ -443,10 +458,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 								echo "\n", '<option value="textarea"', selected( $meta_field['display'], 'textarea', FALSE ), '>', __( 'Text Area', 'register-plus-redux' ), '</option>';
 								echo "\n", '<option value="hidden"', selected( $meta_field['display'], 'hidden', FALSE ), '>', __( 'Hidden Field', 'register-plus-redux' ), '</option>';
 								echo "\n", '<option value="text"', selected( $meta_field['display'], 'text', FALSE ), '>', __( 'Static Text', 'register-plus-redux' ), '</option>';
+								echo "\n", '<option value="terms"', selected( $meta_field['display'], 'terms', FALSE ), '>', __( 'Terms', 'register-plus-redux' ), '</option>';
 								echo "\n", '</select></td></tr>';
 		
 								echo "\n", '<tr><td>', __( 'Options', 'register-plus-redux' ), '</td>';
-								echo "\n", '<td><input type="text" name="options[', $index, ']" id="options[', $index, ']" value="', esc_attr( $meta_field['options'] ), '"'; if ( $meta_field['display'] != 'textbox' && $meta_field['display'] != 'select' && $meta_field['display'] != 'checkbox' && $meta_field['display'] != 'radio' ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
+								echo "\n", '<td><input type="text" name="options[', $index, ']" id="options[', $index, ']" value="', esc_attr( $meta_field['options'] ), '"'; if ( 'textbox' !== $meta_field['display'] && 'select' !== $meta_field['display'] && 'checkbox' !== $meta_field['display'] && 'radio' !== $meta_field['display'] ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
 		
 								echo "\n", '<tr><td>', __( 'Database Key', 'register-plus-redux' ), '</td>';
 								echo "\n", '<td><input type="text" name="meta_key[', $index, ']" id="meta_key[', $index, ']" value="', esc_attr( $meta_field['meta_key'] ), '" style="width: 100%;" /></td></tr>';
@@ -461,7 +477,16 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 								echo "\n", '<td><input type="checkbox" name="require_on_registration[', $index, ']" id="require_on_registration[', $index, ']" value="1"', checked( $meta_field['require_on_registration'], 1 ), ' ', disabled( empty( $meta_field['show_on_registration'] ), TRUE, FALSE ), ' /></td></tr>';
 		
 								echo "\n", '<tr><td>', __( 'Show Datepicker', 'register-plus-redux' ), '</td>';
-								echo "\n", '<td><input type="checkbox" name="show_datepicker[', $index, ']" id="show_datepicker[', $index, ']" value="1"', checked( $meta_field['show_datepicker'], 1 ), ' ', disabled( $meta_field['display'] == 'textbox', FALSE, FALSE ), ' /></td></tr>';
+								echo "\n", '<td><input type="checkbox" name="show_datepicker[', $index, ']" id="show_datepicker[', $index, ']" value="1"', checked( $meta_field['show_datepicker'], 1 ), ' ', disabled( $meta_field['display'] === 'textbox', FALSE, FALSE ), ' /></td></tr>';
+
+								echo "\n", '<tr><td>', __( 'Terms Content', 'register-plus-redux' ), '</td>';
+								echo "\n", '<td><textarea name="terms_content[', $index, ']" id="terms_content[', $index, ']" style="width: 100%; height: 160px; display: block;">', esc_textarea( $meta_field['terms_content'] ),'</textarea></td></tr>';
+
+								echo "\n", '<tr><td>', __( 'Terms Agreement Text', 'register-plus-redux' ), '</td>';
+								echo "\n", '<td><input type="text" name="terms_agreement_text[', $index, ']" id="terms_agreement_text[', $index, ']" value="', esc_attr( $meta_field['terms_agreement_text'] ), '"'; if ( 'terms' !== $meta_field['display'] ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
+
+								echo "\n", '<tr><td>', __( 'Revised', 'register-plus-redux' ), '</td>';
+								echo "\n", '<td><input type="text" name="date_revised[', $index, ']" id="date_revised[', $index, ']" class="datepicker" value="', date( "m/d/Y", $meta_field['date_revised'] ), '"'; if ( 'terms' !== $meta_field['display'] ) echo ' readonly="readonly"'; echo ' style="width: 100%;" /></td></tr>';
 
 								echo "\n", '<tr><td>', __( 'Actions', 'register-plus-redux' ), '</td>';
 								echo "\n", '<td><img src="', plugins_url( 'images\question.png', __FILE__ ), '" alt="', esc_attr__( 'Help', 'register-plus-redux' ), '" title="', esc_attr__( 'No help available', 'register-plus-redux' ), '" class="helpButton" style="cursor: pointer;" />';
@@ -839,6 +864,14 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 			}
 
 			jQuery(document).ready(function() {
+				jQuery(".datepicker").datepicker({
+					beforeShow: function(input, inst) {
+						if (jQuery(input).prop("readonly")) {
+							inst.dpDiv = jQuery('<div style="display: none;"></div>');
+						}
+					}
+				});
+				
 				jQuery(document).on("click", "#upload_custom_logo_button", function() {
 					formfield = jQuery("#custom_logo_url").prop("name");
 					tb_show("<?php _e( 'Upload/Select Logo', 'register-plus-redux' ); ?>", "<?php echo admin_url('media-upload.php') ?>?post_id=0&type=image&context=custom-logo&TB_iframe=1");
@@ -1356,12 +1389,14 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 								$meta_field['options'] = sanitize_text_field( (string) $_POST['options'][$index] );
 							}
 						}
-						$meta_field['show_datepicker'] = '0';
 						$meta_field['escape_url'] = '0';
 						$meta_field['show_on_profile'] = isset( $_POST['show_on_profile'][$index] ) ? '1' : '0';
 						$meta_field['show_on_registration'] = isset( $_POST['show_on_registration'][$index] ) ? '1' : '0';
-						$meta_field['show_datepicker'] = isset( $_POST['show_datepicker'][$index] ) ? '1' : '0';
 						$meta_field['require_on_registration'] = isset( $_POST['require_on_registration'][$index] ) ? '1' : '0';
+						$meta_field['show_datepicker'] = isset( $_POST['show_datepicker'][$index] ) ? '1' : '0';
+						$meta_field['terms_content'] = isset( $_POST['terms_content'][$index] ) ? wp_kses_post( (string) $_POST['terms_content'][$index] ) : '';
+						$meta_field['terms_agreement_text'] = isset( $_POST['terms_agreement_text'][$index] ) ? wp_kses_post( (string) $_POST['terms_agreement_text'][$index] ) : '';
+						$meta_field['date_revised'] = isset( $_POST['date_revised'][$index] ) ? strtotime ( (string) $_POST['date_revised'][$index] ) : time();
 						if ( empty( $meta_field['meta_key'] ) ) {
 							$meta_field['meta_key'] = 'rpr_' . Register_Plus_Redux::sanitize_text( $meta_field['label'] );
 						}
@@ -1377,11 +1412,14 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 					$meta_field['meta_key'] = 'rpr_' . Register_Plus_Redux::sanitize_text( $meta_field['label'] );
 					$meta_field['display'] = '';
 					$meta_field['options'] = '';
-					$meta_field['show_datepicker'] = '0';
 					$meta_field['escape_url'] = '0';
 					$meta_field['show_on_profile'] = '0';
 					$meta_field['show_on_registration'] = '0';
 					$meta_field['require_on_registration'] = '0';
+					$meta_field['show_datepicker'] = '0';
+					$meta_field['terms_content'] = '';
+					$meta_field['terms_agreement_text'] = '';
+					$meta_field['date_revised'] = time();
 					$redux_usermeta[] = $meta_field;
 				}
 			}

@@ -232,6 +232,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			
 			$valid_value = TRUE;
+			if ( 'text' === $meta_field['display'] ) $valid_value = FALSE;
 			// poor man's way to ensure required fields aren't blanked out, really should have a separate config per field
 			if ( '1' === $meta_field['require_on_registration'] && empty( $meta_value ) ) $valid_value = FALSE;
 			// check text field against regex if specified
@@ -239,7 +240,10 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			if ( 'textarea' !== $meta_field['display'] ) $meta_value = sanitize_text_field( $meta_value );
 			if ( 'textarea' === $meta_field['display'] ) $meta_value = wp_filter_kses( $meta_value );
 			
-			if ( $valid_value ) update_user_meta( $user_id, $meta_field['meta_key'], $meta_value );
+			if ( $valid_value ) {
+				update_user_meta( $user_id, $meta_field['meta_key'], $meta_value );
+				if ( 'terms' === $meta_field['display'] ) update_user_meta( $user_id, $meta_field['meta_key'] . '_date', time() );
+			}
 		}
 
 		public /*.void.*/ function rpr_i18n_init() {
@@ -276,83 +280,139 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 
 		// $profileuser is a WP_User object
 		public /*.void.*/ function rpr_show_custom_fields( $profileuser ) {
+			$additional_fields_exist = FALSE;
+			$terms_exist = FALSE;
+
 			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) || is_array( $redux_usermeta ) ) {
-				echo '<h3>', __( 'Additional Information', 'register-plus-redux' ), '</h3>';
-				echo '<table class="form-table">';
-				if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) ) {
-					echo "\n", '<tr>';
-					echo "\n", '<th><label for="invitation_code">', __( 'Invitation Code', 'register-plus-redux' ), '</label></th>';
-					echo "\n", '<td><input type="text" name="invitation_code" id="invitation_code" value="', esc_attr( $profileuser->invitation_code ), '" class="regular-text" ';
-					if ( !current_user_can( 'edit_users' ) ) echo 'readonly="readonly" ';
-					echo '/></td>';
-					echo "\n", '</tr>';
-				}
 				if ( is_array( $redux_usermeta ) ) {
 					foreach ( $redux_usermeta as $meta_field ) {
-						if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
-							$meta_key = (string) esc_attr( $meta_field['meta_key'] );
-							$meta_value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
-							echo "\n", '<tr>';
-							echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
-							if ( '1' !== $meta_field['show_on_profile'] ) echo ' <span class="description">(hidden)</span>';
-							if ( '1' ===  $meta_field['require_on_registration'] ) echo ' <span class="description">(required)</span>';
-							echo '</label></th>';
-							switch ( (string) $meta_field['display'] ) {
-								case 'textbox':
-									echo "\n", '<td><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
-									if ( '1' === $meta_field['show_datepicker'] ) echo 'class="datepicker" ';
-									echo 'value="', esc_attr( $meta_value ), '" class="regular-text" /></td>';
-									break;
-								case 'select':
-									echo "\n", '<td>';
-									echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
-									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
-									foreach ( $field_options as $field_option ) {
-										echo "\n", '<option value="', esc_attr( $field_option ), '"';
-										if ( $meta_value === esc_attr( $field_option ) ) echo ' selected="selected"';
-										echo '>', esc_html( $field_option ), '</option>';
-									}
-									echo "\n", '</select>';
-									echo "\n", '</td>';
-									break;
-								case 'checkbox':
-									echo "\n", '<td>';
-									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
-									/*.array[]string.*/ $meta_values = explode( ',', (string) $meta_value );
-									foreach ( $field_options as $field_option ) {
-										echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
-										if ( in_array( esc_attr( $field_option ), $meta_values ) ) echo 'checked="checked" ';
-										echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
-									}
-									echo "\n", '</td>';
-									break;
-								case 'radio':
-									echo "\n", '<td>';
-									/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
-									foreach ( $field_options as $field_option ) {
-										echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', esc_attr( $field_option ), '" ';
-										if ( $meta_value === esc_attr( $field_option ) ) echo 'checked="checked" ';
-										echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
-									}
-									echo "\n", '</td>';
-									break;
-								case 'textarea':
-									echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea></td>';
-									break;
-								case 'hidden':
-									echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" /></td>';
-									break;
-								case 'text':
-									echo "\n", '<td><span class="description">', esc_html( $meta_field['label'] ), '</span></td>';
-									break;
-								default:
+						if ( 'terms' !== $meta_field['display'] ) {
+							$additional_fields_exist = TRUE;
+							break;
+						}
+						else if ( 'terms' === $meta_field['display'] ) { $term_exist = TRUE; }
+					}
+				}
+				if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) || $additional_fields_exist ) {
+					echo '<h3>', __( 'Additional Information', 'register-plus-redux' ), '</h3>';
+					echo '<table class="form-table">';
+					if ( '1' === $this->rpr_get_option( 'enable_invitation_code' ) ) {
+						echo "\n", '<tr>';
+						echo "\n", '<th><label for="invitation_code">', __( 'Invitation Code', 'register-plus-redux' ), '</label></th>';
+						echo "\n", '<td><input type="text" name="invitation_code" id="invitation_code" value="', esc_attr( $profileuser->invitation_code ), '" class="regular-text" ';
+						if ( !current_user_can( 'edit_users' ) ) echo 'readonly="readonly" ';
+						echo '/></td>';
+						echo "\n", '</tr>';
+					}
+					if ( $additional_fields_exist ) {
+						foreach ( $redux_usermeta as $meta_field ) {
+							if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
+								if ( 'terms' === $meta_field['display'] ) continue;
+								$meta_key = (string) esc_attr( $meta_field['meta_key'] );
+								$meta_value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
+								if ( 'checkbox' === $meta_field['display'] ) {
+									$meta_value = (array) get_user_meta( $profileuser->ID, $meta_key, TRUE );
+								}
+								else {
+									$meta_value = (string) get_user_meta( $profileuser->ID, $meta_key, TRUE );
+								}
+								echo "\n", '<tr>';
+								echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
+								if ( '1' !== $meta_field['show_on_profile'] ) echo ' <span class="description">(hidden)</span>';
+								if ( '1' ===  $meta_field['require_on_registration'] ) echo ' <span class="description">(required)</span>';
+								echo '</label></th>';
+								switch ( (string) $meta_field['display'] ) {
+									case 'textbox':
+										echo "\n", '<td><input type="text" name="', $meta_key, '" id="', $meta_key, '" ';
+										if ( '1' === $meta_field['show_datepicker'] ) echo 'class="datepicker" ';
+										echo 'value="', esc_attr( $meta_value ), '" class="regular-text" /></td>';
+										break;
+									case 'select':
+										echo "\n", '<td>';
+										echo "\n", '<select name="', $meta_key, '" id="', $meta_key, '" style="width: 15em;">';
+										/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
+										foreach ( $field_options as $field_option ) {
+											echo "\n", '<option value="', esc_attr( $field_option ), '"';
+											if ( $meta_value === esc_attr( $field_option ) ) echo ' selected="selected"';
+											echo '>', esc_html( $field_option ), '</option>';
+										}
+										echo "\n", '</select>';
+										echo "\n", '</td>';
+										break;
+									case 'checkbox':
+										echo "\n", '<td>';
+										/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
+										/*.array[]string.*/ $meta_values = explode( ',', (string) $meta_value );
+										foreach ( $field_options as $field_option ) {
+											echo "\n", '<label><input type="checkbox" name="', $meta_key, '[]" value="', esc_attr( $field_option ), '" ';
+											if ( in_array( esc_attr( $field_option ), $meta_values ) ) echo 'checked="checked" ';
+											echo '/>&nbsp;', esc_html( $field_option ), '</label><br />';
+										}
+										echo "\n", '</td>';
+										break;
+									case 'radio':
+										echo "\n", '<td>';
+										/*.array[]string.*/ $field_options = explode( ',', (string) $meta_field['options'] );
+										foreach ( $field_options as $field_option ) {
+											echo "\n", '<label><input type="radio" name="', $meta_key, '" value="', esc_attr( $field_option ), '" ';
+											if ( $meta_value === esc_attr( $field_option ) ) echo 'checked="checked" ';
+											echo 'class="tog">&nbsp;', esc_html( $field_option ), '</label><br />';
+										}
+										echo "\n", '</td>';
+										break;
+									case 'textarea':
+										echo "\n", '<td><textarea name="', $meta_key, '" id="', $meta_key, '" cols="25" rows="5">', esc_textarea( $meta_value ), '</textarea></td>';
+										break;
+									case 'hidden':
+										echo "\n", '<td><input type="text" disabled="disabled" name="', $meta_key, '" id="', $meta_key, '" value="', esc_attr( $meta_value ), '" /></td>';
+										break;
+									case 'text':
+										echo "\n", '<td><span class="description">', esc_html( $meta_field['label'] ), '</span></td>';
+										break;
+									default:
+								}
+								echo "\n", '</tr>';
 							}
-							echo "\n", '</tr>';
+						}
+					}
+					echo '</table>';
+				}
+			}
+			if ( is_array( $redux_usermeta ) ) {
+				if ( !$terms_exist ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( 'terms' === $meta_field['display'] ) { 
+							$terms_exist = TRUE;
+							break;
 						}
 					}
 				}
-				echo '</table>';
+				if ( $terms_exist ) {
+					echo '<h3>', __( 'Terms', 'register-plus-redux' ), '</h3>';
+					echo '<table class="form-table">';
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( 'terms' === $meta_field['display'] ) {
+							$meta_key = (string) esc_attr( $meta_field['meta_key'] );
+							$meta_value = (string) get_user_meta( $profileuser->ID, $meta_key, TRUE );
+							$meta_value = !empty( $meta_value ) ? $meta_value : 'N';
+							$meta_value_date = (int) get_user_meta( $profileuser->ID, $meta_key . '_date', TRUE );
+							echo "\n", '<tr>';
+							echo "\n", '<th>', esc_html( $meta_field['label'] );
+							if ( '1' ===  $meta_field['require_on_registration'] ) echo ' <span class="description">(required)</span>';
+							echo '</label></th>';
+							echo "\n", '<td>';
+							echo "\n", nl2br( $meta_field['terms_content'] ), '<br />';
+							echo "\n", '<span class="description">', __( 'Last Revised:', 'register-plus-redux' ), ' ', date( "m/d/Y", $meta_field['date_revised'] ), '</span><br />';
+							echo "\n", '<span class="description">', __( 'Accepted:', 'register-plus-redux' ), ' ', esc_html( $meta_value );
+							if ( 'Y' === $meta_value ) echo ' on ', date( "m/d/Y", $meta_value_date );
+							echo '</span>';
+							echo "\n", '</td>';
+							echo "\n", '</tr>';
+						}
+					}
+					echo '</table>';
+				}
 			}
 		}
 
@@ -365,7 +425,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			/*.array[]mixed.*/ $redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( is_array( $redux_usermeta ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
-					if ( 'text' !== $meta_field['display'] ) {
+					if ( 'text' !== $meta_field['display'] && 'terms' !== $meta_field['display'] ) {
 						if ( current_user_can( 'edit_users' ) || '1' === $meta_field['show_on_profile'] ) {
 							if ( 'checkbox' === $meta_field['display'] ) {
 								$meta_value = isset( $_POST[ (string) $meta_field['meta_key']] ) ? (array) $_POST[ (string) $meta_field['meta_key']] : '';

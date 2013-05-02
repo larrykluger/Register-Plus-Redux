@@ -115,6 +115,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 
 		public /*.void.*/ function rpr_register_form() {
 			global $register_plus_redux;
+			$terms_exist = FALSE;
 			$_REQUEST = stripslashes_deep( (array) $_REQUEST );
 			$tabindex = absint( $register_plus_redux->rpr_get_option( 'starting_tabindex' ) );
 			if ( !is_numeric( $tabindex ) || $tabindex < 1 ) $tabindex = 0;
@@ -306,7 +307,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$accept_disclaimer = isset( $_REQUEST['accept_disclaimer'] ) ? '1' : '0';
 				echo "\n", '<p id="disclaimer-p">';
 				echo "\n", '<label id="disclaimer_title">', esc_html( $register_plus_redux->rpr_get_option( 'message_disclaimer_title' ) ), '</label><br />';
-				echo "\n", '<div name="disclaimer" id="disclaimer"">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
+				echo "\n", '<div id="disclaimer"">', nl2br( $register_plus_redux->rpr_get_option( 'message_disclaimer' ) ), '</div>';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'require_disclaimer_agree' ) ) {
 					echo "\n", '<label id="accept_disclaimer-label" class="accept_check" for="accept_disclaimer"><input type="checkbox" name="accept_disclaimer" id="accept_disclaimer" value="1"'; if ( !empty( $accept_disclaimer ) ) echo ' checked="checked" ';
 					if ( 0 !== $tabindex ) echo 'tabindex="', $tabindex++, '" ';
@@ -318,7 +319,7 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$accept_license = isset( $_REQUEST['accept_license'] ) ? '1' : '0';
 				echo "\n", '<p id="license-p">';
 				echo "\n", '<label id="license_title">', esc_html( $register_plus_redux->rpr_get_option( 'message_license_title' ) ), '</label><br />';
-				echo "\n", '<div name="license" id="license"">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
+				echo "\n", '<div id="license"">', nl2br( $register_plus_redux->rpr_get_option( 'message_license' ) ), '</div>';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'require_license_agree' ) ) {
 					echo "\n", '<label id="accept_license-label" class="accept_check" for="accept_license"><input type="checkbox" name="accept_license" id="accept_license" value="1"'; if ( !empty( $accept_license ) ) echo ' checked="checked" ';
 					if ( 0 !== $tabindex ) echo 'tabindex="', $tabindex++, '" ';
@@ -330,13 +331,40 @@ if ( !class_exists( 'RPR_Login' ) ) {
 				$accept_privacy_policy = isset( $_REQUEST['accept_privacy_policy'] ) ? '1' : '0';
 				echo "\n", '<p id="privacy_policy-p">';
 				echo "\n", '<label id="privacy_policy_title">', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_title' ) ), '</label><br />';
-				echo "\n", '<div name="privacy_policy" id="privacy_policy">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
+				echo "\n", '<div id="privacy_policy">', nl2br( $register_plus_redux->rpr_get_option( 'message_privacy_policy' ) ), '</div>';
 				if ( '1' === $register_plus_redux->rpr_get_option( 'require_privacy_policy_agree' ) ) {
 					echo "\n", '<label id="accept_privacy_policy-label" class="accept_check" for="accept_privacy_policy"><input type="checkbox" name="accept_privacy_policy" id="accept_privacy_policy" value="1"'; if ( !empty( $accept_privacy_policy ) ) echo ' checked="checked" ';
 					if ( 0 !== $tabindex ) echo 'tabindex="', $tabindex++, '" ';
 					echo '/>&nbsp;', esc_html( $register_plus_redux->rpr_get_option( 'message_privacy_policy_agree' ) ), '</label>';
 				}
 				echo "\n", '</p>';
+			}
+			if ( is_array( $redux_usermeta ) ) {
+				if ( !$terms_exist ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( 'terms' === $meta_field['display'] ) { 
+							$terms_exist = TRUE;
+							break;
+						}
+					}
+				}
+				if ( $terms_exist ) {
+					foreach ( $redux_usermeta as $meta_field ) {
+						if ( 'terms' === $meta_field['display'] && '1' === $meta_field['show_on_registration'] ) {
+							$meta_value = isset( $_REQUEST[$meta_key] ) ? (string) $_REQUEST[$meta_key] : 'N';
+							$meta_key = (string) esc_attr( $meta_field['meta_key'] );
+							echo "\n", '<p id="', $meta_key, '-p">';
+							echo "\n", '<label id="', $meta_key, '-label">', esc_html( $meta_field['label'] ), '</label><br />';
+							echo "\n", '<span id="', $meta_key, '-content">', nl2br( $meta_field['terms_content'] ), '</span>';
+							if ( '1' === $meta_field['require_on_registration'] ) {
+								echo "\n", '<label id="accept_', $meta_key, '-label" class="accept_check" for="', $meta_key, '"><input type="checkbox" name="', $meta_key, '" id="', $meta_key, '" value="Y"', checked( $meta_value, 'Y' ), ' ';
+								if ( 0 !== $tabindex ) echo 'tabindex="', $tabindex++, '" ';
+								echo '/>&nbsp;', esc_html( $meta_field['terms_agreement_text'] ), '</label>';
+							}
+							echo "\n", '</p>';
+						}
+					}
+				}
 			}
 		}
 
@@ -579,16 +607,17 @@ if ( !class_exists( 'RPR_Login' ) ) {
 			$redux_usermeta = get_option( 'register_plus_redux_usermeta-rv2' );
 			if ( is_array( $redux_usermeta ) ) {
 				foreach ( $redux_usermeta as $meta_field ) {
-					if ( !empty( $meta_field['show_on_registration'] ) ) {
+					if ( '1' === $meta_field['show_on_registration'] ) {
 						if ( 'checkbox' === $meta_field['display'] ) {
 							$meta_value = isset( $source[ (string) $meta_field['meta_key']] ) ? (array) $source[ (string) $meta_field['meta_key']] : '';
+						}
+						else if ( 'terms' === $meta_field['display'] ) {
+							$meta_value = isset( $source[ (string) $meta_field['meta_key']] ) ? (string) $source[ (string) $meta_field['meta_key']] : 'N';
 						}
 						else {
 							$meta_value = isset( $source[ (string) $meta_field['meta_key']] ) ? (string) $source[ (string) $meta_field['meta_key']] : '';
 						}
-						if ( !empty( $meta_value ) ) {
-							$register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
-						}
+						$register_plus_redux->rpr_update_user_meta( $user_id, $meta_field, $meta_value );
 					}
 				}
 			}
@@ -689,12 +718,12 @@ if ( !class_exists( 'RPR_Login' ) ) {
 							}
 							if ( 'textarea' === $meta_field['display'] ) {
 								if ( empty( $show_custom_textarea_fields ) )
-									$show_custom_textarea_fields = '#' . $meta_key . '-label';
+									$show_custom_textarea_fields = '#' . $meta_key;
 								else
-									$show_custom_textarea_fields .= ', #' . $meta_key . '-label';
+									$show_custom_textarea_fields .= ', #' . $meta_key;
 							}
 							if ( 'text' === $meta_field['display'] ) {
-								if ( empty( $show_custom_textarea_fields ) )
+								if ( empty( $show_custom_text_fields ) )
 									$show_custom_text_fields = '#login form #' . $meta_key . '-p';
 								else
 									$show_custom_text_fields .= ', #login form #' . $meta_key . '-p';
@@ -717,14 +746,14 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					if ( '1' === $register_plus_redux->rpr_get_option( 'double_check_email' ) ) echo "\n", '#user_email2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( !empty( $show_fields ) ) echo "\n", $show_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'about', $register_plus_redux->rpr_get_option( 'show_fields' ) ) )  {
-						echo "\n", '#description { font-size:24px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+						echo "\n", '#description { font-size:18px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 						echo "\n", '#description_msg { font-size: smaller; }';
 					}
 					if ( !empty( $show_custom_textbox_fields ) ) echo "\n", $show_custom_textbox_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( !empty( $show_custom_select_fields ) ) echo "\n", $show_custom_select_fields, ' { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( !empty( $show_custom_checkbox_fields ) ) echo "\n", $show_custom_checkbox_fields, ' { font-size:18px; }';
 					if ( !empty( $show_custom_radio_fields ) ) echo "\n", $show_custom_radio_fields, ' { font-size:18px; }';
-					if ( !empty( $show_custom_textarea_fields ) ) echo "\n", $show_custom_textarea_fields, ' { font-size:24px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
+					if ( !empty( $show_custom_textarea_fields ) ) echo "\n", $show_custom_textarea_fields, ' { font-size:18px; height: 60px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( !empty( $show_custom_text_fields ) ) echo "\n", $show_custom_text_fields, ' { font-size: larger; color: #777; margin-bottom:16px; }';
 					if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) ) echo "\n", '#pass1, #pass2 { font-size:24px; width:100%; padding:3px; margin-top:2px; margin-right:6px; margin-bottom:16px; border:1px solid #e5e5e5; background:#fbfbfb; }';
 					if ( '1' === $register_plus_redux->rpr_get_option( 'enable_invitation_code' ) ) {
