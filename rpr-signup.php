@@ -830,7 +830,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 						get_footer();
 						exit();
 					}
-				break;
+					break;
 				case 'blog-signup' :
 					if ( $active_signup == 'all' || $active_signup == 'blog' ) {
 						/* begin validate_blog_signup stage */
@@ -868,7 +868,7 @@ if ( !class_exists( 'RPR_Signup' ) ) {
 						get_footer();
 						exit();
 					}
-				break;
+					break;
 				default :
 					return;
 			}
