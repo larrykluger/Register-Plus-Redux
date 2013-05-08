@@ -520,11 +520,11 @@ if ( !class_exists( 'RPR_Login' ) ) {
 					if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 						global $wpdb;
 						$user_password = get_user_meta( $user_id, 'stored_user_password', TRUE );
+						$user = get_userdata( $user_id );
 						if ( !is_multisite() ) {
 							wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
 						}
 						else {
-							$user = get_userdata( $user_id );
 							$user->remove_role( 'rpr_unverified' );
 						}
 						delete_user_meta( $user_id, 'email_verification_code' );
