@@ -311,12 +311,7 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 								if ( 'terms' === $meta_field['display'] ) continue;
 								$meta_key = (string) esc_attr( $meta_field['meta_key'] );
 								$meta_value = get_user_meta( $profileuser->ID, $meta_key, TRUE );
-								if ( 'checkbox' === $meta_field['display'] ) {
-									$meta_value = (array) get_user_meta( $profileuser->ID, $meta_key, TRUE );
-								}
-								else {
-									$meta_value = (string) get_user_meta( $profileuser->ID, $meta_key, TRUE );
-								}
+								$meta_value = (string) get_user_meta( $profileuser->ID, $meta_key, TRUE );
 								echo "\n", '<tr>';
 								echo "\n", '<th><label for="', $meta_key, '">', esc_html( $meta_field['label'] );
 								if ( '1' !== $meta_field['show_on_profile'] ) echo ' <span class="description">(hidden)</span>';
