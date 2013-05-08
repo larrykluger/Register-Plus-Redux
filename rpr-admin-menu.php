@@ -1008,11 +1008,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 				$user_id = (int) $_GET['user_id'];
 				if ( current_user_can( 'promote_user', $user_id ) ) {
 					$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
+					$user = get_userdata( $user_id );
 					if ( !is_multisite() ) {
-						wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
+						$user->set_role( (string) get_option( 'default_role' ) );
 					}
 					else {
-						$user = get_userdata( $user_id );
 						$user->remove_role( 'rpr_unverified' );
 					}
 					if ( empty( $plaintext_pass ) ) {
@@ -1039,11 +1039,11 @@ if ( !class_exists( 'RPR_Admin_Menu' ) ) {
 						$user_id = (int) $id;
 						if ( current_user_can( 'promote_user', $user_id ) ) {
 							$plaintext_pass = get_user_meta( $user_id, 'stored_user_password', TRUE );
+							$user = get_userdata( $user_id );
 							if ( !is_multisite() ) {
-								wp_update_user( array( 'ID' => $user_id, 'role' => (string) get_option( 'default_role' ) ) );
+								$user->set_role( (string) get_option( 'default_role' ) );
 							}
 							else {
-								$user = get_userdata( $user_id );
 								$user->remove_role( 'rpr_unverified' );
 							}
 							if ( empty( $plaintext_pass ) ) {

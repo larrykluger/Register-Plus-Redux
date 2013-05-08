@@ -61,7 +61,7 @@ if ( !class_exists( 'RPR_Admin' ) ) {
 				foreach ( $user_query->results as $user ) {			
 					$stored_user_login = get_user_meta( $user->ID, 'stored_user_login', TRUE );
 					$wpdb->update( $wpdb->users, array( 'user_login' => $stored_user_login ), array( 'ID' => $user->ID ) );
-					wp_update_user( array( 'ID' => $user->ID, 'role' => 'rpr_unverified' ) );
+					$user->set_role( 'rpr_unverified' );
 					delete_user_meta( $user->ID, 'stored_user_login' );
 				}
 			}

@@ -55,7 +55,8 @@ if ( !class_exists( 'RPR_Activate' ) ) {
 			//TODO: Not the most elegant solution, it would be better to interupt the activation and keep the data in the signups table with a flag to alert admin to complete activation			
 			if ( '1' === $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 				update_user_meta( $user_id, 'stored_user_password', sanitize_text_field( $password ) );
-				wp_update_user( array( 'ID' => $user_id, 'role' => 'rpr_unverified' ) );
+				$user = get_userdata( $user_id );
+				$user->set_role( 'rpr_unverified' );
 			}
 
 			if ( is_array( $register_plus_redux->rpr_get_option( 'show_fields' ) ) && in_array( 'first_name', $register_plus_redux->rpr_get_option( 'show_fields' ) ) && !empty( $meta['first_name'] ) ) update_user_meta( $user_id, 'first_name', sanitize_text_field( $meta['first_name'] ) );
