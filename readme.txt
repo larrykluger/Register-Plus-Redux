@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.2
 Tested up to: 3.5
-Stable tag: 3.9.8
+Stable tag: 3.9.9
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -115,8 +115,9 @@ HTML attributes should go in the following order name -> id -> class
 == Changelog ==
 
 = 3.9.9 =
-May 1, 2013 by radiok
+May 8, 2013 by radiok
 
+* Fixed bug, upon verification usermeta was purging when changing user role from unverified to default role
 * Fixed regression from 3.9, show Datepicker
 * Fixed bug, when both email and admin verification were enabled, admin verification was not obeyed after completing email verification
 * Delete Wordpress option register_plus_redux_last_activated on deactivation or uninstall
