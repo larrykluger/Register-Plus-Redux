@@ -4,7 +4,7 @@ Donate link: http://radiok.info/donate/
 Tags: registration, register, plus, redux, password, invitation, code, email, verification, disclaimer, license, agreement, privacy, policy, logo, moderation, user
 Requires at least: 3.3
 Tested up to: 3.5
-Stable tag: 3.9.9
+Stable tag: 3.9.10
 
 Enhances the user registration process with complete customization and additional administration options.
 
@@ -113,6 +113,11 @@ HTML attributes should go in the following order name -> id -> class
 4. Unverified User Management
 
 == Changelog ==
+
+= 3.9.10 =
+May 14, 2013 by radiok
+
+* Fixed bug, under Wordpress for Networks, super_admin users could not login
 
 = 3.9.9 =
 May 8, 2013 by radiok
