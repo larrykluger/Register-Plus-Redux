@@ -54,6 +54,7 @@ Available in the following translations:
 * fr_FR French
 * ir_FA Persian
 * it_IT Italian
+* pl_PL Polish
 * pt_BR Portuguese
 * pt_BR Brazilian Portuguese
 * ro_RO Romanian
@@ -118,6 +119,7 @@ HTML attributes should go in the following order name -> id -> class
 May 14, 2013 by radiok
 
 * Fixed bug, under Wordpress for Networks, super_admin users could not login
+* Added pl_PL translation
 
 = 3.9.9 =
 May 8, 2013 by radiok
