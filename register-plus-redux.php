@@ -493,7 +493,9 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 			}
 			if ( !empty( $verification_code ) ) {
 				$message = str_replace( '%verification_code%', $verification_code, $message );
-				$message = str_replace( '%verification_url%', wp_login_url() . '?action=verifyemail&verification_code=' . $verification_code, $message );
+				//$message = str_replace( '%verification_url%', wp_login_url() . '?action=verifyemail&verification_code=' . $verification_code, $message );
+				$message = str_replace( '%verification_url%', /*.string.*/ add_query_arg( array ( 'action' => 'verifyemail', 'verification_code' => $verification_code ), wp_login_url() ), $message );
+				
 			}
 
 			preg_match_all( '/%([^%]+)%/', (string) $message, $keys );
