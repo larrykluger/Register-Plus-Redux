@@ -615,6 +615,12 @@ if ( !class_exists( 'Register_Plus_Redux' ) ) {
 		public /*.string.*/ function rpr_filter_mail_content_type_html( /*.string.*/ $content_type ) {
 			return 'text/html';
 		}
+
+		public /*.boolean.*/ function rpr_wp_modal_registration() {
+			// We do various things differently if the user is registering via a modal form provided by the WP-Modal-Login plugin
+			global $wp_modal_form; 
+			return ( isset($wp_modal_form) && $wp_modal_form === 'registration' );
+		}
 	}
 }
 

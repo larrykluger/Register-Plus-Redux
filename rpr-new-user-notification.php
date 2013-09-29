@@ -19,20 +19,21 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 			$plaintext_pass = stripslashes( (string) $_POST['pass1'] );
 		//TODO: Code now only forces users registering to verify email, may want to add settings to have admin created users verify email too
 		$verification_code = '';
-		if ( 'wp-login.php' === $pagenow && '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) {
+		$user_registering = 'wp-login.php' === $pagenow || $register_plus_redux->rpr_wp_modal_registration();
+		if ( $user_registering && '1' === $register_plus_redux->rpr_get_option( 'verify_user_email' ) ) {
 			$verification_code = wp_generate_password( 20, FALSE );
 			update_user_meta( $user_id, 'email_verification_code', $verification_code );
 			update_user_meta( $user_id, 'email_verification_sent', gmdate( 'Y-m-d H:i:s' ) );
 			$register_plus_redux->send_verification_mail( $user_id, $verification_code );
 		}
-		if ( ( 'wp-login.php' === $pagenow && '1' !== $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) || 
-			( 'wp-login.php' !== $pagenow && '1' !== $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) ) ) {
+		if ( ( $user_registering && '1' !== $register_plus_redux->rpr_get_option( 'disable_user_message_registered' ) ) || 
+			( ! $user_registering && '1' !== $register_plus_redux->rpr_get_option( 'disable_user_message_created' ) ) ) {
 			if ( '1' !== $register_plus_redux->rpr_get_option( 'verify_user_email' ) && '1' !== $register_plus_redux->rpr_get_option( 'verify_user_admin' ) ) {
 				$register_plus_redux->send_welcome_user_mail( $user_id, $plaintext_pass );
 			}
 		}
-		if ( ( 'wp-login.php' === $pagenow && '1' !== $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) ) || 
-			( 'wp-login.php' !== $pagenow && '1' !== $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) ) ) {
+		if ( ( $user_registering && '1' !== $register_plus_redux->rpr_get_option( 'disable_admin_message_registered' ) ) || 
+			( ! $user_registering && '1' !== $register_plus_redux->rpr_get_option( 'disable_admin_message_created' ) ) ) {
 			$register_plus_redux->send_admin_mail( $user_id, $plaintext_pass, $verification_code );
 		}
 	}
