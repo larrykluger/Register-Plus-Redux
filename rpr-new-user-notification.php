@@ -17,6 +17,9 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 			$plaintext_pass = stripslashes( (string) $_POST['pass1'] );
 		if ( 'user-new.php' === $pagenow && !empty( $_POST['pass1'] ) )
 			$plaintext_pass = stripslashes( (string) $_POST['pass1'] );
+		if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) )
+			update_user_option( $user_id, 'default_password_nag', false, true ); // turn off the Password change nag.
+
 		//TODO: Code now only forces users registering to verify email, may want to add settings to have admin created users verify email too
 		$verification_code = '';
 		$user_registering = 'wp-login.php' === $pagenow || $register_plus_redux->rpr_wp_modal_registration();
