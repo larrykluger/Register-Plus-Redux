@@ -8,7 +8,7 @@ if ( function_exists( 'wp_new_user_notification' ) ) {
 // Called after admin creates new site, which also creates new user from wp-admin/network/edit.php (MS)
 // Called after admin creates user from wp-admin/network/edit.php (MS)
 //
-// Action: rpr_new_user 2 parameters ($user_id, $plaintext_pass)
+// Action: rpr_new_user 2 parameters ($user_id, $plaintext_pass). Should not generate output.
 if ( !function_exists( 'wp_new_user_notification' ) ) {
 	/*.void.*/ function wp_new_user_notification( /*.int.*/ $user_id, $plaintext_pass = '' ) {
 		global $pagenow;
