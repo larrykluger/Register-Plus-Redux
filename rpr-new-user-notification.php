@@ -7,6 +7,8 @@ if ( function_exists( 'wp_new_user_notification' ) ) {
 // Called after admin creates user from wp-admin/user-new.php
 // Called after admin creates new site, which also creates new user from wp-admin/network/edit.php (MS)
 // Called after admin creates user from wp-admin/network/edit.php (MS)
+//
+// Action: rpr_new_user 2 parameters ($user_id, $plaintext_pass)
 if ( !function_exists( 'wp_new_user_notification' ) ) {
 	/*.void.*/ function wp_new_user_notification( /*.int.*/ $user_id, $plaintext_pass = '' ) {
 		global $pagenow;
@@ -19,6 +21,7 @@ if ( !function_exists( 'wp_new_user_notification' ) ) {
 			$plaintext_pass = stripslashes( (string) $_POST['pass1'] );
 		if ( '1' === $register_plus_redux->rpr_get_option( 'user_set_password' ) )
 			update_user_option( $user_id, 'default_password_nag', false, true ); // turn off the Password change nag.
+		do_action( 'rpr_new_user', $user_id, $plaintext_pass );	
 
 		//TODO: Code now only forces users registering to verify email, may want to add settings to have admin created users verify email too
 		$verification_code = '';
